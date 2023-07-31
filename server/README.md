@@ -30,6 +30,7 @@ The API offers a variety of routes to work with *cohort* and *student* documents
 
 | HTTP verb | URL                               | Request body | Action                                                         |
 | --------- | --------------------------------- | ------------ | -------------------------------------------------------------- |
+| GET       | `/api/students`                   | (empty)      | Returns all the students in JSON format                        |
 | GET       | `/api/students/cohort/:cohortId`  | (empty)      | Returns all the students of a specified cohort in JSON format  |
 | GET       | `/api/students/:studentId`        | (empty)      | Returns the specified student by id                            |
 | POST      | `/api/students`                   | JSON         | Creates a new student **with their respective cohort id**      |
