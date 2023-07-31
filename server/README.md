@@ -4,6 +4,7 @@ This documentation provides an overview of the available routes and data models 
 
 Throughout the project, you should use this documentation as a reference and a guide. Refer to it whenever you need information or more details on how to implement the routes or model your database.
 
+<br>
 
 ## Routes
 
