@@ -44,7 +44,7 @@ The *Models* section holds information about the data models for your database. 
 
 ```js
 // We intentionally left this section unfinished because we want you to actively participate in the process.
-// As you work on your database, you'll need to define the data models to practice structuring your database data (data modeling).
+// As you start working on your database, you'll need to define the data models to practice structuring your database data (data modeling).
 // The purpose of this section will become clearer as you progress in your project.
 ```
 
@@ -52,6 +52,6 @@ The *Models* section holds information about the data models for your database. 
 
 ```js
 // We intentionally left this section unfinished because we want you to actively participate in the process.
-// As you work on your database, you'll need to define the data models to practice structuring your database data (data modeling).
+// As you start working on your database, you'll need to define the data models to practice structuring your database data (data modeling).
 // The purpose of this section will become clearer as you progress in your project.
 ```
