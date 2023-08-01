@@ -5,6 +5,7 @@ import CohortListPage from "./pages/CohortListPage";
 import CohortDetailsPage from "./pages/CohortDetailsPage";
 import CohortEditPage from "./pages/CohortEditPage";
 import CohortCreatePage from "./pages/CohortCreatePage";
+import StudentListPage from "./pages/StudentListPage";
 import StudentDetailsPage from "./pages/StudentDetailsPage";
 import StudentEditPage from "./pages/StudentEditPage";
 
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Navigate to="/dashboard" />} />
         <Route exact path="/dashboard" element={<CohortListPage />} />
+        <Route exact path="/students" element={<StudentListPage />} />
         <Route exact path="/cohorts/details/:cohortId" element={<CohortDetailsPage />} />
         <Route exact path="/cohorts/edit/:cohortId" element={<CohortEditPage />} />
         <Route exact path="/cohorts/create" element={<CohortCreatePage />} />

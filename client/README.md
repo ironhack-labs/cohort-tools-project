@@ -22,7 +22,8 @@ This is the client side of the Cohort Tools project. It is a React app that uses
 | Page Name       | Route | Component | Description |
 |-----------------|-------|-----------|-------------|
 | Dashboard       | [/dashboard](http://localhost:5173/dashboard) | `CohortListPage` | Displays a list of all the cohorts |
-| Cohort Details  | [/cohort/:id](http://localhost:5173/cohort/1) | `CohortDetailsPage` | Displays details about a single cohort |
+| Student List    | [/dashboard](http://localhost:5173/students) | `StudentListPage` | Displays a list of all the students |
+| Cohort Details  | [/cohort/:id](http://localhost:5173/cohort/1) | `CohortDetailsPage` | Displays a single cohort details and allows user to create/add new students |
 | Edit Cohort     | [/cohort/:id/edit](http://localhost:5173/cohort/1/edit) | `CohortEditPage` | Allows the user to edit or delete a cohort |
 | Create Cohort   | [/cohort/create](http://localhost:5173/cohort/create) | `CohortCreatePage` | Allows the user to create a new cohort |
 | Student Details | [/student/:id](http://localhost:5173/student/1) | `StudentDetailsPage` | Displays a single student |
@@ -41,19 +42,13 @@ To get a local copy up and running follow these simple steps.
 
 ### Installing
 
-1. Clone the repo:
-
-```sh
-git clone <repo-url>
-```
-
-2. Install dependencies:
+1. Install dependencies:
 
 ```sh
 npm install
 ```
 
-3. Start the application:
+2. Start the application:
 
 ```sh
 npm run dev

@@ -15,6 +15,8 @@ function StudentCard({
   projects,
   // cohort,
 }) {
+
+  console.log('studentId', studentId)
   return (
     <div className="StudentCard card">
       <img 
