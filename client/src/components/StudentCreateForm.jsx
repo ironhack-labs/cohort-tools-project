@@ -29,7 +29,6 @@ function StudentCreateForm({ cohortId, cohortName, callback }) {
     const requestBody = { ...student, cohort: cohortId };
     
     setSubmitting(true);
-    console.log('requestBody', requestBody);
 
     axios
       .post(`${API_URL}/api/students`, requestBody)
