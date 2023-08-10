@@ -50,71 +50,39 @@ The *Models* section holds information about the data models for your database. 
 
 #### Cohort Model
 
-```js
-// We intentionally left this section unfinished because we want you to actively participate in the process.
-// As you start working on your database, you'll need to define the data models to practice structuring your database data (data modeling).
-// The purpose of this section will become clearer as you progress in your project.
-```
+| Field          | Data Type        | Description                                 |
+|----------------|------------------|---------------------------------------------|
+| `cohortSlug`     | *`String`*           | Unique identifier for the cohort. Required. |
+| `cohortName`     | *`String`*           | Name of the cohort. Required.              |
+| `program`        | *`String`*           | Program/course name. Allowed values: "Web Dev", "UX/UI", "Data Analytics", "Cybersecurity". |
+| `format`         | *`String`*           | Format of the cohort. Allowed values: "Full Time", "Part Time". |
+| `campus`         | *`String`*           | Campus location. Allowed values: "Madrid", "Barcelona", "Miami", "Paris", "Berlin", "Amsterdam", "Lisbon", "Remote". |
+| `startDate`      | *`Date`*             | Start date of the cohort. Default: Current date. |
+| `endDate`        | *`Date`*             | End date of the cohort.                     |
+| `inProgress`     | *`Boolean`*          | Indicates if the cohort is currently in progress. Default: false. |
+| `programManager` | *`String`*           | Name of the program manager. Required.      |
+| `leadTeacher`    | *`String`*           | Name of the lead teacher. Required.         |
+| `totalHours`     | *`Number`*           | Total hours of the cohort program. Default: 360. |
+
 
 <br>
 
 #### Student Model
 
-```js
-// We intentionally left this section unfinished because we want you to actively participate in the process.
-// As you start working on your database, you'll need to define the data models to practice structuring your database data (data modeling).
-// The purpose of this section will become clearer as you progress in your project.
-```
+| Field        | Data Type                            | Description                                  |
+|--------------|--------------------------------------|----------------------------------------------|
+| `firstName`    | *`String`*                               | First name of the student. Required.        |
+| `lastName`     | *`String`*                               | Last name of the student. Required.         |
+| `email`        | *`String`*                               | Email address of the student. Required, unique. |
+| `phone`        | *`String`*                               | Phone number of the student. Required.      |
+| `linkedinUrl`  | *`String`*                               | URL to the student's LinkedIn profile. Default: Empty string. |
+| `languages`    | *`Array`* of Strings                     | Spoken languages of the student. Allowed values: "English", "Spanish", "French", "German", "Portuguese", "Dutch", "Other". |
+| `program`      | *`String`*                               | Type of program the student is enrolled in. Allowed values: "Web Dev", "UX/UI", "Data Analytics", "Cybersecurity". |
+| `background`   | *`String`*                               | Background information about the student. Default: Empty. |
+| `image`        | *`String`*                               | URL to the student's profile image. Default: https://i.imgur.com/r8bo8u7.png . |
+| `cohort`       | *`ObjectId`*,                            | Reference *_id* of the cohort the student belongs to. |
+| `projects`     | *`Array`*                                | Array of the student's projects.   |
+
 
 <br>
 
-### Mock JSON Data (❗TEMPORARY - REMOVE AFTER MODELING THE DATABASE)
-
-
-At the beginning stage of the project, before you integrate a database into your project, you will be working with mock JSON data. For this purpose, we have provided you with the two JSON files located in the `server/` folder:
-
-###### `cohorts.json`
-```js
-[
-  {
-    "_id": 1,
-    "inProgress": false,
-    "cohortSlug": "ft-wd-paris-2023-07-03",
-    "cohortName": "FT WD PARIS 2023 07",
-    "program": "Web Dev",
-    "campus": "Paris",
-    "startDate": "2023-07-03T00:00:00.000Z",
-    "endDate": "2023-09-08T00:00:00.000Z",
-    "programManager": "Sally Daher",
-    "leadTeacher": "Florian Aube",
-    "totalHours": 360
-  },
-  // Additional data...
-]
-```
-
-<br>
-
-###### `students.json`
-```js
-[
-  {
-    "firstName": "Christine",
-    "lastName": "Clayton",
-    "email": "christine.clayton@example.com",
-    "phone": "567-890-1234",
-    "linkedinUrl": "https://linkedin.com/in/christineclaytonexample",
-    "languages": ["English", "Dutch"],
-    "program": "Web Dev",
-    "background": "Computer Engineering",
-    "image": "https://i.imgur.com/r8bo8u7.png",
-    "cohort": 1,
-    "projects": []
-  },
-  // Additional data...
-]
-```
-
-<br>
-
-❗You should use this mock data as a reference as you start modeling your database. **Once you've completed the database modeling** process, remember to **remove this section from the README file**.
