@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 import StudentCard from "../components/StudentCard";
 
@@ -21,9 +20,7 @@ function StudentListPage() {
   return (
     <div className="StudentListPage">
       {students && students.map((student) => (
-        <Link to={`/students/details/${student._id}`} key={student._id}>
-          <StudentCard {...student} />
-        </Link>
+          <StudentCard key={student._id} {...student} />
       ))}
     </div>
   );

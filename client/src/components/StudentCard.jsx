@@ -12,11 +12,10 @@ function StudentCard({
   program,
   background,
   image,
-  projects,
+  // projects,
   // cohort,
 }) {
 
-  console.log('studentId', studentId)
   return (
     <div className="StudentCard card">
       <img 
@@ -38,17 +37,6 @@ function StudentCard({
       <p>{background}</p>
       <p>{linkedinUrl}</p>
       <p>{program}</p>
-
-      {projects &&
-        projects.map((project) => (
-          <Link key={project._id} to={`/projects/details/`}>
-            <div>
-              <img src={project.image} />
-              <p>{project.name}</p>
-              <p>{project.description}</p>
-            </div>
-          </Link>
-        ))}
     </div>
   );
 }
