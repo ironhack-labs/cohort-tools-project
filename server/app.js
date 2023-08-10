@@ -1,26 +1,33 @@
-// IMPORTS - Use require() to import the packages that you will need: express, morgan
-// ...
-
-// INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
-// ...
-
+const express = require("express");
+const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
+const PORT = 5005;
 
 // STATIC DATA
-// Dev Team - Add the provided arrays with static data on students and cohorts here:
+// Devs Team - Import the provided files with JSON data of students and cohorts here:
 // ...
+
+
+// INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
+const app = express();
 
 
 // MIDDLEWARE
-// Dev Team - Set up the following required middleware here: express.json(), morgan("dev"), express.static("public")
+// Research Team - Set up CORS middleware here:
 // ...
-// Research Team - Set up CORS middleware here (after researching what it is and how it works):
-// ...
+app.use(express.json());
+app.use(morgan("dev"));
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 
 // ROUTES - https://expressjs.com/en/starter/basic-routing.html
-// Dev Team - Start working on the routes here:
+// Devs Team - Start working on the routes here:
 // ...
 
 
 // START SERVER
-// ...
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
