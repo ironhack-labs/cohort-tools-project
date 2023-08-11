@@ -19,8 +19,16 @@ function StudentListPage() {
 
   return (
     <div className="StudentListPage">
-      {students && students.map((student) => (
-          <StudentCard key={student._id} {...student} />
+      <div className="flex justify-between items-center p-2 font-bold border-b">
+        <span className="flex items-center justify-center" style={{ flexBasis: "20%" }}>Image</span>
+        <span style={{ flexBasis: "20%" }}>Name</span>
+        <span style={{ flexBasis: "20%" }}>Program</span>
+        <span style={{ flexBasis: "20%" }}>Email</span>
+        <span style={{ flexBasis: "20%" }}>Phone</span>
+      </div>
+
+      {students && students.map((student, index) => (
+          <StudentCard key={student._id} {...student} className={index % 2 === 0 ? "bg-white" : "bg-gray-100"} />
       ))}
     </div>
   );

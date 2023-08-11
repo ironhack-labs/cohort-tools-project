@@ -1,0 +1,26 @@
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #F3F4F6;
+  color: #111827;
+}
+
+/* Colors */
+:root {
+    --primary-color: #1E40AF;
+    --secondary-color: #3B82F6;
+    --background-color: #F3F4F6;
+    --text-color: #111827;
+}
+
+/* Base styles */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+/* Container */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px;
+}

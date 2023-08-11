@@ -1,3 +1,9 @@
+/* Tailwind directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Styles */
 body {
   margin: 0;
 }
@@ -20,27 +26,9 @@ label {
   display: block;
 }
 
-input,
-textarea {
-  width: 200px;
-  padding: 10px;
-  display: inline-block;
-  margin: 10px;
-}
-
-.Navbar {
-  background: #515f7d;
-  color: white;
-  padding: 0px 20px;
-  box-shadow: 0px 1px 2px gray;
-  width: 100%;
-  margin-bottom: 15px;
-  padding: 5px;
-}
 
 .Navbar li {
   list-style: none;
-  color: white;
   font-size: 24px;
   font-weight: 600;
 }
@@ -63,15 +51,8 @@ textarea {
 .EditProjectPage,
 .AddCohort,
 .AddStudent {
-  background: #f9eec3;
-  border: 1px solid grey;
-  box-shadow: 0px 2px 3px grey;
-  width: 400px;
-  text-align: center;
-  margin: 0 auto;
-  margin-bottom: 20px;
-  padding: 10px;
-  border-radius: 4px;
+  border: 0.5px solid grey;
+  box-shadow: 0px 2px 5px grey;
 }
 
 .EditProjectPage {
@@ -89,8 +70,4 @@ textarea {
 .AddStudent button,
 .AddCohort button {
   display: block;
-}
-
-.StudentCard {
-  background-color: #dfeef9;
 }

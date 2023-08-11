@@ -1,3 +1,7 @@
+/* Typography */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import './styles/base.css';
+
 .App {
   text-align: center;
 }
@@ -32,7 +36,133 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+nav {
+  position: relative;
+  z-index: 20;
+}
+
+
+/* Primary Button */
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #3B82F6;
+}
+
+/* Secondary Button */
+.btn-secondary {
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.btn-secondary:hover {
+  background-color: #E5E7EB;
+}
+
+
+/* Spacing utilities */
+.spacing-xs {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.spacing-sm {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.spacing-md {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.spacing-lg {
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+/* Text utilities */
+.text-center {
+  text-align: center;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+/* Flex utilities */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Card styles */
+.card {
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.content {
+  transition: margin-left 0.4s ease-in-out;
+}
+
+.content.shifted {
+  margin-left: 250px;
+}
+
+
+.sidebar {
+  position: fixed;
+  z-index: 20;
+  top: 70px;
+  left: 0;
+  width: 250px;
+  height: calc(100% - 60px);
+  background-color: white;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  transition: transform 0.4s ease-in-out;
+}
+
+.sidebar a {
+  display: block;
+  padding: 8px 16px;
+  text-decoration: none;
+  color: #111827;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.sidebar a:hover {
+  background-color: #f3f4f6;
+}
+
+.sidebar a.active {
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.cohort-name-text {
+  display: inline-block;
+  width: 100px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

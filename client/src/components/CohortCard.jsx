@@ -1,30 +1,28 @@
 import { Link } from "react-router-dom";
 
-// We are deconstructing props object directly in the parentheses of the function
 function CohortCard({
   _id,
-  cohortSlug,
-  cohortName,
   program,
-  format,
+  inProgress,
   campus,
-  // startDate,
-  // endDate,
-  // inProgress,
-  // programManager,
-  // leadTeacher,
-  // totalHours,
+  cohortName,
+  cohortSlug,
+  className,
 }) {
   return (
-    <div className="CohortCard card">
-      <Link to={`/cohorts/details/${_id}`}>
-        <h3>{cohortName}</h3>
-      </Link>
-      <p style={{ maxWidth: "400px" }}>{cohortSlug} </p>
-      <p style={{ maxWidth: "400px" }}>{campus} </p>
-      <p style={{ maxWidth: "400px" }}>{program} </p>
-      <p style={{ maxWidth: "400px" }}>{format} </p>
-    </div>
+    <Link to={`/cohorts/details/${_id}`}>
+      <div
+        className={`CohortCard flex justify-between items-center p-3 mb-2 bg-white shadow-sm rounded border border-gray-200 hover:bg-gray-50 ${className}`}
+      >
+        <span style={{ flexBasis: "25%" }}>{cohortName}</span>
+        <span style={{ flexBasis: "15%" }}>{program}</span>
+        <span style={{ flexBasis: "15%" }}>{campus}</span>
+        {/* Make into a toggle checkmark depending if inProgress is true of false. Use empty check box or full */}
+
+        <span style={{ flexBasis: "15%" }}>{inProgress ? "✅" : "⬜️"}</span>
+        <span style={{ flexBasis: "25%" }}>{cohortSlug}</span>
+      </div>
+    </Link>
   );
 }
 

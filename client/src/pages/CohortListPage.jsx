@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
-
+import CohortFilterBar from "../components/CohortFilterBar";
 import CohortCard from "../components/CohortCard";
 
 // Import the string from the .env with URL of the API/server - http://localhost:5005
@@ -24,7 +23,8 @@ function CohortListPage() {
     axios
       .get(`${API_URL}/api/cohorts?${queryString}`)
       .then((response) => {
-        setCohorts(response.data)})
+        setCohorts(response.data);
+      })
       .catch((error) => console.log(error));
   }, [campusQuery, programQuery]);
 
@@ -43,51 +43,35 @@ function CohortListPage() {
 
   return (
     <div className="CohortListPage">
-      <Link to="/cohorts/create">
-        <button>Create</button>
-      </Link>
+      <CohortFilterBar
+        campusQuery={campusQuery}
+        setCampusQuery={setCampusQuery}
+        programQuery={programQuery}
+        setProgramQuery={setProgramQuery}
+        handleChange={handleChange}
+      />
 
-      <label htmlFor="campus">
-        Campus
-        <br />
-        <select
-          name="campus"
-          id="campus"
-          value={campusQuery}
-          onChange={(e) => handleChange(e, setCampusQuery)}
-        >
-          <option value="">All</option>
-          <option value="Madrid">Madrid</option>
-          <option value="Barcelona">Barcelona</option>
-          <option value="Miami">Miami</option>
-          <option value="Paris">Paris</option>
-          <option value="Berlin">Berlin</option>
-          <option value="Amsterdam">Amsterdam</option>
-          <option value="Remote">Remote</option>
-        </select>
-      </label>
+      <div className="flex justify-between items-center p-2 font-bold border-b">
+        <span style={{ flexBasis: "25%" }}>Cohort</span>
+        <span style={{ flexBasis: "15%" }}>Program</span>
+        <span style={{ flexBasis: "15%" }}>Format</span>
+        <span style={{ flexBasis: "15%" }}>Ongoing</span>
+        <span style={{ flexBasis: "25%" }}>Id</span>
+      </div>
 
-      <label htmlFor="campus">
-        Program
-        <br />
-        <select
-          name="program"
-          id="program"
-          value={programQuery}
-          onChange={(e) => handleChange(e, setProgramQuery)}
-        >
-          <option value="">All</option>
-          <option value="Web Dev">Web Development</option>
-          <option value="UX/UI">UX/UI</option>
-          <option value="Data Analytics">Data Analytics</option>
-          <option value="Cybersecurity">Cybersecurity</option>
-        </select>
-      </label>
-
-
-      {cohorts && cohorts.map((cohort) => (
-        <CohortCard key={cohort._id} {...cohort} />
-      ))}
+      {cohorts &&
+        cohorts.map(
+          (cohort, index) => (
+            console.log("cohort", cohort),
+            (
+              <CohortCard
+                key={cohort._id}
+                {...cohort}
+                className={index % 2 === 0 ? "bg-white" : "bg-gray-100"}
+              />
+            )
+          )
+        )}
     </div>
   );
 }
