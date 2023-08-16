@@ -15,6 +15,7 @@ const cohortSchema = new Schema({
     },
     startDate: { type: Date, default: Date.now },
     endDate: { type: Date },
+    inProgress: {type: Boolean, default: false},
     programManager: { type: String, required: true },
     leadTeacher: { type: String, required: true },
     totalHours: { type: Number, default: 360 },
@@ -24,7 +25,7 @@ const cohortSchema = new Schema({
 // The model() method defines a model (Book) and creates a collection (books) in MongoDB
 // The collection name will default to the lowercased, plural form of the model name:
 //                          "Book" --> "books"
-const cohort = mongoose.model("Cohort", cohortSchema);
+const Cohort = mongoose.model("Cohort", cohortSchema);
 
 // EXPORT THE MODEL
-module.exports = cohort;
+module.exports = Cohort;
