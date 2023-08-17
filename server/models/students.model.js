@@ -20,7 +20,7 @@ const studentSchema = new Schema({
     },
     background: { type: String, default: "" },
     // project: [Array],
-    cohort: Schema.Types.ObjectId,
+    cohort: {type: Schema.Types.ObjectId, ref: "Cohort"},
 });
 
 // CREATE MODEL
