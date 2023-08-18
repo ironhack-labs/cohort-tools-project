@@ -64,4 +64,3 @@ This project was built with:
 - [Vite](https://vitejs.dev/)
 - [React Router](https://reactrouter.com/)
 - [Tailwind CSS](https://tailwindcss.com/)
-- [Flowbite](https://flowbite.com/)
