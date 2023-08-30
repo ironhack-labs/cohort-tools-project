@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import placeholderImage from "../assets/placeholder.png";
+import placeholderImage from "../assets/profile-icon.png";
 
 function StudentCard({
   _id: studentId,

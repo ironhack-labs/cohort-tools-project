@@ -17,8 +17,6 @@ function CohortCard({
         <span style={{ flexBasis: "25%" }}>{cohortName}</span>
         <span style={{ flexBasis: "15%" }}>{program}</span>
         <span style={{ flexBasis: "15%" }}>{campus}</span>
-        {/* Make into a toggle checkmark depending if inProgress is true of false. Use empty check box or full */}
-
         <span style={{ flexBasis: "15%" }}>{inProgress ? "✅" : "⬜️"}</span>
         <span style={{ flexBasis: "25%" }}>{cohortSlug}</span>
       </div>

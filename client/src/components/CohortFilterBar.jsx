@@ -8,7 +8,7 @@ function CohortFilterBar({
   handleChange,
 }) {
   return  (
-    <div className="filter-bar flex justify-between items-center mb-4 p-2 bg-gray-200 rounded">
+    <div className="filter-bar flex justify-between items-center mb-4 p-2 px-8 bg-gray-200 rounded">
       <div className="flex justify-start items-center space-x-8">
         <label htmlFor="campus" className="flex items-center">
           <span className="mr-2">Campus:</span>
@@ -49,7 +49,7 @@ function CohortFilterBar({
       </div>
 
       <Link to="/cohorts/create" className="ml-auto">
-        <button className="px-4 py-1 rounded bg-blue-600 text-white hover:bg-blue-500">Create</button>
+        <button className="px-4 py-1 rounded bg-blue-600 text-white hover:bg-blue-500 px-6">Create</button>
       </Link>
     </div>
   );

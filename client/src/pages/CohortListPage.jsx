@@ -62,14 +62,11 @@ function CohortListPage() {
       {cohorts &&
         cohorts.map(
           (cohort, index) => (
-            console.log("cohort", cohort),
-            (
               <CohortCard
                 key={cohort._id}
                 {...cohort}
                 className={index % 2 === 0 ? "bg-white" : "bg-gray-100"}
               />
-            )
           )
         )}
     </div>
