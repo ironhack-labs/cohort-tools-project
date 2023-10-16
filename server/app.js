@@ -2,10 +2,11 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const PORT = 5005;
+const PORT = 5001;
 
 const cohorts = require('./data/cohorts.json');
 const students = require('./data/students.json');
+
 
 // STATIC DATA
 // Devs Team - Import the provided files with JSON data of students and cohorts here:
@@ -19,7 +20,11 @@ const app = express();
 // MIDDLEWARE
 // Research Team - Set up CORS middleware here:
 // ...
-app.use(cors({origin:["http://localhost:5005/","http://localhost:5005/api/cohorts","http://localhost:5005/api/students"]}))
+app.use(cors({origin:
+  ["http://localhost:5005/",
+  "http://localhost:5005/api/cohorts",
+  "http://localhost:5005/api/students"]
+}))
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.static("public"));
@@ -44,6 +49,8 @@ app.get('/api/students', (req, res) => {
 
 
 // START SERVER
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+
+module.exports = server
