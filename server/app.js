@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const PORT = 5005;
 
@@ -18,6 +19,7 @@ const app = express();
 // MIDDLEWARE
 // Research Team - Set up CORS middleware here:
 // ...
+app.use(cors({origin:["http://localhost:5005/","http://localhost:5005/api/cohorts","http://localhost:5005/api/students"]}))
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.static("public"));
