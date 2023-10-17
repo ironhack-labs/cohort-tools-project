@@ -4,6 +4,10 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const PORT = 5005;
 
+const bodyParser = require("body-parser");
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+
 // const cohorts = require('./data/cohorts.json');
 // const students = require('./data/students.json');
 
@@ -81,6 +85,41 @@ app.get("/api/cohorts", (req, res) => {
 
 
 // START SERVER
+const options = {
+  definition: {
+    openapi: "3.1.0",
+    info: {
+      title: "LogRocket Express API with Swagger",
+      version: "0.1.0",
+      description:
+        "This is a simple CRUD API application made with Express and documented with Swagger",
+      license: {
+        name: "MIT",
+        url: "https://spdx.org/licenses/MIT.html",
+      },
+      contact: {
+        name: "LogRocket",
+        url: "https://logrocket.com",
+        email: "info@email.com",
+      },
+    },
+    servers: [
+      {
+        url: "http://localhost:3000",
+      },
+    ],
+  },
+  apis: ["./models/*.js"],
+};
+
+const specs = swaggerJsdoc(options);
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(specs, { explorer: true })
+);
+
+
 const server = app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
