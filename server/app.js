@@ -2,7 +2,13 @@ const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const mongoose = require("mongoose");
 const PORT = 5005;
+
+mongoose
+  .connect("mongodb://localhost:27017/cohort-tools-api")
+  .then((x) => console.log(`Connected to Database: "${x.connections[0].name}"`))
+  .catch((err) => console.error("Error connecting to MongoDB", err));
 
 // STATIC DATA
 // Devs Team - Import the provided files with JSON data of students and cohorts here:
@@ -33,14 +39,30 @@ app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
-const cohorts = require("./cohorts.json");
+const Cohort = require("./models/Cohort.model");
 
 app.get("/api/cohorts", (req, res) => {
-  res.json(cohorts);
+  Cohort.find({})
+    .then((cohorts) => {
+      res.json(cohorts);
+      console.log(cohorts);
+    })
+    .catch((error) => {
+      console.error("Error", error);
+      res.status(500).send({ error: "failed to retrieve cohorts" });
+    });
 });
-const students = require("./students.json");
+
+const Student = require("./models/Student.model");
 app.get("/api/students", (req, res) => {
-  res.json(students);
+  Student.find({})
+    .then((students) => {
+      res.json(students);
+    })
+    .catch((error) => {
+      console.error("Error", error);
+      res.status(500).send({ error: "failed to retrieve students" });
+    });
 });
 
 // START SERVER
