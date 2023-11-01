@@ -65,6 +65,121 @@ app.get("/api/students", (req, res) => {
     });
 });
 
+app.post("/api/students", (req, res, next) => {
+  const newStudent = { ...req.body };
+  Student.create(newStudent)
+    .then((createdNewStudent) => {
+      res.json(createdNewStudent);
+    })
+    .catch((error) => {
+      console.error("Error", error);
+      res.status(500).send({ error: "Failed creating a new student" });
+    });
+});
+
+app.get("/api/students", (req, res, next) => {
+  Student.find()
+    .then((allStudents) => {
+      res.status(200).json(allStudents);
+    })
+    .catch((error) => {
+      console.error("Error", error);
+      res.status(500).send({ error: "Failed to retrieve all the students" });
+    });
+});
+
+app.get("/api/students/cohort/:cohortId", async (req, res, next) => {
+  const { cohortId } = req.params;
+  try {
+    const oneCohort = await Cohort.findById(cohortId);
+    res.json(oneCohort);
+  } catch (error) {
+    console.error("Error", error);
+    res.status(500).send({ error: "Failed to retrieve this cohort students" });
+  }
+});
+
+app.get("/api/students/:studentId", async (req, res, next) => {
+  const { studentId } = req.params;
+  try {
+    const oneStudent = await Student.findById(studentId);
+    res.json(oneStudent);
+  } catch (error) {
+    console.error("Error", error);
+    res.status(500).send({ error: "Failed to retrieve this student" });
+  }
+});
+
+app.put("/api/students/:studentId", async (req, res, next) => {
+  const { studentId } = req.params;
+  const updatedStudentData = req.body;
+
+  try {
+    const updatedStudent = await Student.findByIdAndUpdate(
+      studentId,
+      updatedStudentData,
+      { new: true }
+    );
+
+    if (updatedStudent) {
+      res.json(updatedStudent);
+    } else {
+      res.status(404).send({ error: "Student not found" });
+    }
+  } catch (error) {
+    console.error("Error", error);
+    res.status(500).send({ error: "Failed to update the student" });
+  }
+});
+
+app.delete("/api/students/:studentId", (req, res, next) => {
+  Student.findByIdAndDelete(req.params.id)
+    .then(() => {
+      res.status(204).send();
+    })
+    .catch((error) => {
+      console.error("Error", error);
+      res.status(500).send({ error: "Error while deleting content" });
+    });
+});
+
+app.get("/api/cohorts/:cohortId", (req, res, next) => {
+  Cohort.findById(req.params.id)
+    .then((cohorts) => {
+      res.status(200).json(cohorts);
+    })
+    .catch((error) => {
+      res.status(500).json({ message: "error" });
+    });
+});
+app.post("/api/cohorts", (req, res, next) => {
+  const oneCohort = { ...req.body };
+  Cohort.create({
+    oneCohort,
+  }).then((createdCohorts) => {
+    res.status(201).json(createdCohorts);
+  });
+  res.status(500).json({ message: "error" });
+});
+app.put("/api/cohorts/:cohortId", (req, res, next) => {
+  Cohort.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .then((updatedCorhort) => {
+      res.status(200).json(updatedCorhort);
+    })
+    .catch((error) => {
+      res.status(500).json({ message: "error" });
+    });
+});
+app.delete("/api/cohorts/:cohortId", (req, res, next) => {
+  Cohort.findByIdAndDelete(req.params.id)
+    .then(() => {
+      res.status(200).json();
+    })
+    .catch((error) => {
+      res.status(500).json({ message: "error" });
+    });
+});
+
 // START SERVER
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
