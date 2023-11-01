@@ -46,6 +46,8 @@ app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
+// ------- COHORTS ------- //
+
 app.get("/api/cohorts", (req, res) => {
   // res.json(cohorts);
   Cohort.find({})
@@ -59,9 +61,63 @@ app.get("/api/cohorts", (req, res) => {
     });
 });
 
+app.post("/api/cohorts", async (req, res, next) => {
+  const cohort = { ...req.body };
+  Cohort.create(cohort)
+    .then((createdCohort) => {
+      res.status(201).json(createdCohort);
+      console.log("Cohort created");
+    })
+    .catch((error) => {
+      res.send(error);
+    });
+});
+
+app.get("/api/cohorts/:cohortId", (req, res) => {
+  const { cohortId } = req.params;
+  Cohort.findById(cohortId)
+    .then((cohort) => {
+      console.log("Retrieved cohort ->", cohort);
+      res.status(200).json(cohort);
+    })
+    .catch((error) => {
+      console.error("Error while retrieving cohort ->", error);
+      res.status(500).send({ error: "Failed to retrieve cohort" });
+    });
+});
+
+app.put("/api/cohorts/:cohortId", (req, res) => {
+  const { cohortId } = req.params;
+  Cohort.findByIdAndUpdate(cohortId, req.body, { new: true })
+    .then((cohort) => {
+      console.log("Updating cohort ->", cohort);
+      res.status(204).json(cohort);
+    })
+    .catch((error) => {
+      console.error("Error while updating cohort ->", error);
+      res.status(500).send({ error: "Failed to update cohort" });
+    });
+});
+
+app.delete("/api/cohorts/:cohortId", (req, res) => {
+  const { cohortId } = req.params;
+  Cohort.findByIdAndDelete(cohortId)
+    .then((cohort) => {
+      console.log("Deleting cohort ->", cohort);
+      res.status(204).send();
+    })
+    .catch((error) => {
+      console.error("Error while deleting cohort ->", error);
+      res.status(500).send({ error: "Failed to delete cohort" });
+    });
+});
+
+// ------- STUDENTS ------- //
+
 app.get("/api/students", (req, res) => {
   // res.json(students);
   Student.find({})
+    .populate("cohort")
     .then((students) => {
       console.log("Retrieved students ->", students);
       res.json(students);
@@ -69,6 +125,72 @@ app.get("/api/students", (req, res) => {
     .catch((error) => {
       console.error("Error while retrieving students ->", error);
       res.status(500).send({ error: "Failed to retrieve students" });
+    });
+});
+
+app.post("/api/students", async (req, res, next) => {
+  const student = { ...req.body };
+  Student.create(student)
+    .then((createdStudent) => {
+      res.status(201).json(createdStudent);
+      console.log("Student created");
+    })
+    .catch((error) => {
+      res.send(error);
+    });
+});
+
+app.get("/api/students/:studentId", (req, res) => {
+  const { studentId } = req.params;
+  Student.findById(studentId)
+    .populate("cohort", "programManager")
+    .then((student) => {
+      console.log("Retrieved student ->", student);
+      res.status(200).json(student);
+    })
+    .catch((error) => {
+      console.error("Error while retrieving student ->", error);
+      res.status(500).send({ error: "Failed to retrieve student" });
+    });
+});
+
+app.get("/api/students/cohort/:cohortId", (req, res) => {
+  const { cohortId } = req.params;
+  Student.find({ cohort: cohortId })
+    .populate("cohort")
+    .then((students) => {
+      console.log("Retrieved student ->", students);
+      res.status(200).json(students);
+    })
+    .catch((error) => {
+      console.error("Error while retrieving students ->", error);
+      res.status(500).send({ error: "Failed to retrieve students" });
+    });
+});
+
+app.put("/api/students/:studentId", (req, res) => {
+  const { studentId } = req.params;
+  Student.findByIdAndUpdate(studentId, req.body, { new: true })
+    .then((student) => {
+      console.log("Updating student ->", student);
+      res.status(204).json(student);
+    })
+    .catch((error) => {
+      console.error("Error while updating student ->", error);
+      res.status(500).send({ error: "Failed to update student" });
+    });
+});
+
+app.delete("/api/students/:studentId", (req, res) => {
+  const { studentId } = req.params;
+  Student.findByIdAndDelete(studentId)
+    .then((student) => {
+      console.log("Deleting student ->", student);
+      res.status(204).send();
+    })
+    .catch((error) => {
+      console.error("Error while deleting student ->", error);
+      res.status(500).send({ error: "Failed to delete student" });
     });
 });
 
