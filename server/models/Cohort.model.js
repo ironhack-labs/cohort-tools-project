@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 // CREATE SCHEMA
 // Schema - describes and enforces the structure of the documents
 const cohortSchema = new Schema({
-  cohortSlug: String,
-  cohortName: String,
+  cohortSlug: { type: String, required: true },
+  cohortName: { type: String, required: true },
   program: {
     type: String,
     enum: ["Web Dev", "UX/UI", "Data Analytics", "Cybersecurity"],
@@ -27,8 +27,8 @@ const cohortSchema = new Schema({
   startDate: { type: Date, default: Date.now },
   endDate: Date,
   inProgress: { type: Boolean, default: false },
-  programmManager: String,
-  leadTeacher: String,
+  programmManager: { type: String, required: true },
+  leadTeacher: { type: String, required: true },
   totalHours: { type: Number, default: 360 },
 });
 

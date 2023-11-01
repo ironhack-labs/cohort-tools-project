@@ -4,10 +4,10 @@ const Schema = mongoose.Schema;
 // CREATE SCHEMA
 // Schema - describes and enforces the structure of the documents
 const studentSchema = new Schema({
-  firstName: String,
-  lastName: String,
-  email: { type: String, unique: true },
-  phone: String,
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  email: { type: String, unique: true, required: true },
+  phone: { type: String, required: true },
   linkedinUrl: { type: String, default: "" },
   languages: {
     type: [String],
