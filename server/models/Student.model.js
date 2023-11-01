@@ -10,7 +10,7 @@ const studentSchema = new Schema({
   phone: String,
   linkedinUrl: { type: String, default: "" },
   languages: {
-    type: String,
+    type: [String],
     enum: [
       "English",
       "Spanish",
@@ -31,7 +31,7 @@ const studentSchema = new Schema({
   projects: [],
 });
 
-const Student = mongoose.model("Students", studentSchema);
+const Student = mongoose.model("Student", studentSchema);
 
 // EXPORT THE MODEL
 module.exports = Student;

@@ -79,6 +79,7 @@ app.post("/api/students", (req, res, next) => {
 
 app.get("/api/students", (req, res, next) => {
   Student.find()
+    .populate("cohort")
     .then((allStudents) => {
       res.status(200).json(allStudents);
     })
@@ -91,8 +92,11 @@ app.get("/api/students", (req, res, next) => {
 app.get("/api/students/cohort/:cohortId", async (req, res, next) => {
   const { cohortId } = req.params;
   try {
-    const oneCohort = await Cohort.findById(cohortId);
-    res.json(oneCohort);
+    const oneCohortStudents = await Student.find({ cohort: cohortId }).populate(
+      "cohort"
+    );
+    console.log(oneCohortStudents);
+    res.json(oneCohortStudents);
   } catch (error) {
     console.error("Error", error);
     res.status(500).send({ error: "Failed to retrieve this cohort students" });
@@ -102,7 +106,7 @@ app.get("/api/students/cohort/:cohortId", async (req, res, next) => {
 app.get("/api/students/:studentId", async (req, res, next) => {
   const { studentId } = req.params;
   try {
-    const oneStudent = await Student.findById(studentId);
+    const oneStudent = await Student.findById(studentId).populate("cohort");
     res.json(oneStudent);
   } catch (error) {
     console.error("Error", error);
@@ -133,7 +137,7 @@ app.put("/api/students/:studentId", async (req, res, next) => {
 });
 
 app.delete("/api/students/:studentId", (req, res, next) => {
-  Student.findByIdAndDelete(req.params.id)
+  Student.findByIdAndDelete(req.params.studentId)
     .then(() => {
       res.status(204).send();
     })
@@ -144,7 +148,7 @@ app.delete("/api/students/:studentId", (req, res, next) => {
 });
 
 app.get("/api/cohorts/:cohortId", (req, res, next) => {
-  Cohort.findById(req.params.id)
+  Cohort.findById(req.params.cohortId)
     .then((cohorts) => {
       res.status(200).json(cohorts);
     })
@@ -171,7 +175,7 @@ app.put("/api/cohorts/:cohortId", (req, res, next) => {
     });
 });
 app.delete("/api/cohorts/:cohortId", (req, res, next) => {
-  Cohort.findByIdAndDelete(req.params.id)
+  Cohort.findByIdAndDelete(req.params.cohortId)
     .then(() => {
       res.status(200).json();
     })
