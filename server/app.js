@@ -140,6 +140,7 @@ app.post("/api/cohorts", (req, res, next) => {
       next(error);
     });
 });
+
 app.put("/api/cohorts/:cohortId", (req, res, next) => {
   Cohort.findByIdAndUpdate(req.params.cohortId, req.body, { new: true })
     .then((updatedCorhort) => {
@@ -158,14 +159,17 @@ app.delete("/api/cohorts/:cohortId", (req, res, next) => {
       next(error);
     });
 });
+
 // Import the custom error handling middleware:
 const {
   errorHandler,
   notFoundHandler,
 } = require("./middleware/error-handling");
+
 // Set up custom error handling middleware:
 app.use(errorHandler);
 app.use(notFoundHandler);
+
 // START SERVER
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
