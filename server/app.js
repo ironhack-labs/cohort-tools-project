@@ -39,7 +39,7 @@ app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 app.use("/api/cohorts", require("./routes/cohort.routes"));
-/* app.use("/api/students", require("./routes/student.routes")); */
+app.use("/api/students", require("./routes/student.routes"));
 
 const {
   errorHandler,
