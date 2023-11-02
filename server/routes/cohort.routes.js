@@ -8,8 +8,7 @@ router.get("/", (req, res, next) => {
       res.json(cohorts);
     })
     .catch((error) => {
-      /* console.error("Error while retrieving Cohorts ->", error);
-      res.status(500).send({ error: "Failed to retrieve cohorts" }); */
+      res.status(500).json({ message: "Error while getting all cohorts" });
       next(error);
     });
 });
@@ -21,7 +20,7 @@ router.post("/", async (req, res, next) => {
     const createdCohort = await Cohort.create(cohort);
     res.status(201).json(createdCohort);
   } catch (error) {
-    res;
+    res.status(500).json({ message: "Error while creating a new cohort" });
     next(error);
   }
 });
@@ -33,6 +32,7 @@ router.get("/:cohortId", async (req, res, next) => {
     const oneCohort = await Cohort.findById(cohortId);
     res.status(200).json(oneCohort);
   } catch (error) {
+    res.status(500).json({ message: "Error while getting a specific cohort" });
     next(error);
   }
 });
@@ -46,6 +46,7 @@ router.put("/:cohortId", async (req, res, next) => {
     });
     res.status(200).json(updatedCohort);
   } catch (error) {
+    res.status(500).json({ message: "Error while updating a specific cohort" });
     next(error);
   }
 });
@@ -57,6 +58,7 @@ router.delete("/:cohortId", async (req, res) => {
     const deletedCohort = await Cohort.findByIdAndDelete(cohortId);
     res.status(204).send();
   } catch (error) {
+    res.status(500).json({ message: "Error while deleting a specific cohort" });
     next(error);
   }
 });
