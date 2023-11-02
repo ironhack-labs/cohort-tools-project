@@ -158,20 +158,22 @@ app.get("/api/cohorts/:cohortId", (req, res, next) => {
 });
 app.post("/api/cohorts", (req, res, next) => {
   const oneCohort = { ...req.body };
-  Cohort.create({
-    oneCohort,
-  }).then((createdCohorts) => {
-    res.status(201).json(createdCohorts);
-  });
-  res.status(500).json({ message: "error" });
-});
-app.put("/api/cohorts/:cohortId", (req, res, next) => {
-  Cohort.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    .then((updatedCorhort) => {
-      res.status(200).json(updatedCorhort);
+  Cohort.create(oneCohort)
+    .then((createdCohort) => {
+      res.json(createdCohort);
     })
     .catch((error) => {
-      res.status(500).json({ message: "error" });
+      console.error("Error", error);
+      res.status(500).send({ message: "Failed creating a new cohort" });
+    });
+});
+app.put("/api/cohorts/:cohortId", (req, res, next) => {
+  Cohort.findByIdAndUpdate(req.params.cohortId, req.body, { new: true })
+    .then((updatedCorhort) => {
+      res.json(updatedCorhort);
+    })
+    .catch((error) => {
+      next(error);
     });
 });
 app.delete("/api/cohorts/:cohortId", (req, res, next) => {

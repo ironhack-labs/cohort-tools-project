@@ -27,7 +27,7 @@ const cohortSchema = new Schema({
   startDate: { type: Date, default: Date.now },
   endDate: Date,
   inProgress: { type: Boolean, default: false },
-  programmManager: { type: String, required: true },
+  programManager: { type: String, required: true },
   leadTeacher: { type: String, required: true },
   totalHours: { type: Number, default: 360 },
 });
