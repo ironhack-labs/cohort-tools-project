@@ -12,6 +12,8 @@ mongoose
   .then(x => console.log(`Connected to Database: "${x.connections[0].name}"`))
   .catch(err => console.error("Error connecting to MongoDB", err));
  
+// INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
+const app = express();
 
 // STATIC DATA
 // Devs Team - Import the provided files with JSON data of students and cohorts here:
@@ -78,10 +80,6 @@ app.get("/cohorts", (req, res)=>{
     res.status(500).send({ error: "Failed to retrieve cohorts" });
   });
 })
-
-
-// INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
-const app = express();
 
 
 // MIDDLEWARE
