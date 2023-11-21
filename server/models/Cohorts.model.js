@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const {Schema, model} = mongoose;
-const ObjectId = mongoose.ObjectId;
 
 
 const cohortsSchema = new Schema({
