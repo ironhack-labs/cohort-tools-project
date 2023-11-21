@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const PORT = 5005;
 const cohorts = require("./cohorts.json")
@@ -22,6 +23,13 @@ app.use(morgan("dev"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use(
+  cors({
+    // Add the URLs of allowed origins to this array
+    origin: ['http://localhost:5173', 'http://localhost:5173/docs', 'http://localhost:5173/api/cohorts', 'http://localhost:5173/api/students'],
+  })
+);
 
 
 // ROUTES - https://expressjs.com/en/starter/basic-routing.html
