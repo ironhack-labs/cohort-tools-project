@@ -42,10 +42,37 @@ app.get("/api/students", (req, res) => {
   res.json(students);
 });
 
-// START SERVER
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+// Student Routes
+
+GET /api/students - should return all the cohorts from the static students array
+
+POST /api/students - Creates a new student
+
+GET /api/students - Retrieves all of the students in the database collection
+
+GET /api/students/cohort/:cohortId - Retrieves all of the students for a given cohort
+
+GET /api/students/:studentId - Retrieves a specific student by id
+
+PUT /api/students/:studentId - Updates a specific student by id
+
+DELETE /api/students/:studentId - Deletes a specific student by id
+
+
+//Cohort Routes
+
+POST /api/cohorts - Creates a new cohort
+
+GET /api/cohorts - Retrieves all of the cohorts in the database collection
+
+GET /api/cohorts/:cohortId - Retrieves a specific cohort by id
+
+PUT /api/cohorts/:cohortId - Updates a specific cohort by id
+
+DELETE /api/cohorts/:cohortId - Deletes a specific cohort by id
+
+
+
 
 // MONGOOSE
 mongoose
@@ -54,102 +81,9 @@ mongoose
   .catch(err => console.error("Error connecting to MongoDB", err));
 
 
-  const cohortsSchema = new Schema({
-    cohortSlug: {
-      type: String,
-      required: true,
-    },
-    cohortName: {
-      type: String,
-      required: true,
-    },
-    program: {
-      type: String,
-      enum: ["Web Dev", "UX/UI", "Data Analytics", "Cybersecurity"],
-    },
-    format: {
-      type: String,
-      enum: ["Full Time", "Part Time"],
-    },
-    campus:{
-      type: String,
-      enum: ["Madrid", "Barcelona", "Miami", "Paris", "Berlin", "Amsterdam", "Lisbon", "Remote"],
-    },
-    startDate: {
-      type: Date,
-      default: Date.now(),
-    },
-    endDate: {
-      type: Date,
-    },
-    inProgress:{
-      type: Boolean,
-      default: false,
-    },
-    programManager:{
-      type: String,
-      required: true,
-    },
-    leadTeacher:{
-      type: String,
-      required: true,
-    },
-    totalHours:{
-      type: Number,
-      default: 360,
-    },
-  });
 
-  const Cohort = mongoose.model("Cohort", cohortsSchema);
-
-
-
-
-const studentSchema = new Schema({
-  firstName: {
-    type: String,
-    required: true,
-  },
-  lastName: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  phone: {
-    type: String,
-    required: true,
-  },
-  linkedinUrl: {
-    type: String,
-    default: '',
-  },
-  languages: {
-    type: [String],
-    enum: ["English", "Spanish", "French", "German", "Portuguese", "Dutch", "Other"],
-  },
-  program: {
-    type: String,
-    enum: ["Web Dev", "UX/UI", "Data Analytics", "Cybersecurity"],
-  },
-  background: {
-    type: String,
-    default: '',
-  },
-  image: {
-    type: String,
-    default: 'https://i.imgur.com/r8bo8u7.png',
-  },
-  cohort: {
-    type: Schema.Types.ObjectId,
-    ref: 'Cohort',
-  },
-  projects: {
-    type: Array,
-  },
+  // START SERVER
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });
 
-const Student = mongoose.model('Student', studentSchema);
