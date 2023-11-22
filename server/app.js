@@ -7,9 +7,12 @@ const PORT = 5005;
 
 // STATIC DATA
 // Devs Team - Import the provided files with JSON data of students and cohorts here:
+const Cohort = require('./models/Cohort');
+const Student = require('./models/Student');
 const cohorts = require('./cohorts.json')
 const students = require('./students.json')
 const cors = require("cors");
+const { get } = require("http");
 
 
 // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
@@ -23,7 +26,7 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.static("public"));
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded());
 app.use(cookieParser());
 
 
@@ -34,49 +37,99 @@ app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
-app.get("/api/cohorts", (req, res) => {
-  res.json(cohorts);
-});
-
-app.get("/api/students", (req, res) => {
-  res.json(students);
-});
-
 // Student Routes
+    
+app.post("/api/students", (req,res)=>{
+  Student.create({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body. email,
+      phone: req.body.phone,
+      linkedinUrl: req.body.linkedinUrl,
+      languages: req.body.languages,
+      program: req.body.program,
+      background: req.body.background,
+      image: req.body.image,
+      cohort: req.body.cohort,
+      projects: req.body.projects,
+  })
+  .then((createdStudent)=>{
+      console.log("Student was created", createdStudent);
+      res.status(201).send(createdStudent);
+  })
+  .catch((error)=>{
+      console.log(error);
+      res.status(500).send({error: "Failed to create a student"})
+  });
+});
 
-GET /api/students - should return all the cohorts from the static students array
+app.get('/api/students',(req,res)=>{
 
-POST /api/students - Creates a new student
+  Student.find()
+    .then((students)=>{
+        console.log("Retrieved students", students);
+        res.status(200).send(students);
+    })
+    .catch((error)=>{
+        console.log(error);
+        res.status(500).send({error: "Failed to get students"});
+    })
+});
 
-GET /api/students - Retrieves all of the students in the database collection
 
-GET /api/students/cohort/:cohortId - Retrieves all of the students for a given cohort
+app.get ('/api/students/cohort/:cohortId',(req,res)=>{
+  
+}) 
 
-GET /api/students/:studentId - Retrieves a specific student by id
+app.get("/api/students/:studentId", (req,res)=>{
+  Student.findById(req.params.id)
+  .then((student)=>{
+      console.log("Retrieved student", student);
+      res.status(200).send(student);
+  })
+  .catch((error)=>{
+      console.log(error);
+      res.status(500).send({error: "Failed to get student"});
+  })
+});
 
-PUT /api/students/:studentId - Updates a specific student by id
+app.put('/api/students/:studentId',(req,res)=>{
+  
+})
 
-DELETE /api/students/:studentId - Deletes a specific student by id
+app.delete('/api/students/:studentId',(req,res)=>{
+  
+})
 
 
 //Cohort Routes
 
-POST /api/cohorts - Creates a new cohort
+app.post('/api/cohorts',(req,res)=>{
+  
+}) 
 
-GET /api/cohorts - Retrieves all of the cohorts in the database collection
+app.get('/api/cohorts',(req,res)=>{
+  
+}) 
 
-GET /api/cohorts/:cohortId - Retrieves a specific cohort by id
+app.get('/api/cohorts/:cohortId',(req,res)=>{
+  
+}) 
 
-PUT /api/cohorts/:cohortId - Updates a specific cohort by id
+app.put('/api/cohorts/:cohortId',(req,res)=>{
+  
+}) 
 
-DELETE /api/cohorts/:cohortId - Deletes a specific cohort by id
+app.delete('/api/cohorts/:cohortId',(req,res)=>{
+  
+}) 
 
 
 
 
 // MONGOOSE
 mongoose
-  .connect("mongodb://127.0.0.1:27017/cohort-tools-api/cohorts")
+  .connect("mongodb://127.0.0.1:27017/cohort-tools-api")
   .then(x => console.log(`Connected to Database: "${x.connections[0].name}"`))
   .catch(err => console.error("Error connecting to MongoDB", err));
 
