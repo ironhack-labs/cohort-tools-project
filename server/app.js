@@ -2,8 +2,8 @@ const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const cohorts = require(__dirname + "/cohorts.json")
-const students = require(__dirname + "/students.json")
+const Cohorts = require(__dirname + "/cohorts.json")
+const Students = require(__dirname + "/students.json")
 const PORT = 5005;
 const mongoose = require("mongoose");
 const Student = require("./models/Students.js")
@@ -13,22 +13,11 @@ const Cohort = require("./models/Cohorts.js")
 // Devs Team - Import the provided files with JSON data of students and cohorts here:
 // ...
 
-
 // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
 const app = express();
 app.use(cors());
-
-/*
-  // Use the CORS middleware with options to allow requests
-  // from specific IP addresses and domains.
-  app.use(
-    cors({
-      // Add the URLs of allowed origins to this array
-      origin: ['http://localhost:5173', 'http://example.com'],
-    })
-  );
-*/
-
+app.use(express.urlencoded())
+app.use(express.json());
 
 
 // MIDDLEWARE
@@ -47,14 +36,129 @@ app.use(cookieParser());
 app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
-app.get("/api/cohorts", (req, res)=>{
-  res.json(cohorts)
+
+//..............................................Student REQUESTS..............................................
+
+//Returns all the students in JSON format
+app.get("/api/students", async (req, res)=>{
+  try{
+    const response = await Student.find({})
+    res.status(200).json(response)
+  }
+  catch(err){
+    res.status(500).send({ err: "Failed to retrieve students" });
+  }
 })
-app.get("/api/students", (req, res)=>{
-  res.json(students)
+//Returns all the students of a specified cohort in JSON format
+app.get("/api/students/cohort/:cohortId", async (req, res)=>{
+  try{
+    const response = await Student.find({cohort: req.params.cohortId})
+    res.status(200).json(response)
+  }
+  catch(err){
+    res.status(500).send({ err: "Failed to retrieve students of this cohort" });
+  }
+})
+//Returns the specified student by id
+app.get("/api/students/:studentId", async (req, res)=>{
+  try{
+    const response = await Student.findById(req.params.studentId);
+    res.status(200).json(response)
+  }
+  catch(err){
+    res.status(500).send({ err: "Failed to retrieve student" });
+  }
+})
+//Creates a new student with their respective cohort id
+app.post("/api/students", async (req, res)=>{
+  try{
+    const response = await Student.create(req.body);
+    res.status(200).json(response)
+  }
+  catch(err){
+    res.status(500).send({ err: "Failed to add new student" });
+  }
+})
+//Updates the specified student by id
+app.put("/api/students/:studentId", async (req, res)=>{
+  try{
+    const response = await Student.findByIdAndUpdate(req.params.studentId, req.body, {new:true})
+    res.status(200).json(response)
+  }
+  catch(error){
+    res.status(500).send({ err: "Failed to edit student" });
+  }
+})
+//Deletes a specific student by id
+app.delete("/api/students/:studentId", async (req, res)=>{
+  try{
+    await Student.findByIdAndDelete(req.params.studentId);
+    res.status(200)
+  }
+  catch(err){
+    res.status(500).send({ err: "Failed to remove student" });
+  }
 })
 
-//connecting to db
+
+//..............................................COHORT REQUESTS..............................................
+
+//Returns all the cohorts in JSON format
+app.get("/api/cohorts", async (req, res)=>{
+  try{
+    const response = await Cohort.find({});
+    res.status(200).json(response)
+  }
+  catch(err){
+    res.status(500).send({ err: "Failed to retrieve cohorts" });
+  }
+})
+
+//Returns the specified cohort by id
+app.get("/api/cohorts/:cohortId", async (req, res)=>{
+  try{
+    const response = await Cohort.findById(req.params.cohortId);
+    res.status(200).json(response)
+  }
+  catch(err){
+    res.status(500).send({ err: "Failed to retrieve cohort" });
+  }
+})
+
+//	Creates a new cohort
+app.post("/api/cohorts", async (req, res)=>{
+  try{
+    const response = await Cohort.create(req.body);
+    res.status(200).json(response);
+  }
+  catch(err){
+    res.status(500).send({ err: "Failed to add cohort" });
+  }
+})
+
+//Updates the specified cohort by id
+app.put("/api/cohorts/:cohortId", async (req, res)=>{
+  try{
+    const response = await Cohort.findByIdAndUpdate(req.params.cohortId, req.body, {new: true})
+    res.status(200).json(response)
+  }
+  catch(err){
+    res.status(500).send({ err: "Failed to edit cohort" });
+  }
+})
+//Deletes the specified cohort by id
+app.delete("/api/cohorts/:cohortId", async (req, res)=>{
+  try{
+    await Cohort.findByIdAndDelete(req.params.cohortId)
+    res.status(200)
+  }
+  catch(err){
+    res.status(500).send({ err: "Failed to delete cohort" });
+  }
+})
+
+//..............................................CONNECT TO DB..............................................
+
 async function connectMongo(){
   try{
     const connection = await mongoose.connect("mongodb://127.0.0.1:27017/cohort-tools-api")
@@ -69,32 +173,8 @@ connectMongo()
 
 
 
-//get request for students
-app.get("/api/students", (req, res)=>{
-  Student.find( {} )
-  .then(students=>{
-    console.log("students: ", students);
-    res.status(200).send(students)
-  })
-  .catch((error) => {
-    console.error("Error while retrieving students", error);
-    res.status(500).send({ error: "Failed to retrieve students" });
-  });
-})
 
-//get request for cohorts
-app.get("/api/cohorts", (req, res)=>{
-  Cohort.find({})
-  .then(cohorts=>{
-    console.log("cohorts: ", cohorts);
-    res.status(200).send(cohorts)
-  })
-  .catch((error) => {
-    console.error("Error while retrieving cohorts", error);
-    res.status(500).send({ error: "Failed to retrieve cohorts" });
-  });
-  
-})
+
 // START SERVER
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
