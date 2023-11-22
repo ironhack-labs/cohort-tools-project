@@ -42,7 +42,7 @@ app.get("/docs", (req, res) => {
 //Returns all the students in JSON format
 app.get("/api/students", async (req, res)=>{
   try{
-    const response = await Student.find({})
+    const response = await Student.find({}).populate("cohort");
     res.status(200).json(response)
   }
   catch(err){
@@ -53,7 +53,7 @@ app.get("/api/students", async (req, res)=>{
 app.get("/api/students/cohort/:cohortId", async (req, res)=>{
   try{
     const response = await Student.find({cohort: req.params.cohortId})
-    res.status(200).json(response)
+    res.status(200).json(response).populate("cohort");
   }
   catch(err){
     res.status(500).send({ err: "Failed to retrieve students of this cohort" });
@@ -62,7 +62,7 @@ app.get("/api/students/cohort/:cohortId", async (req, res)=>{
 //Returns the specified student by id
 app.get("/api/students/:studentId", async (req, res)=>{
   try{
-    const response = await Student.findById(req.params.studentId);
+    const response = await Student.findById(req.params.studentId).populate("cohort");
     res.status(200).json(response)
   }
   catch(err){
