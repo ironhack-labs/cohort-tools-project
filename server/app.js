@@ -6,7 +6,8 @@ const cohorts = require(__dirname + "/cohorts.json")
 const students = require(__dirname + "/students.json")
 const PORT = 5005;
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const Student = require("./models/Students.js")
+const Cohort = require("./models/Cohorts.js")
 
 // STATIC DATA
 // Devs Team - Import the provided files with JSON data of students and cohorts here:
@@ -54,46 +55,23 @@ app.get("/api/students", (req, res)=>{
 })
 
 //connecting to db
-mongoose
-.connect("mongodb://127.0.0.1:27017/cohort-tools-api")
-.then(x => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
-.catch(err => console.error("Error connecting to mongo", err));
+async function connectMongo(){
+  try{
+    const connection = await mongoose.connect("mongodb://127.0.0.1:27017/cohort-tools-api")
+    console.log("Connected to Mongo!\nDatabase name: " + connection.connections[0].name);
+  }
+  catch(err){
+    console.error("Error connecting to mongo", err)
+  }
+}
+connectMongo()
 
-//creating Schemas
-const cohortsSchema = new Schema({
-  inProgress: Boolean,
-  cohortSlug: String,
-  cohortName: String,
-  program: String,
-  campus: String,
-  startDate: String,
-  endDate: String,
-  programManager: String,
-  leadTeacher: String,
-  totalHours: Number
-})
 
-const studentsSchema = new Schema({
-  firstName: String,
-  lastName: String,
-  email: String,
-  phone: String,
-  linkedinUrl: String,
-  languages: Array,
-  program: String,
-  background: String,
-  image: String,
-  projects:  Array,
-  cohort: String
-})
 
-//creating models
-const Student = mongoose.model("Student", studentsSchema);
-const Cohort = mongoose.model("Cohort", cohortsSchema);
 
 //get request for students
-app.get("/students", (req, res)=>{
-  Student.find({})
+app.get("/api/students", (req, res)=>{
+  Student.find( {} )
   .then(students=>{
     console.log("students: ", students);
     res.status(200).send(students)
@@ -105,7 +83,7 @@ app.get("/students", (req, res)=>{
 })
 
 //get request for cohorts
-app.get("/cohorts", (req, res)=>{
+app.get("/api/cohorts", (req, res)=>{
   Cohort.find({})
   .then(cohorts=>{
     console.log("cohorts: ", cohorts);
