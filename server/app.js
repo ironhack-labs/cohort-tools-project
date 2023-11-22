@@ -9,10 +9,8 @@ const Student = require("./models/Students.model")
 const StudentData = require("./students.json")
 const CohortData = require("./cohorts.json")
 
-
 // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
 const app = express();
-
 
 // MIDDLEWARE
 // Research Team - Set up CORS middleware here:
@@ -43,19 +41,7 @@ app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
-app.get("/cohorts", (req, res) => {
-  const query = {}
-  Cohort.find(query)
-    .then((cohorts) => {
-      console.log("Retrieved cohorts ->", cohorts);
-      res.json(cohorts);
-    })
-    .catch((error) => {
-      res.json(error)
-    });
-});
-
-app.get("/students", (req, res) => {
+app.get("/api/students", (req, res) => {
   Student.find({})
     .then((students) => {
       console.log("Retrieved students ->", students);
@@ -67,8 +53,111 @@ app.get("/students", (req, res) => {
     });
 });
 
+app.post("/api/students", (req, res)=>{
+  Student.create({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    phone: req.body.phone,
+    linkedinUrl: req.body.linkedinUrl,
+    languages: req.body.languages,
+    program: req.body.program,
+    background: req.body.background,
+    image: req.body.image,
+    cohort: req.body.cohort,
+    projects: req.body.projects 
+  }).then((createdStudent)=>{
+    res.status(201).json(createdStudent)
+  }).catch((error)=>{res.status(500).json({message:"Error Creating Student"})})
+})
+
+app.get("/api/students/cohort/:id", (req, res)=>{
+  const cohortId = req.params.id;
+  Student.find({ cohort: cohortId })
+  .then((students)=>{
+    res.status(200).send(students);
+}).catch((error)=>{res.status(500).json({message: "error Cohort Id"})})
+})
+
+app.get("/api/students/:id", (req, res)=>{
+  const id = req.params.id
+  Student.findById(id).then((students)=>{
+    res.status(200).send(students);
+}).catch((error)=>{res.status(500).json({message: "error Student Id"})})
+})
+
+app.put("/api/students/:studentId", (req, res)=>{
+  Student.findByIdAndUpdate(req.params.id, req.body, {new: true}).then((updatedStudent)=>{
+      res.status(200).json(updatedStudent)
+  }).catch((error)=>{
+      res.status(500).json({message: "Error updating Student"})
+  })
+})
+
+app.delete("/api/students/:studentId", (req, res)=>{
+  Student.findByIdAndDelete(req.params.id).then(()=>{
+      res.status(204).send();
+  }).catch((error)=>{
+      res.status(500).json({message: "Error deleting Student"})
+  })
+})
+
+app.get("/api/cohorts", (req, res) => {
+  const query = {}
+  Cohort.find(query)
+    .then((cohorts) => {
+      console.log("Retrieved cohorts ->", cohorts);
+      res.json(cohorts);
+    })
+    .catch((error) => {
+      res.json(error)
+    });
+});
+
+app.post("/api/cohorts", (req, res)=>{
+  Student.create({
+    cohortSlug: req.body.cohortSlug,
+    cohortName: req.body.cohortName,
+    program: req.body.program,
+    format: req.body.format, 
+    campus: req.body.campus,
+    startDate: req.body.startDate,
+    endDate: req.body.endDate,
+    inProgress: req.body.inProgress,
+    programManager: req.body.programManager,
+    leadTeacher: req.body.leadTeacher,
+    totalHours: req.body.totalHours
+  }).then((createdcohort)=>{createdcohort
+    res.status(201).json(createdStudent)
+  }).catch((error)=>{res.status(500).json({message:"Error Creating Cohort"})})
+})
+
+app.get("/api/cohorts/:id", (req, res)=>{
+  const id = req.params.id
+  Cohort.findById(id).then((cohort)=>{
+    res.status(200).json(cohort);
+}).catch((error)=>{res.status(500).json({message: "error Cohort Id"})})
+})
+
+app.put("/api/cohorts/:cohortId", (req, res)=>{
+  Cohort.findByIdAndUpdate(req.params.id, req.body, {new: true}).then((updatedCohort)=>{
+      res.status(200).json(updatedCohort)
+  }).catch((error)=>{
+      res.status(500).json({message: "Error updating Cohort"})
+  })
+})
+
+app.delete("/api/cohorts/:cohortId", (req, res)=>{
+  Cohort.findByIdAndDelete(req.params.id).then(()=>{
+      res.status(204).send();
+  }).catch((error)=>{
+      res.status(500).json({message: "Error deleting Cohort"})
+  })
+})
 
 // START SERVER
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+
+
