@@ -143,7 +143,6 @@ app.delete('/api/students/:studentId',(req,res)=>{
 })
 
 //Cohort Routes
-
 /* Creates a new cohort*/
 app.post('/api/cohorts', (req, res)=>{
   Cohort.create({
@@ -167,7 +166,6 @@ app.post('/api/cohorts', (req, res)=>{
  */
 app.get('/api/cohorts', (req, res)=>{
   Cohort.find()
-  .populate('students')
   .then ((response)=>res.json(response))
   .catch((error)=>res.json(error))
 })
@@ -175,17 +173,16 @@ app.get('/api/cohorts', (req, res)=>{
 app.get('/api/cohorts/:cohortId', (req, res)=>{
   const {cohortId} = req.params
   Cohort.findById(cohortId)
-  .populate('students')
   .then((cohort)=>res.json(cohort))
   .catch((error)=>res.json(error))
 })
 /* PUT /api/cohorts/:cohortId - Updates a specific cohort by id
- */app.put("/api/cohorts/:cohort", (req, res)=>{
+ */app.put("/api/cohorts/:cohortId", (req, res)=>{
   const {cohortId} = req.params
-  const {cohortSlug, cohortName, program, foramt, campus, 
+  const {cohortSlug, cohortName, program, format, campus,
   startDate, endDate, inProgress, leadTeacher, programManager, totalHours} = req.body
-  Cohort.findByIdAndUpdate(cohortId, 
-    {cohortSlug, cohortName, program, foramt, campus, startDate, endDate, inProgress, leadTeacher, programManager, totalHours},
+  Cohort.findByIdAndUpdate(cohortId,
+    {cohortSlug, cohortName, program, format, campus, startDate, endDate, inProgress, leadTeacher, programManager, totalHours},
     {new: true})
     .then(()=>{
       res.json({message: "Cohort Updated"})
@@ -197,6 +194,7 @@ app.get('/api/cohorts/:cohortId', (req, res)=>{
 /* DELETE /api/cohorts/:cohortId - Deletes a specific cohort by id
  */
 app.delete("/api/cohorts/:cohortId", (req, res)=>{
+  const {cohortId} = req.params
   Cohort.findByIdAndDelete(cohortId)
   .then(()=>{
     res.json({message: "Cohort Deleted"})
@@ -205,16 +203,6 @@ app.delete("/api/cohorts/:cohortId", (req, res)=>{
     res.json({message: "Cohort Delete Failed"})
   })
 })
-
-
-
-
-
-
-
- 
-
-
 
 
 // MONGOOSE
