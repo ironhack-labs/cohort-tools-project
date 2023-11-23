@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const cors = require('cors');
 const PORT = 5005;
 const mongoose = require('mongoose');
+const {errorHandler, notFoundHandler} = require('./middleware/error-handling.js')
 
 
 // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
@@ -64,7 +65,7 @@ app
 
   // Retrieves all of the students for a given cohort - OK
 app
-.get("/students/cohort/:cohortId", (req, res)=>{
+.get("/students/cohort/:cohortId", (req, res, next)=>{
   const cohortId = req.params.cohortId;
   Student.find({cohort: cohortId})
 .populate("cohort") // OK
@@ -73,12 +74,13 @@ app
   })
 .catch((error)=>{console.log(error);
   res.status(500).send({error: "Failed to fetch cohort students"})})
+  next(error)
 })
 
 
   // Retrieves a specific student by id - OK 
 app
-.get("/students/:studentId", (req, res)=>{
+.get("/students/:studentId", (req, res, next)=>{
   const studentId = req.params.studentId
   Student.findById(studentId)
 .populate("cohort") // OK
@@ -88,13 +90,14 @@ app
 })
 .catch((error)=>{
     res.status(500).send({message: "Failed to fetch student info"});
+    next(error)
 });
 });
 
 
   // Creates a new student - OK
 app
-.post("/students", (req, res)=>{
+.post("/students", (req, res, next)=>{
   Student.create({
     firstName: req.body.firstname,
     lastName: req.body.lastname,
@@ -113,12 +116,13 @@ app
 })
 .catch((error)=>{console.log(error);
       res.status(500).send({error: "Failed to create student card"})})
+      next(error)
 }) 
 
 
   // Updates a specific student by id - OK
 app
-.put("/api/students/:studentId", (req, res)=>{
+.put("/api/students/:studentId", (req, res, next)=>{
   const {studentId} = req.params;
   Student.findByIdAndUpdate(studentId, req.body, {new: true})
 .then((updatedStudent)=>{
@@ -135,6 +139,7 @@ app
 .then(()=>{res.json({message: "Student Deleted"})
 })
 .catch(()=>{res.json({error: "Failed to delete student"})})
+next(error)
 })
 
 
@@ -143,7 +148,7 @@ app
 
   // returns all the cohorts - OK
 app
-.get("/cohorts", (req, res)=>{
+.get("/cohorts", (req, res, next)=>{
   Cohort.find({})
 .then(cohorts=>{
     console.log("cohorts: ", cohorts);
@@ -152,12 +157,13 @@ app
 .catch((error) => {
     console.error("Error while retrieving cohorts", error);
     res.status(500).send({ error: "Failed to retrieve cohorts" });
+    next(error)
   });
 }) 
 
   // Retrieves a specific cohort by id - OK
 app
-.get("/api/cohorts/:cohortId", (req, res)=>{
+.get("/api/cohorts/:cohortId", (req, res, next)=>{
   const cohortId = req.params.cohortId
   Cohort.findById(cohortId)
 .then((cohort)=>{
@@ -166,13 +172,14 @@ app
 })
 .catch((error)=>{
     res.status(500).send({message: "Failed to fetch cohort info"});
+    next(error)
 });
 })
 
 
   // Creates a new cohort - OK
 app
-.post("/api/cohorts", (req, res)=>{
+.post("/api/cohorts", (req, res, next)=>{
     Cohort.create({
       inProgress: req.body.inProgress,
       cohortSlug: req.body.cohortSlug,
@@ -191,13 +198,13 @@ app
   })
 .catch((error)=>{console.log(error);
         res.status(500).send({error: "Failed to create cohort"})})
-
+        next(error)
 })
 
 
   // Updates a specific cohort by id - OK
 app
-.put("/api/cohorts/:cohortId", (req, res)=>{
+.put("/api/cohorts/:cohortId", (req, res, next)=>{
   const cohortId = req.params.cohortId;
   Cohort.findByIdAndUpdate(cohortId, {
     inProgress: req.body.inProgress,
@@ -218,20 +225,22 @@ app
   })
 .catch((error)=>{console.log(error);
   res.status(500).send({error: "Failed to update cohort"})})
+  next(error)
 })
 
 
   // Deletes a specific cohort by id - OK
 app
-.delete("/api/cohorts/:cohortId", (req, res)=>{
+.delete("/api/cohorts/:cohortId", (req, res, next)=>{
   const {cohortId} = req.params;
   Cohort.findByIdAndDelete(cohortId)
 .then(()=>{res.json({message: "Cohort Deleted"})})
 .catch(()=>{res.json({error: "Failed to delete cohort"})})
+next(error)
 })
 
-
-
+app.use(errorHandler)
+app.use(notFoundHandler)
 
 // START SERVER
 app.listen(PORT, () => {
