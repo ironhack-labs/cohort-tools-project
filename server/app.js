@@ -8,6 +8,7 @@ const PORT = 5005;
 const mongoose = require("mongoose");
 const Student = require("./models/Students.js")
 const Cohort = require("./models/Cohorts.js")
+const {errorHandler, notFoundHandler} = require('./middleware/error-handling.js')
 
 // STATIC DATA
 // Devs Team - Import the provided files with JSON data of students and cohorts here:
@@ -16,7 +17,7 @@ const Cohort = require("./models/Cohorts.js")
 // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
 const app = express();
 app.use(cors());
-app.use(express.urlencoded())
+ app.use(express.urlencoded())
 app.use(express.json());
 
 
@@ -29,6 +30,8 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use(errorHandler)
+//app.use(notFoundHandler)
 
 // ROUTES - https://expressjs.com/en/starter/basic-routing.html
 // Devs Team - Start working on the routes here:
@@ -40,32 +43,35 @@ app.get("/docs", (req, res) => {
 //..............................................Student REQUESTS..............................................
 
 //Returns all the students in JSON format
-app.get("/api/students", async (req, res)=>{
+app.get("/api/students", async (req, res, next)=>{
   try{
     const response = await Student.find({}).populate("cohort");
     res.status(200).json(response)
   }
   catch(err){
     res.status(500).send({ err: "Failed to retrieve students" });
+  
   }
 })
 //Returns all the students of a specified cohort in JSON format
-app.get("/api/students/cohort/:cohortId", async (req, res)=>{
+app.get("/api/students/cohort/:cohortId", async (req, res, next)=>{
   try{
-    const response = await Student.find({cohort: req.params.cohortId})
-    res.status(200).json(response).populate("cohort");
+    const response = await Student.find({cohort: req.params.cohortId}).populate("cohort");
+    res.status(200).json(response)
   }
   catch(err){
     res.status(500).send({ err: "Failed to retrieve students of this cohort" });
+    next(err)
   }
 })
 //Returns the specified student by id
-app.get("/api/students/:studentId", async (req, res)=>{
+app.get("/api/students/:studentId", async (req, res, next)=>{
   try{
     const response = await Student.findById(req.params.studentId).populate("cohort");
     res.status(200).json(response)
   }
   catch(err){
+    return next(err)
     res.status(500).send({ err: "Failed to retrieve student" });
   }
 })
@@ -96,6 +102,7 @@ app.delete("/api/students/:studentId", async (req, res)=>{
     res.status(200)
   }
   catch(err){
+    next(err);
     res.status(500).send({ err: "Failed to remove student" });
   }
 })
@@ -110,6 +117,7 @@ app.get("/api/cohorts", async (req, res)=>{
     res.status(200).json(response)
   }
   catch(err){
+
     res.status(500).send({ err: "Failed to retrieve cohorts" });
   }
 })
