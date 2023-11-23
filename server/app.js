@@ -78,10 +78,11 @@ app.get('/api/students',(req,res)=>{
 
 
 app.get ('/api/students/cohort/:cohortId',(req,res)=>{
+   
   
 }) 
 
-app.get("/api/students/:studentId", (req,res)=>{
+app.get("/api/students/:id", (req,res)=>{
   Student.findById(req.params.id)
   .then((student)=>{
       console.log("Retrieved student", student);
@@ -94,7 +95,10 @@ app.get("/api/students/:studentId", (req,res)=>{
 });
 
 app.put('/api/students/:studentId',(req,res)=>{
-  
+  Student.findById(req.params.id)
+  .then(
+    
+  )
 })
 
 app.delete('/api/students/:studentId',(req,res)=>{
