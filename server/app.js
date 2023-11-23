@@ -9,8 +9,6 @@ const PORT = 5005;
 // Devs Team - Import the provided files with JSON data of students and cohorts here:
 const Cohort = require('./models/Cohort');
 const Student = require('./models/Student');
-const cohorts = require('./cohorts.json')
-const students = require('./students.json')
 const cors = require("cors");
 const { get } = require("http");
 
@@ -38,6 +36,8 @@ app.get("/docs", (req, res) => {
 });
 
 // Student Routes
+
+/* 1st POST /api/students - Creates a new student */
     
 app.post("/api/students", (req,res)=>{
   Student.create({
@@ -63,6 +63,8 @@ app.post("/api/students", (req,res)=>{
   });
 });
 
+/* 2nd GET /api/students - Retrieves all of the students in the database collection */
+
 app.get('/api/students',(req,res)=>{
 
   Student.find()
@@ -76,13 +78,25 @@ app.get('/api/students',(req,res)=>{
     })
 });
 
+/* 3rd GET /api/students/cohort/:cohortId - Retrieves all of the students for a given cohort */
 
 app.get ('/api/students/cohort/:cohortId',(req,res)=>{
-   
-  
+  const {cohortId} = req.params;
+
+  Student.find(cohortId)
+    .then((students)=>{
+        console.log("Retrieved students", students);
+        res.status(200).send(students);
+    })
+    .catch((error)=>{
+        console.log(error);
+        res.status(500).send({error: "Failed to get students"});
+    })
 }) 
 
-app.get("/api/students/:id", (req,res)=>{
+/* 4th GET /api/students/:studentId - Retrieves a specific student by id */
+
+app.get("/api/students/:studentId", (req,res)=>{
   Student.findById(req.params.id)
   .then((student)=>{
       console.log("Retrieved student", student);
@@ -94,39 +108,107 @@ app.get("/api/students/:id", (req,res)=>{
   })
 });
 
+/* 5th PUT /api/students/:studentId - Updates a specific student by id */
+
 app.put('/api/students/:studentId',(req,res)=>{
-  Student.findById(req.params.id)
-  .then(
-    
-  )
+  const studentId = req.params.studentId;
+
+    Student.findByIdAndUpdate(studentId, {
+        title: req.body.title,
+        year: req.body.year,
+        description: req.body.description,
+        quantity: req.body.quantity
+    }, {new: true})
+    .then((updatedBook)=>{
+        console.log("Updated Book", updatedBook);
+        res.status(200).send(updatedBook);
+    })
+    .catch((error)=>{
+        console.log(error);
+        res.status(500).send({error: "Failed to update book"});
+    })
+
+
+  
 })
+
+/* 6th DELETE /api/students/:studentId - Deletes a specific student by id */
 
 app.delete('/api/students/:studentId',(req,res)=>{
   
 })
 
-
 //Cohort Routes
 
-app.post('/api/cohorts',(req,res)=>{
-  
-}) 
+/* Creates a new cohort*/
+app.post('/api/cohorts', (req, res)=>{
+  Cohort.create({
+    cohortSlug: req.body.cohortSlug,
+    cohortName: req.body.cohortName,
+    program: req.body.program,
+    format: req.body.format,
+    campus: req.body.campus,
+    startDate: req.body.startDate,
+    endDate: req.body.endDate,
+    inProgress: req.body.inProgress,
+    programManager: req.body.programManager,
+    leadTeacher: req.body.leadTeacher,
+    totalHours: req.body.totalHours
+  }
+  .then ((response)=> res.json(response))
+  .catch((error)=> res.json(error))
+  )
+})
+/* GET /api/cohorts - Retrieves all of the cohorts in the database collection
+ */
+app.get('/api/cohorts', (req, res)=>{
+  Cohort.find()
+  .populate('students')
+  .then ((response)=>res.json(response))
+  .catch((error)=>res.json(error))
+})
+/* GET /api/cohorts/:cohortId - Retrieves a specific cohort by id */
+app.get('/api/cohorts/:cohortId', (req, res)=>{
+  const {cohortId} = req.params
+  Cohort.findById(cohortId)
+  .populate('students')
+  .then((cohort)=>res.json(cohort))
+  .catch((error)=>res.json(error))
+})
+/* PUT /api/cohorts/:cohortId - Updates a specific cohort by id
+ */app.put("/api/cohorts/:cohort", (req, res)=>{
+  const {cohortId} = req.params
+  const {cohortSlug, cohortName, program, foramt, campus, 
+  startDate, endDate, inProgress, leadTeacher, programManager, totalHours} = req.body
+  Cohort.findByIdAndUpdate(cohortId, 
+    {cohortSlug, cohortName, program, foramt, campus, startDate, endDate, inProgress, leadTeacher, programManager, totalHours},
+    {new: true})
+    .then(()=>{
+      res.json({message: "Cohort Updated"})
+    })
+    .catch(()=>{
+      res.json({message: "Cohort not updated (failed)"})
+    })
+})
+/* DELETE /api/cohorts/:cohortId - Deletes a specific cohort by id
+ */
+app.delete("/api/cohorts/:cohortId", (req, res)=>{
+  Cohort.findByIdAndDelete(cohortId)
+  .then(()=>{
+    res.json({message: "Cohort Deleted"})
+  })
+  .catch(()=>{
+    res.json({message: "Cohort Delete Failed"})
+  })
+})
 
-app.get('/api/cohorts',(req,res)=>{
-  
-}) 
 
-app.get('/api/cohorts/:cohortId',(req,res)=>{
-  
-}) 
 
-app.put('/api/cohorts/:cohortId',(req,res)=>{
-  
-}) 
 
-app.delete('/api/cohorts/:cohortId',(req,res)=>{
-  
-}) 
+
+
+
+ 
 
 
 
