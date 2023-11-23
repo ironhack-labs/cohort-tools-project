@@ -68,6 +68,7 @@ app.post("/api/students", (req,res)=>{
 app.get('/api/students',(req,res)=>{
 
   Student.find()
+  .populate('cohort')
     .then((students)=>{
         console.log("Retrieved students", students);
         res.status(200).send(students);
@@ -84,6 +85,7 @@ app.get ('/api/students/cohort/:cohortId',(req,res)=>{
   const {cohortId} = req.params;
 
   Student.find({ cohort: { $in: [cohortId] } })
+  .populate('cohort')
     .then((students)=>{
         console.log("Retrieved students", students);
         res.status(200).send(students);
@@ -100,6 +102,7 @@ app.get("/api/students/:studentId", (req,res)=>{
   const {studentId} = req.params;
 
   Student.findById(studentId)
+  .populate('cohort')
   .then((student)=>{
       console.log("Retrieved student", student);
       res.status(200).send(student);
