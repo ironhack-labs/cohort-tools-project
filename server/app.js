@@ -83,7 +83,7 @@ app.get('/api/students',(req,res)=>{
 app.get ('/api/students/cohort/:cohortId',(req,res)=>{
   const {cohortId} = req.params;
 
-  Student.find(cohortId)
+  Student.find({ cohort: { $in: [cohortId] } })
     .then((students)=>{
         console.log("Retrieved students", students);
         res.status(200).send(students);
@@ -113,30 +113,32 @@ app.get("/api/students/:studentId", (req,res)=>{
 /* 5th PUT /api/students/:studentId - Updates a specific student by id */
 
 app.put('/api/students/:studentId',(req,res)=>{
-  const studentId = req.params.studentId;
+  const {studentId} = req.params;
 
-    Student.findByIdAndUpdate(studentId, {
-        title: req.body.title,
-        year: req.body.year,
-        description: req.body.description,
-        quantity: req.body.quantity
-    }, {new: true})
-    .then((updatedBook)=>{
-        console.log("Updated Book", updatedBook);
-        res.status(200).send(updatedBook);
-    })
-    .catch((error)=>{
-        console.log(error);
-        res.status(500).send({error: "Failed to update book"});
-    })
-
-
-  
+  Student.findByIdAndUpdate(studentId, req.body)
+  .then((student)=>{
+    console.log("Updated student", student);
+    res.status(200).send(student);
+})
+  .catch((error)=>{
+    console.log(error);
+    res.status(500).send({error: "Failed to update student"});
+  })
 })
 
 /* 6th DELETE /api/students/:studentId - Deletes a specific student by id */
 
 app.delete('/api/students/:studentId',(req,res)=>{
+  const studentId = req.params.studentId;
+  Student.findByIdAndDelete(studentId)
+  .then((deletedStudent)=>{
+    console.log("Deleted Student", deletedStudent);
+    res.status(200).send(deletedStudent);
+  })
+  .catch((error)=>{
+    console.log(error);
+    res.status(500).send({error: "Failed to delete student"});
+  })
   
 })
 
