@@ -9,8 +9,6 @@ const PORT = 5005;
 // Devs Team - Import the provided files with JSON data of students and cohorts here:
 const Cohort = require('./models/Cohort');
 const Student = require('./models/Student');
-const cohorts = require('./cohorts.json')
-const students = require('./students.json')
 const cors = require("cors");
 const { get } = require("http");
 
@@ -38,6 +36,8 @@ app.get("/docs", (req, res) => {
 });
 
 // Student Routes
+
+/* 1st POST /api/students - Creates a new student */
     
 app.post("/api/students", (req,res)=>{
   Student.create({
@@ -63,6 +63,8 @@ app.post("/api/students", (req,res)=>{
   });
 });
 
+/* 2nd GET /api/students - Retrieves all of the students in the database collection */
+
 app.get('/api/students',(req,res)=>{
 
   Student.find()
@@ -76,13 +78,28 @@ app.get('/api/students',(req,res)=>{
     })
 });
 
+/* 3rd GET /api/students/cohort/:cohortId - Retrieves all of the students for a given cohort */
 
 app.get ('/api/students/cohort/:cohortId',(req,res)=>{
-  
+  const {cohortId} = req.params;
+
+  Student.find(cohortId)
+    .then((students)=>{
+        console.log("Retrieved students", students);
+        res.status(200).send(students);
+    })
+    .catch((error)=>{
+        console.log(error);
+        res.status(500).send({error: "Failed to get students"});
+    })
 }) 
 
+/* 4th GET /api/students/:studentId - Retrieves a specific student by id */
+
 app.get("/api/students/:studentId", (req,res)=>{
-  Student.findById(req.params.id)
+  const {studentId} = req.params;
+
+  Student.findById(studentId)
   .then((student)=>{
       console.log("Retrieved student", student);
       res.status(200).send(student);
@@ -93,9 +110,31 @@ app.get("/api/students/:studentId", (req,res)=>{
   })
 });
 
+/* 5th PUT /api/students/:studentId - Updates a specific student by id */
+
 app.put('/api/students/:studentId',(req,res)=>{
+  const studentId = req.params.studentId;
+
+    Student.findByIdAndUpdate(studentId, {
+        title: req.body.title,
+        year: req.body.year,
+        description: req.body.description,
+        quantity: req.body.quantity
+    }, {new: true})
+    .then((updatedBook)=>{
+        console.log("Updated Book", updatedBook);
+        res.status(200).send(updatedBook);
+    })
+    .catch((error)=>{
+        console.log(error);
+        res.status(500).send({error: "Failed to update book"});
+    })
+
+
   
 })
+
+/* 6th DELETE /api/students/:studentId - Deletes a specific student by id */
 
 app.delete('/api/students/:studentId',(req,res)=>{
   
