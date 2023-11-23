@@ -140,28 +140,77 @@ app.delete('/api/students/:studentId',(req,res)=>{
   
 })
 
-
 //Cohort Routes
 
-app.post('/api/cohorts',(req,res)=>{
-  
-}) 
+/* Creates a new cohort*/
+app.post('/api/cohorts', (req, res)=>{
+  Cohort.create({
+    cohortSlug: req.body.cohortSlug,
+    cohortName: req.body.cohortName,
+    program: req.body.program,
+    format: req.body.format,
+    campus: req.body.campus,
+    startDate: req.body.startDate,
+    endDate: req.body.endDate,
+    inProgress: req.body.inProgress,
+    programManager: req.body.programManager,
+    leadTeacher: req.body.leadTeacher,
+    totalHours: req.body.totalHours
+  }
+  .then ((response)=> res.json(response))
+  .catch((error)=> res.json(error))
+  )
+})
+/* GET /api/cohorts - Retrieves all of the cohorts in the database collection
+ */
+app.get('/api/cohorts', (req, res)=>{
+  Cohort.find()
+  .populate('students')
+  .then ((response)=>res.json(response))
+  .catch((error)=>res.json(error))
+})
+/* GET /api/cohorts/:cohortId - Retrieves a specific cohort by id */
+app.get('/api/cohorts/:cohortId', (req, res)=>{
+  const {cohortId} = req.params
+  Cohort.findById(cohortId)
+  .populate('students')
+  .then((cohort)=>res.json(cohort))
+  .catch((error)=>res.json(error))
+})
+/* PUT /api/cohorts/:cohortId - Updates a specific cohort by id
+ */app.put("/api/cohorts/:cohort", (req, res)=>{
+  const {cohortId} = req.params
+  const {cohortSlug, cohortName, program, foramt, campus, 
+  startDate, endDate, inProgress, leadTeacher, programManager, totalHours} = req.body
+  Cohort.findByIdAndUpdate(cohortId, 
+    {cohortSlug, cohortName, program, foramt, campus, startDate, endDate, inProgress, leadTeacher, programManager, totalHours},
+    {new: true})
+    .then(()=>{
+      res.json({message: "Cohort Updated"})
+    })
+    .catch(()=>{
+      res.json({message: "Cohort not updated (failed)"})
+    })
+})
+/* DELETE /api/cohorts/:cohortId - Deletes a specific cohort by id
+ */
+app.delete("/api/cohorts/:cohortId", (req, res)=>{
+  Cohort.findByIdAndDelete(cohortId)
+  .then(()=>{
+    res.json({message: "Cohort Deleted"})
+  })
+  .catch(()=>{
+    res.json({message: "Cohort Delete Failed"})
+  })
+})
 
-app.get('/api/cohorts',(req,res)=>{
-  
-}) 
 
-app.get('/api/cohorts/:cohortId',(req,res)=>{
-  
-}) 
 
-app.put('/api/cohorts/:cohortId',(req,res)=>{
-  
-}) 
 
-app.delete('/api/cohorts/:cohortId',(req,res)=>{
-  
-}) 
+
+
+
+ 
 
 
 
