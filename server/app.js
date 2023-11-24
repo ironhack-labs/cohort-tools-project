@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
@@ -19,6 +20,7 @@ const app = express();
 app.use(cors());
  app.use(express.urlencoded())
 app.use(express.json());
+const {isAuthenticated} = require("./middleware/jwt.middleware.js");
 
 
 // MIDDLEWARE
@@ -48,8 +50,8 @@ app.get("/api/students", async (req, res, next)=>{
     res.status(200).json(response)
   }
   catch(err){
+    next(err)
     res.status(500).send({ err: "Failed to retrieve students" });
-  
   }
 })
 //Returns all the students of a specified cohort in JSON format
@@ -59,8 +61,9 @@ app.get("/api/students/cohort/:cohortId", async (req, res, next)=>{
     res.status(200).json(response)
   }
   catch(err){
-    res.status(500).send({ err: "Failed to retrieve students of this cohort" });
     next(err)
+    res.status(500).send({ err: "Failed to retrieve students of this cohort" });
+
   }
 })
 //Returns the specified student by id
@@ -70,22 +73,23 @@ app.get("/api/students/:studentId", async (req, res, next)=>{
     res.status(200).json(response)
   }
   catch(err){
-    return next(err)
+    next(err)
     res.status(500).send({ err: "Failed to retrieve student" });
   }
 })
 //Creates a new student with their respective cohort id
-app.post("/api/students", async (req, res)=>{
+app.post("/api/students", async (req, res, next)=>{
   try{
     const response = await Student.create(req.body);
     res.status(200).json(response)
   }
   catch(err){
+    next(err)
     res.status(500).send({ err: "Failed to add new student" });
   }
 })
 //Updates the specified student by id
-app.put("/api/students/:studentId", async (req, res)=>{
+app.put("/api/students/:studentId", async (req, res, next)=>{
   try{
     const response = await Student.findByIdAndUpdate(req.params.studentId, req.body, {new:true})
     res.status(200).json(response)
@@ -95,7 +99,7 @@ app.put("/api/students/:studentId", async (req, res)=>{
   }
 })
 //Deletes a specific student by id
-app.delete("/api/students/:studentId", async (req, res)=>{
+app.delete("/api/students/:studentId", async (req, res, next)=>{
   try{
     await Student.findByIdAndDelete(req.params.studentId);
     res.status(200)
@@ -110,25 +114,27 @@ app.delete("/api/students/:studentId", async (req, res)=>{
 //..............................................COHORT REQUESTS..............................................
 
 //Returns all the cohorts in JSON format
-app.get("/api/cohorts", async (req, res)=>{
+app.get("/api/cohorts", async (req, res, next)=>{
   try{
     const response = await Cohort.find({});
     res.status(200).json(response)
   }
   catch(err){
-
+    return next(err)
     res.status(500).send({ err: "Failed to retrieve cohorts" });
   }
 })
 
 //Returns the specified cohort by id
-app.get("/api/cohorts/:cohortId", async (req, res)=>{
+app.get("/api/cohorts/:cohortId", async (req, res, next)=>{
   try{
     const response = await Cohort.findById(req.params.cohortId);
     res.status(200).json(response)
   }
   catch(err){
+    return next(err)
     res.status(500).send({ err: "Failed to retrieve cohort" });
+
   }
 })
 
@@ -163,6 +169,13 @@ app.delete("/api/cohorts/:cohortId", async (req, res)=>{
     res.status(500).send({ err: "Failed to delete cohort" });
   }
 })
+//..............................................Authentication routes..............................................
+
+const authRoutes = require("./routes/auth.routes")
+app.use("/auth", authRoutes)
+//..............................................User routes..............................................
+const userRoutes = require("./routes/user.routes")
+app.use("/user", userRoutes)
 
 //..............................................CONNECT TO DB..............................................
 
