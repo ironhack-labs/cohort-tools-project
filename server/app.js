@@ -1,10 +1,18 @@
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require('cors');
 const PORT = 5005;
 const mongoose = require('mongoose');
-const {errorHandler, notFoundHandler} = require('./middleware/error-handling.js')
+
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const User = require("./models/User.model")
+const {isAuthenticated} = require("./middleware/jwtmiddleware")
+// Define the number of encryptions of the password. 10 is usually a good number
+const saltRounds = 10;
+
 
 
 // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
@@ -239,8 +247,102 @@ app
 next(error)
 })
 
-app.use(errorHandler)
-app.use(notFoundHandler)
+
+
+
+
+
+
+
+// auth part ///
+
+
+    // POST -> Creates a new user
+app
+.post("/auth/signup", (req, res)=>{
+    const {email, password, name} = req.body;
+
+    if(email === "" || password === "" || name === ""){
+        res.status(400).json({message: "Please provide email, password and name"})
+        return; // return will stop the code
+    }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+    if(!emailRegex.test(email)){
+       res.status(400).json({message: "Please provide a valid email"})
+       return;
+    }
+    const passwordRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+    if(!passwordRegex.test(password)){
+        res.status(400).json({message: "Password must have at least 6 characters, one number, one lowercase and one uppercase letter"})
+        return;
+    }
+    // What if the name or password already exists on the database?
+    // We try to find the user with that email:
+    User.findOne({email})
+    // Then if the user is found:
+.then((foundUser)=>{
+        if(foundUser){
+            res.status(400).json({message: "User already exists"})
+            return;
+        }
+    // If the user is not found:
+    // Encrypt a Password - salt is like something we add to encrypt the password
+        const salt = bcrypt.genSaltSync(saltRounds);
+        const hashedPassword = bcrypt.hashSync(password, salt);
+        return User.create({email, password: hashedPassword, name});
+    //The, after the user is created (as a promise), we use it:
+    })
+.then((createdUser)=>{
+        const {email, name, _id} = createdUser;
+        const user = {email, name, _id};
+        res.status(200).json({user: user});
+    })
+.catch((error)=>{
+        console.log(error);
+        res.status(500).json({message: "Internal server error"})
+    })
+});
+    // POST "/auth/login" - Verifies email and password and returns a JWT
+app
+.post("/auth/login", (req, res)=>{
+  const {email, password} = req.body;
+  // What if email and password were left in blank?
+  if(email === "" || password === ""){
+      res.status(400).json({message: "Please provide an email and password"});
+      return;
+  }
+  User
+.findOne({email})
+.then((foundUser)=>{
+  // What if the user was not found?
+  if(!foundUser){
+      res.status(400).json({message: "User not found"});
+      return;
+  }
+  // What if the password is correct?
+  const passwordCorrect = bcrypt.compareSync(password, foundUser.password)
+  if(passwordCorrect){
+      const {_id, email, name} = foundUser;
+      const payload = {_id, email, name};
+      const authToken = jwt.sign(
+          payload, process.env.TOKEN_SECRET, {algorithm: "HS256", expiresIn: "6h"}
+      )
+      res.status(200).json({authToken: authToken});
+  }
+  // What if the password is not correct?
+  else{
+      res.status(400).json({message: "Password not found"})
+  }
+})
+.catch((error)=> res.status(500).json({message: "some error"}))
+});
+    // GET "/auth/verify" -> Used to verify JWT
+app      // isAuthenticated, in the middle of the rounte, as it is a middlware
+.get("/auth/verify", isAuthenticated, (req, res)=>{
+    res.status(200).json(req.payload);
+})
+
+
 
 // START SERVER
 app.listen(PORT, () => {
