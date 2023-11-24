@@ -68,6 +68,7 @@ app.post("/api/students", (req,res)=>{
 app.get('/api/students',(req,res)=>{
 
   Student.find()
+  .populate('cohort')
     .then((students)=>{
         console.log("Retrieved students", students);
         res.status(200).send(students);
@@ -83,7 +84,8 @@ app.get('/api/students',(req,res)=>{
 app.get ('/api/students/cohort/:cohortId',(req,res)=>{
   const {cohortId} = req.params;
 
-  Student.find(cohortId)
+  Student.find({ cohort: { $in: [cohortId] } })
+  .populate('cohort')
     .then((students)=>{
         console.log("Retrieved students", students);
         res.status(200).send(students);
@@ -97,7 +99,10 @@ app.get ('/api/students/cohort/:cohortId',(req,res)=>{
 /* 4th GET /api/students/:studentId - Retrieves a specific student by id */
 
 app.get("/api/students/:studentId", (req,res)=>{
-  Student.findById(req.params.id)
+  const {studentId} = req.params;
+
+  Student.findById(studentId)
+  .populate('cohort')
   .then((student)=>{
       console.log("Retrieved student", student);
       res.status(200).send(student);
@@ -111,35 +116,36 @@ app.get("/api/students/:studentId", (req,res)=>{
 /* 5th PUT /api/students/:studentId - Updates a specific student by id */
 
 app.put('/api/students/:studentId',(req,res)=>{
-  const studentId = req.params.studentId;
+  const {studentId} = req.params;
 
-    Student.findByIdAndUpdate(studentId, {
-        title: req.body.title,
-        year: req.body.year,
-        description: req.body.description,
-        quantity: req.body.quantity
-    }, {new: true})
-    .then((updatedBook)=>{
-        console.log("Updated Book", updatedBook);
-        res.status(200).send(updatedBook);
-    })
-    .catch((error)=>{
-        console.log(error);
-        res.status(500).send({error: "Failed to update book"});
-    })
-
-
-  
+  Student.findByIdAndUpdate(studentId, req.body)
+  .then((student)=>{
+    console.log("Updated student", student);
+    res.status(200).send(student);
+})
+  .catch((error)=>{
+    console.log(error);
+    res.status(500).send({error: "Failed to update student"});
+  })
 })
 
 /* 6th DELETE /api/students/:studentId - Deletes a specific student by id */
 
 app.delete('/api/students/:studentId',(req,res)=>{
+  const studentId = req.params.studentId;
+  Student.findByIdAndDelete(studentId)
+  .then((deletedStudent)=>{
+    console.log("Deleted Student", deletedStudent);
+    res.status(200).send(deletedStudent);
+  })
+  .catch((error)=>{
+    console.log(error);
+    res.status(500).send({error: "Failed to delete student"});
+  })
   
 })
 
 //Cohort Routes
-
 /* Creates a new cohort*/
 app.post('/api/cohorts', (req, res)=>{
   Cohort.create({
@@ -176,9 +182,9 @@ app.get('/api/cohorts/:cohortId', (req, res)=>{
 /* PUT /api/cohorts/:cohortId - Updates a specific cohort by id
  */app.put("/api/cohorts/:cohortId", (req, res)=>{
   const {cohortId} = req.params
-  const {cohortSlug, cohortName, program, format, campus, 
+  const {cohortSlug, cohortName, program, format, campus,
   startDate, endDate, inProgress, leadTeacher, programManager, totalHours} = req.body
-  Cohort.findByIdAndUpdate(cohortId, 
+  Cohort.findByIdAndUpdate(cohortId,
     {cohortSlug, cohortName, program, format, campus, startDate, endDate, inProgress, leadTeacher, programManager, totalHours},
     {new: true})
     .then(()=>{
@@ -192,7 +198,6 @@ app.get('/api/cohorts/:cohortId', (req, res)=>{
  */
 app.delete("/api/cohorts/:cohortId", (req, res)=>{
   const {cohortId} = req.params
-
   Cohort.findByIdAndDelete(cohortId)
   .then(()=>{
     res.json({message: "Cohort Deleted"})
@@ -201,16 +206,6 @@ app.delete("/api/cohorts/:cohortId", (req, res)=>{
     res.json({message: "Cohort Delete Failed"})
   })
 })
-
-
-
-
-
-
-
- 
-
-
 
 
 // MONGOOSE
