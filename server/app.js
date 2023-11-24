@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -6,6 +7,9 @@ const PORT = 5005;
 const mongoose = require("mongoose");
 const Student = require("./models/Students.model")
 const Cohort = require("./models/Cohorts.model")
+const User = require("./models/User.model")
+const {isAuthenticated} = require('./middleware/jwt.middleware')
+const authRoutes = require("./routes/auth.routes")
 
 // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
 const app = express();
@@ -25,6 +29,8 @@ app.use(
     origin: ['http://localhost:5005', 'http://localhost:5005/docs', 'http://localhost:5005/api/cohorts', 'http://localhost:5005/api/students'],
   })
 );
+
+app.use("/auth", authRoutes)
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/cohort-tools-api")
@@ -154,6 +160,13 @@ app.delete("/api/cohorts/:cohortId", (req, res)=>{
   }).catch((error)=>{
       res.status(500).json({message: "Error deleting Cohort"})
   })
+})
+
+app.get('/api/user/:id', (req, res)=>{
+  const id = req.params.id
+User.findById(id).then((user)=>{
+  res.status(200).json(user);
+}).catch((error)=>{res.status(500).json({message: "error User Id"})})
 })
 
 // START SERVER
