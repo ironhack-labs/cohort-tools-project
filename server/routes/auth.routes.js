@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const {isAuthenticated} = require("../middleware/jwt.middleware");
 const router = express.Router();
+require("dotenv").config();
+
 const saltRounds = 10;
 // POST /auth/signup - Creates a new user in the database
 router.post("/signup", (req, res)=>{
@@ -70,14 +72,14 @@ router.post("/login", (req,res)=>{
             const authToken = jwt.sign(
                 payload, process.env.TOKEN_SECRET, {algorithm: "HS256", expiresIn: "6h"}
             )
-            res.status(200).json({authToken: authToken});
+            return res.status(200).json({authToken: authToken});
         }
         /* What if the password is not correct? */
         else{
-            res.status(400).json({message: "Password not found"});
+            return res.status(400).json({message: "Password not found"});
         }
     })
-    .catch(()=> res.status(500).json({message: "User not found."}));
+    .catch((error)=> res.status(500).json({message: error.message}));
 })
 // GET /auth/verify - Verifies that the JWT sent by the client is valid
 router.get("/verify", isAuthenticated, (req,res)=>{

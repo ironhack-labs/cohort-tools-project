@@ -220,13 +220,12 @@ app.delete("/api/cohorts/:cohortId", (req, res, next)=>{
 })
 
 const {errorHandler,notFoundHandler} = require("./middleware/error-handling");
-
-app.use(errorHandler)
-
-app.use(notFoundHandler)
-
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
+
+app.use(errorHandler)
+app.use(notFoundHandler)
+
 
 // MONGOOSE
 mongoose
