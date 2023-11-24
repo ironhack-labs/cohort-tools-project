@@ -4,10 +4,8 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const PORT = 5005;
 const mongoose = require("mongoose");
-const Cohort = require("./models/Cohorts.model")
 const Student = require("./models/Students.model")
-const StudentData = require("./students.json")
-const CohortData = require("./cohorts.json")
+const Cohort = require("./models/Cohorts.model")
 
 // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
 const app = express();
@@ -43,6 +41,7 @@ app.get("/docs", (req, res) => {
 
 app.get("/api/students", (req, res) => {
   Student.find({})
+  .populate("cohort")
     .then((students) => {
       console.log("Retrieved students ->", students);
       res.json(students);
@@ -68,28 +67,30 @@ app.post("/api/students", (req, res)=>{
     projects: req.body.projects 
   }).then((createdStudent)=>{
     res.status(201).json(createdStudent)
-  }).catch((error)=>{res.status(500).json({message:"Error Creating Student"})})
+  }).catch(()=>{res.status(500).json({message:"Error Creating Student"})})
 })
 
 app.get("/api/students/cohort/:id", (req, res)=>{
   const cohortId = req.params.id;
-  Student.find({ cohort: cohortId })
-  .then((students)=>{
-    res.status(200).send(students);
-}).catch((error)=>{res.status(500).json({message: "error Cohort Id"})})
+  Student.find({cohort: cohortId})
+  .populate("cohort")
+  .then((students)=>res.status(200).send(students))
+  .catch(()=>{res.status(500).send({message: "error Cohort Id"})})
 })
 
 app.get("/api/students/:id", (req, res)=>{
   const id = req.params.id
-  Student.findById(id).then((students)=>{
+  Student.findById(id)
+  .populate("cohort")
+  .then((students)=>{
     res.status(200).send(students);
-}).catch((error)=>{res.status(500).json({message: "error Student Id"})})
+}).catch(()=>{res.status(500).json({message: "error Student Id"})})
 })
 
 app.put("/api/students/:studentId", (req, res)=>{
   Student.findByIdAndUpdate(req.params.id, req.body, {new: true}).then((updatedStudent)=>{
       res.status(200).json(updatedStudent)
-  }).catch((error)=>{
+  }).catch(()=>{
       res.status(500).json({message: "Error updating Student"})
   })
 })
@@ -97,7 +98,7 @@ app.put("/api/students/:studentId", (req, res)=>{
 app.delete("/api/students/:studentId", (req, res)=>{
   Student.findByIdAndDelete(req.params.id).then(()=>{
       res.status(204).send();
-  }).catch((error)=>{
+  }).catch(()=>{
       res.status(500).json({message: "Error deleting Student"})
   })
 })

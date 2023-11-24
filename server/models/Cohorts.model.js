@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const {Schema, model} = mongoose;
-
+const Student = require('./Students.model');
 
 const cohortsSchema = new Schema({
   name: String,
@@ -14,7 +14,8 @@ const cohortsSchema = new Schema({
   inProgress: Boolean,
   programManager: String,
   leadTeacher: String,
-  totalHours: Number
+  totalHours: Number,
+  student: {type: Schema.Types.ObjectId, ref: "Students"},
 });
 
 const Cohort = mongoose.model("Cohorts", cohortsSchema);

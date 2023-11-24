@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const {Schema} = mongoose;
 
 
 const studentsSchema = new Schema({
@@ -8,15 +8,12 @@ const studentsSchema = new Schema({
     email: String,
     phone: String,
     linkedinUrl: String,
-    languages: Array,
+    languages: [],
     program: String,
     background: String,
     image: String,
-    cohort: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Cohort' 
-    },
-    projects: Array
+    projects: [],
+    cohort: {type: Schema.Types.ObjectId, ref: 'Cohorts'}
 });
 
 const Student = mongoose.model("Students", studentsSchema);
