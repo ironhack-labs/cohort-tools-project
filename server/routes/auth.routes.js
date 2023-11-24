@@ -6,7 +6,7 @@ const {isAuthenticated} = require("../middleware/jwt.middleware");
 const router = express.Router();
 const saltRounds = 10;
 // POST /auth/signup - Creates a new user in the database
-router.post("/auth/signup", (req, res)=>{
+router.post("/signup", (req, res)=>{
     const {email, password, name} = req.body;
     /* "What if I don't have all the required fields with information?" */
     if(email === "" || password === "" || name === "") {
@@ -48,7 +48,7 @@ router.post("/auth/signup", (req, res)=>{
 })
 /* POST /auth/login - Checks the sent email and password and, if email and
 password are correct returns a JWT*/
-router.post("/auth/login", (req,res)=>{
+router.post("/login", (req,res)=>{
     const {email, password} = req.body;
     /* What if email and password were left blank? */
     if(email === "" || password === ""){
@@ -80,7 +80,7 @@ router.post("/auth/login", (req,res)=>{
     .catch(()=> res.status(500).json({message: "User not found."}));
 })
 // GET /auth/verify - Verifies that the JWT sent by the client is valid
-router.get("/auth/verify", isAuthenticated, (req,res)=>{
+router.get("/verify", isAuthenticated, (req,res)=>{
     res.status(200).json(req.payload);
 })
 

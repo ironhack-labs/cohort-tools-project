@@ -9,6 +9,10 @@ const PORT = 5005;
 // Devs Team - Import the provided files with JSON data of students and cohorts here:
 const Cohort = require('./models/Cohort');
 const Student = require('./models/Student');
+const User = require('./models/User')
+
+const {isAuthenticated} = require("../server/middleware/jwt.middleware");
+
 const cors = require("cors");
 const { get } = require("http");
 
@@ -220,6 +224,9 @@ const {errorHandler,notFoundHandler} = require("./middleware/error-handling");
 app.use(errorHandler)
 
 app.use(notFoundHandler)
+
+const authRoutes = require("./routes/auth.routes");
+app.use("/auth", authRoutes);
 
 // MONGOOSE
 mongoose
