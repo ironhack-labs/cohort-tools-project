@@ -83,4 +83,18 @@ router.post("/auth/login", (req,res)=>{
 router.get("/auth/verify", isAuthenticated, (req,res)=>{
     res.status(200).json(req.payload);
 })
+
+router.get("/api/user/:id", isAuthenticated, (req, res) => {
+    // Your logic to retrieve the user by id goes here
+    const userId = req.params.id;
+    // Replace the following with your actual logic to retrieve the user by id
+    const user = {
+      id: userId,
+      name: req.body.name, // Replace with actual user data
+      email: req.body.email, // Replace with actual user data
+      // Add more user properties as needed
+    };
+    res.status(200).json(user);
+  });
+
 module.exports = router;
