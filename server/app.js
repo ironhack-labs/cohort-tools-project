@@ -5,14 +5,12 @@ const cookieParser = require("cookie-parser");
 const cors = require('cors');
 const PORT = 5005;
 const mongoose = require('mongoose');
-
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("./models/User.model")
 const {isAuthenticated} = require("./middleware/jwtmiddleware")
 // Define the number of encryptions of the password. 10 is usually a good number
 const saltRounds = 10;
-
 
 
 // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
@@ -54,8 +52,9 @@ app
   res.sendFile(__dirname + "/views/docs.html");
 });
 
-    // STUDENT ROUTES
-  // Returns all the students - OK
+// --------------------------------- // STUDENT ROUTES // -------------------------------- //
+
+// Returns all the students - OK
 app
 .get("/api/students", (req, res)=>{
     Student.find({})
@@ -71,7 +70,7 @@ app
   });
 
 
-  // Retrieves all of the students for a given cohort - OK
+// Retrieves all of the students for a given cohort - OK
 app
 .get("/students/cohort/:cohortId", (req, res, next)=>{
   const cohortId = req.params.cohortId;
@@ -85,8 +84,7 @@ app
   next(error)
 })
 
-
-  // Retrieves a specific student by id - OK 
+// Retrieves a specific student by id - OK 
 app
 .get("/students/:studentId", (req, res, next)=>{
   const studentId = req.params.studentId
@@ -102,8 +100,7 @@ app
 });
 });
 
-
-  // Creates a new student - OK
+// Creates a new student - OK
 app
 .post("/students", (req, res, next)=>{
   Student.create({
@@ -127,8 +124,7 @@ app
       next(error)
 }) 
 
-
-  // Updates a specific student by id - OK
+// Updates a specific student by id - OK
 app
 .put("/api/students/:studentId", (req, res, next)=>{
   const {studentId} = req.params;
@@ -139,7 +135,7 @@ app
 .catch((error)=>res.send({error: "Failed to update student Id"}))
 })
 
-  // Deletes a specific student by id
+// Deletes a specific student by id - OK
 app
 .delete("/api/students/:studentId", (req, res)=>{
   const {studentId} = req.params;
@@ -152,9 +148,9 @@ next(error)
 
 
 
-    // COHORT ROUTES
+// ------------------------- // COHORT ROUTES // ----------------------------- //
 
-  // returns all the cohorts - OK
+// returns all the cohorts - OK
 app
 .get("/cohorts", (req, res, next)=>{
   Cohort.find({})
@@ -169,7 +165,7 @@ app
   });
 }) 
 
-  // Retrieves a specific cohort by id - OK
+// Retrieves a specific cohort by id - OK
 app
 .get("/api/cohorts/:cohortId", (req, res, next)=>{
   const cohortId = req.params.cohortId
@@ -184,8 +180,7 @@ app
 });
 })
 
-
-  // Creates a new cohort - OK
+// Creates a new cohort - OK
 app
 .post("/api/cohorts", (req, res, next)=>{
     Cohort.create({
@@ -209,8 +204,7 @@ app
         next(error)
 })
 
-
-  // Updates a specific cohort by id - OK
+// Updates a specific cohort by id - OK
 app
 .put("/api/cohorts/:cohortId", (req, res, next)=>{
   const cohortId = req.params.cohortId;
@@ -236,8 +230,7 @@ app
   next(error)
 })
 
-
-  // Deletes a specific cohort by id - OK
+// Deletes a specific cohort by id - OK
 app
 .delete("/api/cohorts/:cohortId", (req, res, next)=>{
   const {cohortId} = req.params;
@@ -247,17 +240,9 @@ app
 next(error)
 })
 
+// ------------------------ // USER AUTHENTICATION // ------------------------------- //
 
-
-
-
-
-
-
-// auth part ///
-
-
-    // POST -> Creates a new user
+// POST -> Creates a new user - OK
 app
 .post("/auth/signup", (req, res)=>{
     const {email, password, name} = req.body;
@@ -276,21 +261,22 @@ app
         res.status(400).json({message: "Password must have at least 6 characters, one number, one lowercase and one uppercase letter"})
         return;
     }
-    // What if the name or password already exists on the database?
-    // We try to find the user with that email:
+
+// What if the name or password already exists on the database?
+// We try to find the user with that email:
     User.findOne({email})
-    // Then if the user is found:
+// Then if the user is found:
 .then((foundUser)=>{
         if(foundUser){
             res.status(400).json({message: "User already exists"})
             return;
         }
-    // If the user is not found:
-    // Encrypt a Password - salt is like something we add to encrypt the password
+// If the user is not found:
+// Encrypt a Password - salt is like something we add to encrypt the password
         const salt = bcrypt.genSaltSync(saltRounds);
         const hashedPassword = bcrypt.hashSync(password, salt);
         return User.create({email, password: hashedPassword, name});
-    //The, after the user is created (as a promise), we use it:
+//The, after the user is created (as a promise), we use it:
     })
 .then((createdUser)=>{
         const {email, name, _id} = createdUser;
@@ -302,7 +288,8 @@ app
         res.status(500).json({message: "Internal server error"})
     })
 });
-    // POST "/auth/login" - Verifies email and password and returns a JWT
+
+// POST "/auth/login" - Verifies email and password and returns a JWT - OK
 app
 .post("/auth/login", (req, res)=>{
   const {email, password} = req.body;
@@ -314,12 +301,12 @@ app
   User
 .findOne({email})
 .then((foundUser)=>{
-  // What if the user was not found?
+// What if the user was not found?
   if(!foundUser){
       res.status(400).json({message: "User not found"});
       return;
   }
-  // What if the password is correct?
+// What if the password is correct?
   const passwordCorrect = bcrypt.compareSync(password, foundUser.password)
   if(passwordCorrect){
       const {_id, email, name} = foundUser;
@@ -329,20 +316,26 @@ app
       )
       res.status(200).json({authToken: authToken});
   }
-  // What if the password is not correct?
+// What if the password is not correct?
   else{
       res.status(400).json({message: "Password not found"})
   }
 })
 .catch((error)=> res.status(500).json({message: "some error"}))
 });
-    // GET "/auth/verify" -> Used to verify JWT
+
+// GET "/auth/verify" -> Used to verify JWT
 app      // isAuthenticated, in the middle of the rounte, as it is a middlware
 .get("/auth/verify", isAuthenticated, (req, res)=>{
     res.status(200).json(req.payload);
 })
 
-
+app.get('/api/user/:id', (req, res)=>{
+  const id = req.params.id
+User.findById(id).then((user)=>{
+  res.status(200).json(user);
+}).catch((error)=>{res.status(500).json({message: "error User Id"})})
+})
 
 // START SERVER
 app.listen(PORT, () => {
