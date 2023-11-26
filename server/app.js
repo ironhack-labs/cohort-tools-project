@@ -7,8 +7,6 @@ const PORT = 5005;
 const mongoose = require("mongoose");
 const Student = require("./models/Students.model")
 const Cohort = require("./models/Cohorts.model")
-const User = require("./models/User.model")
-const {isAuthenticated} = require('./middleware/jwt.middleware')
 const authRoutes = require("./routes/auth.routes")
 
 const bcrypt = require("bcryptjs");
