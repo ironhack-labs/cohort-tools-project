@@ -26,7 +26,7 @@ app.use(cookieParser());
 app.use(
   cors({
     // Add the URLs of allowed origins to this array
-    origin: ['http://localhost:5005', 'http://localhost:5005/docs', 'http://localhost:5005/api/cohorts', 'http://localhost:5005/api/students'],
+    origin: ['http://localhost:5173'],
   })
 );
 
@@ -89,12 +89,12 @@ app.get("/api/students/:id", (req, res)=>{
   Student.findById(id)
   .populate("cohort")
   .then((students)=>{
-    res.status(200).send(students);
+    res.status(200).send({message: "Student doesnt exists"});
 }).catch(()=>{res.status(500).json({message: "error Student Id"})})
 })
 
 app.put("/api/students/:studentId", (req, res)=>{
-  Student.findByIdAndUpdate(req.params.id, req.body, {new: true}).then((updatedStudent)=>{
+  Student.findByIdAndUpdate(req.params.studentId, req.body, {new: true}).then((updatedStudent)=>{
       res.status(200).json(updatedStudent)
   }).catch(()=>{
       res.status(500).json({message: "Error updating Student"})
@@ -102,8 +102,8 @@ app.put("/api/students/:studentId", (req, res)=>{
 })
 
 app.delete("/api/students/:studentId", (req, res)=>{
-  Student.findByIdAndDelete(req.params.id).then(()=>{
-      res.status(204).send();
+  Student.findByIdAndDelete(req.params.studentId).then(()=>{
+      res.status(204).send({message: "Student deleted"});
   }).catch(()=>{
       res.status(500).json({message: "Error deleting Student"})
   })
@@ -122,7 +122,7 @@ app.get("/api/cohorts", (req, res) => {
 });
 
 app.post("/api/cohorts", (req, res)=>{
-  Student.create({
+  Cohort.create({
     cohortSlug: req.body.cohortSlug,
     cohortName: req.body.cohortName,
     program: req.body.program,
@@ -134,39 +134,45 @@ app.post("/api/cohorts", (req, res)=>{
     programManager: req.body.programManager,
     leadTeacher: req.body.leadTeacher,
     totalHours: req.body.totalHours
-  }).then((createdcohort)=>{createdcohort
-    res.status(201).json(createdStudent)
-  }).catch((error)=>{res.status(500).json({message:"Error Creating Cohort"})})
+  }).then((createdcohort)=>{
+    res.status(201).json(createdcohort)
+  }).catch(()=>{res.status(500).json({message:"Error Creating Cohort"})})
 })
 
 app.get("/api/cohorts/:id", (req, res)=>{
   const id = req.params.id
   Cohort.findById(id).then((cohort)=>{
     res.status(200).json(cohort);
-}).catch((error)=>{res.status(500).json({message: "error Cohort Id"})})
+}).catch(()=>{res.status(500).json({message: "error Cohort Id"})})
 })
 
 app.put("/api/cohorts/:cohortId", (req, res)=>{
-  Cohort.findByIdAndUpdate(req.params.id, req.body, {new: true}).then((updatedCohort)=>{
+  Cohort.findByIdAndUpdate(req.params.cohortId, req.body, {new: true}).then((updatedCohort)=>{
       res.status(200).json(updatedCohort)
-  }).catch((error)=>{
+  }).catch(()=>{
       res.status(500).json({message: "Error updating Cohort"})
   })
 })
 
 app.delete("/api/cohorts/:cohortId", (req, res)=>{
-  Cohort.findByIdAndDelete(req.params.id).then(()=>{
-      res.status(204).send();
-  }).catch((error)=>{
+  Cohort.findByIdAndDelete(req.params.cohortId).then(()=>{
+      res.status(204).send({message: "Cohort deleted"});
+  }).catch(()=>{
       res.status(500).json({message: "Error deleting Cohort"})
   })
 })
 
-app.get('/api/user/:id', (req, res)=>{
-  const id = req.params.id
-User.findById(id).then((user)=>{
+app.get("/api/users", (req, res)=>{
+User.find().then((user)=>{
   res.status(200).json(user);
-}).catch((error)=>{res.status(500).json({message: "error User Id"})})
+}).catch(()=>{res.status(500).json({message: "error User Id"})})
+})
+
+app.get("/api/users/:id", (req, res)=>{
+  const id = req.params.id
+  User.findById(id).then((users)=>{
+    res.status(200).json(users);
+  }).catch(()=>{res.status(500).json({message: "error User Id"})})
 })
 
 // START SERVER
