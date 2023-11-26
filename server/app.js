@@ -7,6 +7,11 @@ const mongoose = require("mongoose");
 const Student = require("./models/Students.model")
 const Cohort = require("./models/Cohorts.model")
 
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const User = require("./models/User.model");
+const saltRounds= 10
+
 // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
 const app = express();
 
