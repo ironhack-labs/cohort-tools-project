@@ -170,10 +170,12 @@ app.post('/api/cohorts', (req, res, next)=>{
     programManager: req.body.programManager,
     leadTeacher: req.body.leadTeacher,
     totalHours: req.body.totalHours
-  }
+  })
   .then ((response)=> res.json(response))
-  .catch((error)=> next(error))
-  )
+  .catch((error)=>{ 
+    console.error(error)
+    next(error)})
+  
 })
 /* GET /api/cohorts - Retrieves all of the cohorts in the database collection
  */
