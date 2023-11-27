@@ -4,9 +4,11 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const {isAuthenticated} = require("../middleware/jwt.middleware");
 const router = express.Router();
+require("dotenv").config();
+
 const saltRounds = 10;
 // POST /auth/signup - Creates a new user in the database
-router.post("/auth/signup", (req, res)=>{
+router.post("/signup", (req, res)=>{
     const {email, password, name} = req.body;
     /* "What if I don't have all the required fields with information?" */
     if(email === "" || password === "" || name === "") {
@@ -48,7 +50,7 @@ router.post("/auth/signup", (req, res)=>{
 })
 /* POST /auth/login - Checks the sent email and password and, if email and
 password are correct returns a JWT*/
-router.post("/auth/login", (req,res)=>{
+router.post("/login", (req,res)=>{
     const {email, password} = req.body;
     /* What if email and password were left blank? */
     if(email === "" || password === ""){
@@ -70,17 +72,31 @@ router.post("/auth/login", (req,res)=>{
             const authToken = jwt.sign(
                 payload, process.env.TOKEN_SECRET, {algorithm: "HS256", expiresIn: "6h"}
             )
-            res.status(200).json({authToken: authToken});
+            return res.status(200).json({authToken: authToken});
         }
         /* What if the password is not correct? */
         else{
-            res.status(400).json({message: "Password not found"});
+            return res.status(400).json({message: "Password not found"});
         }
     })
-    .catch(()=> res.status(500).json({message: "User not found."}));
+    .catch((error)=> res.status(500).json({message: error.message}));
 })
 // GET /auth/verify - Verifies that the JWT sent by the client is valid
-router.get("/auth/verify", isAuthenticated, (req,res)=>{
+router.get("/verify", isAuthenticated, (req,res)=>{
     res.status(200).json(req.payload);
 })
+
+router.get("/api/user/:id", isAuthenticated, (req, res) => {
+    // Your logic to retrieve the user by id goes here
+    const userId = req.params.id;
+    // Replace the following with your actual logic to retrieve the user by id
+    const user = {
+      id: userId,
+      name: req.body.name, // Replace with actual user data
+      email: req.body.email, // Replace with actual user data
+      // Add more user properties as needed
+    };
+    res.status(200).json(user);
+  });
+
 module.exports = router;
