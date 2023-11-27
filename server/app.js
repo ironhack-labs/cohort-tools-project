@@ -84,12 +84,12 @@ app.get("/api/students/cohort/:id", (req, res)=>{
   .catch(()=>{res.status(500).send({message: "error Cohort Id"})})
 })
 
-app.get("/api/students/:id", (req, res)=>{
-  const id = req.params.id
+app.get("/api/students/:studentId", (req, res)=>{
+  const id = req.params.studentId
   Student.findById(id)
   .populate("cohort")
   .then((students)=>{
-    res.status(200).send({message: "Student doesnt exists"});
+    res.status(200).send(students);
 }).catch(()=>{res.status(500).json({message: "error Student Id"})})
 })
 
@@ -155,7 +155,8 @@ app.put("/api/cohorts/:cohortId", (req, res)=>{
 })
 
 app.delete("/api/cohorts/:cohortId", (req, res)=>{
-  Cohort.findByIdAndDelete(req.params.cohortId).then(()=>{
+  const id = req.params.cohortId
+  Cohort.findByIdAndDelete(id).then(()=>{
       res.status(204).send({message: "Cohort deleted"});
   }).catch(()=>{
       res.status(500).json({message: "Error deleting Cohort"})
