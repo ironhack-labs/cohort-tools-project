@@ -7,7 +7,6 @@ const PORT = 5005;
 const mongoose = require('mongoose');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("./models/User.model")
 const {isAuthenticated} = require("./middleware/jwtmiddleware")
 // Define the number of encryptions of the password. 10 is usually a good number
 const saltRounds = 10;
@@ -25,6 +24,7 @@ const cohorts = require('./cohorts.json')
 // Models requires
 const Student = require("./models/Student.model");
 const Cohort = require("./models/Cohort.model");
+const User = require("./models/User.model");
 
 // MIDDLEWARE
 // Research Team - Set up CORS middleware here:
@@ -86,7 +86,7 @@ app
 
 // Retrieves a specific student by id - OK 
 app
-.get("/students/:studentId", (req, res, next)=>{
+.get("/api/students/:studentId", (req, res, next)=>{
   const studentId = req.params.studentId
   Student.findById(studentId)
 .populate("cohort") // OK
@@ -152,7 +152,7 @@ next(error)
 
 // returns all the cohorts - OK
 app
-.get("/cohorts", (req, res, next)=>{
+.get("/api/cohorts", (req, res, next)=>{
   Cohort.find({})
 .then(cohorts=>{
     console.log("cohorts: ", cohorts);
