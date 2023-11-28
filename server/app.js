@@ -19,9 +19,7 @@ app.use(
   cors({
     // Add the URLs of allowed origins to this array
     origin: [
-      "http://localhost:5005/api/cohorts",
-      "http://localhost:5005/api/students",
-      "http://localhost:5173",
+      "http://localhost:5173"
     ],
   })
 );
