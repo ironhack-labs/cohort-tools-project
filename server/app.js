@@ -4,8 +4,8 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors")
 const mongoose = require("mongoose");
 
-const Cohort = require("./models/Cohort")
-const Student = require("./models/Student")
+const Cohort = require("./models/Cohort.model")
+const Student = require("./models/Student.model")
 
 const PORT = 5005;
 
@@ -108,6 +108,7 @@ app.delete("/api/cohorts/:cohortId", (req, res) => {
 // ------ Api endpoints for Students ------ 
 app.get("/api/students", (req, res) => {
   Student.find({})
+    .populate("cohort")
     .then((students) => {
       console.log("Retrieve students " + students);
       res.status(200).json(students)
@@ -117,8 +118,21 @@ app.get("/api/students", (req, res) => {
     })
 })
 
+app.get("/api/students/cohort/:cohortId", (req, res) => {
+  Student.find(req.params.cohortId)
+    .populate("cohort")
+    .then((cohortStudents) => {
+      console.log("Retrieve cohort students " + cohortStudents);
+      res.status(200).json(cohortStudents)
+    })
+    .catch((error) => {
+      res.status(500).send({ message: "Failed getting cohort students: " + error })
+    })
+})
+
 app.get("/api/students/:studentId", (req, res) => {
   Student.findById(req.params.studentId)
+    .populate("cohort")
     .then((student) => {
       res.status(200).json(student);
     })
