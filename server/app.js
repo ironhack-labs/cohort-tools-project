@@ -3,6 +3,7 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require("cors")
 const mongoose = require("mongoose");
+const { errorHandler, notFoundHandler } = require("./error-handling");
 
 const Cohort = require("./models/Cohort.model")
 const Student = require("./models/Student.model")
@@ -30,7 +31,9 @@ app.use(morgan("dev"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors())
+app.use(cors());
+
+
 
 
 // ROUTES - https://expressjs.com/en/starter/basic-routing.html
@@ -47,7 +50,7 @@ app.get("/api/cohorts", (req, res) => {
       res.status(200).json(cohorts);
     })
     .catch((error) => {
-      res.status(500).send({ message: "Failed getting cohorts: " + error });
+      next(error);
     })
 })
 
@@ -57,7 +60,7 @@ app.get("/api/cohorts/:cohortId", (req, res) => {
       res.status(200).json(cohort);
     })
     .catch((error) => {
-      res.status(500).json({ message: "Failed getting a cohort: " + error });
+      next(error);
     })
 });
 
@@ -78,7 +81,7 @@ app.post("/api/cohorts", (req, res) => {
       res.status(200).json(createdCohort)
     })
     .catch((error) => {
-      res.status(500).json({ message: "Error while creating a cohort: " + error })
+      next(error);
     })
 
 })
@@ -89,7 +92,7 @@ app.put("/api/cohorts/:cohortId", (req, res) => {
       res.status(200).json(updatedCohort);
     })
     .catch((error) => {
-      res.status(500).json({ message: "Failed updating a cohort: " + error })
+      next(error);
     })
 })
 
@@ -99,7 +102,7 @@ app.delete("/api/cohorts/:cohortId", (req, res) => {
       res.status(204).send();
     })
     .catch((error) => {
-      res.status(500).json({ message: "Failed deleting a cohort: " + error })
+      next(error);
     })
 })
 
@@ -114,20 +117,20 @@ app.get("/api/students", (req, res) => {
       res.status(200).json(students)
     })
     .catch((error) => {
-      res.status(500).send({ message: "Failed getting students: " + error })
+      next(error);
     })
 })
 
 app.get("/api/students/cohort/:cohortId", (req, res) => {
   const cohortId = req.params.cohortId
-  Student.find({cohort: cohortId})
+  Student.find({ cohort: cohortId })
     .populate("cohort")
     .then((cohortStudents) => {
       console.log("Retrieve cohort students " + cohortStudents);
       res.status(200).json(cohortStudents)
     })
     .catch((error) => {
-      res.status(500).send({ message: "Failed getting cohort students: " + error })
+      next(error);
     })
 })
 
@@ -138,7 +141,7 @@ app.get("/api/students/:studentId", (req, res) => {
       res.status(200).json(student);
     })
     .catch((error) => {
-      res.status(500).json({ message: "Failed getting a student: " + error });
+      next(error);
     })
 });
 
@@ -160,7 +163,7 @@ app.post("/api/students", (req, res) => {
       res.status(200).json(createdStudent)
     })
     .catch((error) => {
-      res.status(500).json({ message: "Error while creating a student: " + error })
+      next(error);
     })
 })
 
@@ -170,7 +173,7 @@ app.put("/api/students/:studentId", (req, res) => {
       res.status(200).json(updatedStudent);
     })
     .catch((error) => {
-      res.status(500).json({ message: "Failed updating a student: " + error })
+      next(error);
     })
 })
 
@@ -180,9 +183,14 @@ app.delete("/api/students/:studentId", (req, res) => {
       res.status(204).send();
     })
     .catch((error) => {
-      res.status(500).json({ message: "Failed deleting a student: " + error })
+      next(error);
     })
 })
+
+// Own custom error handling middleware
+app.use(errorHandler);
+app.use(notFoundHandler);
+
 
 // START SERVER
 app.listen(PORT, () => {
