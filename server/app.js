@@ -5,6 +5,7 @@ const PORT = 5005;
 const cors = require("cors");
 const mongoose = require("mongoose");
 
+
 // STATIC DATA
 // Devs Team - Import the provided files with JSON data of students and cohorts here:
 mongoose
@@ -40,6 +41,12 @@ app.use("/api", require("./routes/student.routes"));
 app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
+
+const {errorHandler, notFoundHandler} = require("./middleware/error-handling");
+app.use(errorHandler);
+app.use(notFoundHandler);
+
+
 
 // START SERVER
 app.listen(PORT, () => {
