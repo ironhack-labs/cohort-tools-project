@@ -119,7 +119,8 @@ app.get("/api/students", (req, res) => {
 })
 
 app.get("/api/students/cohort/:cohortId", (req, res) => {
-  Student.find(req.params.cohortId)
+  const cohortId = req.params.cohortId
+  Student.find({cohort: cohortId})
     .populate("cohort")
     .then((cohortStudents) => {
       console.log("Retrieve cohort students " + cohortStudents);
@@ -153,7 +154,7 @@ app.post("/api/students", (req, res) => {
     background: req.body.background,
     image: req.body.image,
     projects: req.body.projects,
-    // cohort: ObjectId,
+    cohort: req.body.cohortId,
   })
     .then((createdStudent) => {
       res.status(200).json(createdStudent)
@@ -182,11 +183,6 @@ app.delete("/api/students/:studentId", (req, res) => {
       res.status(500).json({ message: "Failed deleting a student: " + error })
     })
 })
-
-
-// TODO: after the Student Schema has correct ObjectId for Cohort
-// api/students/cohort/:cohortId
-
 
 // START SERVER
 app.listen(PORT, () => {
