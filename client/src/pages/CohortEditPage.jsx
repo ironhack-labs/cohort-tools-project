@@ -95,7 +95,7 @@ function CohortEditPage() {
       </h3>
 
       {showDeleteConfirmation && (
-        <div className="absolute top-0 left-0 w-72 h-48 bg-white flex flex-col justify-center items-center border border-gray-300 rounded-md p-4 shadow-md">
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-48 bg-white flex flex-col justify-center items-center border border-gray-300 rounded-md p-4 shadow-md">
           <p className="mb-4">
             Are you sure you want to delete this cohortList?
           </p>
