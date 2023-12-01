@@ -8,15 +8,15 @@ const { errorHandler, notFoundHandler } = require("./error-handling");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const User = require("../models/User.model");
+const User = require("./models/User.model");
 const Cohort = require("./models/Cohort.model")
 const Student = require("./models/Student.model")
-const { isAuthenticated } = require("./middleware/middleware");
 
 const PORT = 5005;
 const saltRounds = 10;
+require("dotenv").config();
 
-
+const { isAuthenticated } = require("./middleware/jwt.middleware");
 
 
 // Setup mongoose connection
@@ -306,6 +306,17 @@ app.post('/login', (req, res, next) => {
     })
     .catch(err => res.status(500).json({ message: "Internal Server Error" }));
 });
+
+// 
+app.get("/api/user/:id",isAuthenticated, (req, res, next) => {
+  User.findById(req.param.id)
+  .then(user => {
+    res.status(200).json(user)
+  }) 
+  .catch(error => {
+    next(error)
+  }) 
+})
 
 
 // Own custom error handling middleware
