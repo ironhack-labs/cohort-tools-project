@@ -43,10 +43,9 @@ app.get("/docs", (req, res) => {
 });
 
 const {errorHandler, notFoundHandler} = require("./middleware/error-handling");
-app.use(errorHandler);
+
 app.use(notFoundHandler);
-
-
+app.use(errorHandler);
 
 // START SERVER
 app.listen(PORT, () => {
