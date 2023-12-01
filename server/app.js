@@ -200,7 +200,7 @@ app.delete("/api/students/:studentId", (req, res) => {
 
 
 // POST /auth/signup  - Creates a new user in the database
-app.post('/signup', (req, res, next) => {
+app.post('/auth/signup', (req, res, next) => {
   const { email, password, name } = req.body;
 
   // Check if the email or password or name is provided as an empty string 
@@ -215,7 +215,7 @@ app.post('/signup', (req, res, next) => {
     res.status(400).json({ message: 'Provide a valid email address.' });
     return;
   }
-  
+
   // Use regex to validate the password format
   const passwordRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
   if (!passwordRegex.test(password)) {
@@ -245,7 +245,7 @@ app.post('/signup', (req, res, next) => {
       // Deconstruct the newly created user object to omit the password
       // We should never expose passwords publicly
       const { email, name, _id } = createdUser;
-    
+
       // Create a new object that doesn't expose the password
       const user = { email, name, _id };
 
@@ -260,7 +260,7 @@ app.post('/signup', (req, res, next) => {
 
 
 // POST  /auth/login - Verifies email and password and returns a JWT
-app.post('/login', (req, res, next) => {
+app.post('/auth/login', (req, res, next) => {
   const { email, password } = req.body;
 
   // Check if email or password are provided as empty string 
@@ -272,7 +272,7 @@ app.post('/login', (req, res, next) => {
   // Check the users collection if a user with the same email exists
   User.findOne({ email })
     .then((foundUser) => {
-    
+
       if (!foundUser) {
         // If the user is not found, send an error response
         res.status(401).json({ message: "User not found." })
@@ -285,12 +285,12 @@ app.post('/login', (req, res, next) => {
       if (passwordCorrect) {
         // Deconstruct the user object to omit the password
         const { _id, email, name } = foundUser;
-        
+
         // Create an object that will be set as the token payload
         const payload = { _id, email, name };
 
         // Create and sign the token
-        const authToken = jwt.sign( 
+        const authToken = jwt.sign(
           payload,
           process.env.TOKEN_SECRET,
           { algorithm: 'HS256', expiresIn: "6h" }
@@ -308,14 +308,14 @@ app.post('/login', (req, res, next) => {
 });
 
 // 
-app.get("/api/user/:id",isAuthenticated, (req, res, next) => {
+app.get("/api/user/:id", isAuthenticated, (req, res, next) => {
   User.findById(req.param.id)
-  .then(user => {
-    res.status(200).json(user)
-  }) 
-  .catch(error => {
-    next(error)
-  }) 
+    .then(user => {
+      res.status(200).json(user)
+    })
+    .catch(error => {
+      next(error)
+    })
 })
 
 
