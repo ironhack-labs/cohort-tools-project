@@ -4,7 +4,9 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors")
 
 const mongoose = require("mongoose");
+
 const { errorHandler, notFoundHandler } = require("./error-handling");
+
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -48,11 +50,11 @@ app.use(cors());
 // ROUTES - https://expressjs.com/en/starter/basic-routing.html
 
 // ------ Api endpoints for Cohorts ------ 
-app.get("/docs", (req, res) => {
+app.get("/docs", (req, res, next) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
-app.get("/api/cohorts", (req, res) => {
+app.get("/api/cohorts", (req, res, next) => {
   Cohort.find({})
     .then((cohorts) => {
       console.log("Retrieve cohorts: ", cohorts);
@@ -63,7 +65,7 @@ app.get("/api/cohorts", (req, res) => {
     })
 })
 
-app.get("/api/cohorts/:cohortId", (req, res) => {
+app.get("/api/cohorts/:cohortId", (req, res, next) => {
   Cohort.findById(req.params.cohortId)
     .then((cohort) => {
       res.status(200).json(cohort);
@@ -73,7 +75,7 @@ app.get("/api/cohorts/:cohortId", (req, res) => {
     })
 });
 
-app.post("/api/cohorts", (req, res) => {
+app.post("/api/cohorts", (req, res, next) => {
   Cohort.create({
     inProgress: req.body.inProgress,
     cohortSlug: req.body.cohortSlug,
@@ -95,7 +97,7 @@ app.post("/api/cohorts", (req, res) => {
 
 })
 
-app.put("/api/cohorts/:cohortId", (req, res) => {
+app.put("/api/cohorts/:cohortId", (req, res, next) => {
   Cohort.findByIdAndUpdate(req.params.cohortId, req.body, { new: true })
     .then((updatedCohort) => {
       res.status(200).json(updatedCohort);
@@ -105,7 +107,7 @@ app.put("/api/cohorts/:cohortId", (req, res) => {
     })
 })
 
-app.delete("/api/cohorts/:cohortId", (req, res) => {
+app.delete("/api/cohorts/:cohortId", (req, res, next) => {
   Cohort.findByIdAndDelete(req.params.cohortId)
     .then(() => {
       res.status(204).send();
@@ -118,7 +120,7 @@ app.delete("/api/cohorts/:cohortId", (req, res) => {
 
 
 // ------ Api endpoints for Students ------ 
-app.get("/api/students", (req, res) => {
+app.get("/api/students", (req, res, next) => {
   Student.find({})
     .populate("cohort")
     .then((students) => {
@@ -130,7 +132,7 @@ app.get("/api/students", (req, res) => {
     })
 })
 
-app.get("/api/students/cohort/:cohortId", (req, res) => {
+app.get("/api/students/cohort/:cohortId", (req, res, next) => {
   const cohortId = req.params.cohortId
   Student.find({ cohort: cohortId })
     .populate("cohort")
@@ -143,7 +145,7 @@ app.get("/api/students/cohort/:cohortId", (req, res) => {
     })
 })
 
-app.get("/api/students/:studentId", (req, res) => {
+app.get("/api/students/:studentId", (req, res, next) => {
   Student.findById(req.params.studentId)
     .populate("cohort")
     .then((student) => {
@@ -154,7 +156,7 @@ app.get("/api/students/:studentId", (req, res) => {
     })
 });
 
-app.post("/api/students", (req, res) => {
+app.post("/api/students", (req, res, next) => {
   Student.create({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -166,7 +168,7 @@ app.post("/api/students", (req, res) => {
     background: req.body.background,
     image: req.body.image,
     projects: req.body.projects,
-    cohort: req.body.cohortId,
+    cohort: req.body.cohort,
   })
     .then((createdStudent) => {
       res.status(200).json(createdStudent)
@@ -176,7 +178,7 @@ app.post("/api/students", (req, res) => {
     })
 })
 
-app.put("/api/students/:studentId", (req, res) => {
+app.put("/api/students/:studentId", (req, res, next) => {
   Student.findByIdAndUpdate(req.params.studentId, req.body, { new: true })
     .then((updatedStudent) => {
       res.status(200).json(updatedStudent);
@@ -186,7 +188,7 @@ app.put("/api/students/:studentId", (req, res) => {
     })
 })
 
-app.delete("/api/students/:studentId", (req, res) => {
+app.delete("/api/students/:studentId", (req, res, next) => {
   Student.findByIdAndDelete(req.params.studentId)
     .then(() => {
       res.status(204).send();
