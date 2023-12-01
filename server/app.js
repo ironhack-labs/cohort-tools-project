@@ -4,6 +4,8 @@ const cookieParser = require("cookie-parser");
 const PORT = 5005;
 const cors = require("cors");
 const mongoose = require("mongoose");
+const {isAuthenticated} = require("./middleware/jwt.middleware");
+require("dotenv").config();
 
 
 // STATIC DATA
@@ -34,8 +36,10 @@ app.use(cookieParser());
 
 // ROUTES - https://expressjs.com/en/starter/basic-routing.html
 app.use("/", require("./routes/index.routes"));
-app.use("/api", require("./routes/cohort.routes"));
-app.use("/api", require("./routes/student.routes"));
+app.use("/api",isAuthenticated, require("./routes/cohort.routes"));
+app.use("/api", isAuthenticated,  require("./routes/student.routes"));
+app.use("/", require("./routes/auth.routes"));
+app.use("/api", require("./routes/user.routes"));
 // Devs Team - Start working on the routes here:
 // ...
 app.get("/docs", (req, res) => {

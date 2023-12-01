@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { isAuthenticated } = require("../middleware/jwt.middleware");
 const Cohort = require("../models/Cohort.model");
 const mongoose = require("mongoose");
 
