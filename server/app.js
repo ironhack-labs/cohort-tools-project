@@ -188,8 +188,8 @@ app.delete("/api/students/:studentId", (req, res) => {
 })
 
 // Own custom error handling middleware
-app.use(errorHandler);
 app.use(notFoundHandler);
+app.use(errorHandler);
 
 
 // START SERVER
