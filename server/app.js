@@ -5,7 +5,8 @@ const cors = require("cors");
 const PORT = 5005;
 const mongoose = require("mongoose");
 
-const Cohort = require("./models/Cohort")
+const Cohort = require("./models/Cohort");
+const Student = require("./models/Student");
 
 // CONNECT TO THE DATABASE
 mongoose
@@ -38,16 +39,22 @@ app.get("/docs", (req, res) => {
 
 app.get("/api/cohorts", (req, res) => {
   Cohort.find()
-  .then((foundCohorts) => {
-    res.json(foundCohorts)
-  })
-  .catch((err) => {
-    console.log(err)
-  })
+    .then((foundCohorts) => {
+      res.json(foundCohorts);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 app.get("/api/students", (req, res) => {
-  res.json(students);
+  Student.find()
+    .then((foundStudents) => {
+      res.json(foundStudents);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 // START SERVER
