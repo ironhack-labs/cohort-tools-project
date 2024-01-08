@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
@@ -7,6 +8,11 @@ const mongoose = require("mongoose");
 
 const Cohort = require("./models/Cohort");
 const Student = require("./models/Student");
+const User = require("./models/User");
+
+const isAuthenticated = require("./middleware/isAuthenticated");
+
+const authRoutes = require("./auth");
 
 // CONNECT TO THE DATABASE
 mongoose
@@ -30,6 +36,7 @@ app.use(morgan("dev"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use("/auth", authRoutes);
 
 // ROUTES - https://expressjs.com/en/starter/basic-routing.html
 // Devs Team - Start working on the routes here:
@@ -48,7 +55,7 @@ app.get("/api/students", (req, res) => {
     });
 });
 
-//Student Routes -- Brandon, Lisi
+// Student Routes -- Brandon, Lisi
 // POST for /api/students - Creates a new student
 app.post("/api/students", (req, res) => {
   Student.create({
@@ -74,7 +81,7 @@ app.post("/api/students", (req, res) => {
     });
 });
 
-//GET /api/students/cohort/:cohortId - Retrieves all of the students for a given cohort
+// GET /api/students/cohort/:cohortId - Retrieves all of the students for a given cohort
 app.get("/api/students/cohort/:cohortId", (req, res) => {
   Student.find({ cohort: req.params.cohortId })
     .then((students) => {
@@ -87,7 +94,7 @@ app.get("/api/students/cohort/:cohortId", (req, res) => {
     });
 });
 
-//GET /api/students/:studentId - Retrieves a specific student by id
+// GET /api/students/:studentId - Retrieves a specific student by id
 app.get("/api/students/:studentId", (req, res) => {
   const studentId = req.params.studentId;
 
@@ -101,7 +108,7 @@ app.get("/api/students/:studentId", (req, res) => {
     });
 });
 
-//PUT /api/students/:studentId - Updates a specific student by id
+// PUT /api/students/:studentId - Updates a specific student by id
 app.put("/api/students/:studentId", (req, res) => {
   Student.findByIdAndUpdate(req.params.studentId, req.body, { new: true })
     .then((updatedStudent) => {
@@ -114,7 +121,7 @@ app.put("/api/students/:studentId", (req, res) => {
     });
 });
 
-//DELETE /api/students/:studentId - Deletes a specific student by id
+// DELETE /api/students/:studentId - Deletes a specific student by id
 app.delete("/api/students/:studentId", (req, res) => {
   Student.findByIdAndDelete(req.params.studentId)
     .then((result) => {
@@ -190,6 +197,18 @@ app.delete("/api/cohorts/:cohortId", (req, res) => {
     .then((deletedCohort) => {
       console.log(deletedCohort);
       res.status(204).send();
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send(err);
+    });
+});
+
+// GET api/users:cohortId
+app.get("/api/users/:userId", (req, res) => {
+  User.findById(req.params.userId)
+    .then((foundUser) => {
+      res.json(foundUser);
     })
     .catch((err) => {
       console.log(err);
