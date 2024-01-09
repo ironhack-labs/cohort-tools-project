@@ -7,7 +7,7 @@ function CohortFilterBar({
   setProgramQuery,
   handleChange,
 }) {
-  return  (
+  return (
     <div className="filter-bar flex justify-between items-center mb-4 p-2 px-8 bg-gray-200 rounded">
       <div className="flex justify-start items-center space-x-8">
         <label htmlFor="campus" className="flex items-center">
@@ -15,11 +15,11 @@ function CohortFilterBar({
           <select
             name="campus"
             id="campus"
-            value={campusQuery}
+            // value={campusQuery}
             onChange={(e) => handleChange(e, setCampusQuery)}
             className="p-1"
           >
-            <option value="">All</option>
+            <option value="All">All</option>
             <option value="Madrid">Madrid</option>
             <option value="Barcelona">Barcelona</option>
             <option value="Miami">Miami</option>
@@ -35,11 +35,11 @@ function CohortFilterBar({
           <select
             name="program"
             id="program"
-            value={programQuery}
+            // value={programQuery}
             onChange={(e) => handleChange(e, setProgramQuery)}
             className="p-1"
           >
-            <option value="">All</option>
+            <option value="All">All</option>
             <option value="Web Dev">Web Development</option>
             <option value="UX/UI">UX/UI</option>
             <option value="Data Analytics">Data Analytics</option>
@@ -49,7 +49,9 @@ function CohortFilterBar({
       </div>
 
       <Link to="/cohorts/create" className="ml-auto">
-        <button className="px-4 py-1 rounded bg-blue-600 text-white hover:bg-blue-500 px-6">Create</button>
+        <button className="px-4 py-1 rounded bg-blue-600 text-white hover:bg-blue-500 px-6">
+          Create
+        </button>
       </Link>
     </div>
   );
