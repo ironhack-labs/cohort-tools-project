@@ -1,9 +1,13 @@
 const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
-const Student = require("./models/Student.model");
+const cors = require("cors");
+
 const mongoose = require("mongoose");
+
+const Student = require("./models/Student.model");
 const Cohort = require("./models/Cohort.model");
+
 const PORT = 5005;
 
 // STATIC DATA
@@ -26,6 +30,7 @@ app.use(morgan("dev"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(cors());
 
 // ROUTES - https://expressjs.com/en/starter/basic-routing.html
 // Devs Team - Start working on the routes here:
