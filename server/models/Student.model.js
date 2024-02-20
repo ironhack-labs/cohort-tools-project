@@ -18,7 +18,10 @@ const studentSchema = new Schema({
       "Other",
     ],
   },
-  program: String,
+  program: {
+    type: String,
+    enum: ["Web Dev", "UX/UI", "Data Analytics", "Cybersecurity"],
+  },
   background: String,
   image: String,
   cohort: { type: Schema.Types.ObjectId, ref: "Cohort" },
