@@ -107,7 +107,7 @@ app.get("/api/students", (req, res) => {
     })
     .catch((error) => {
       res.status(500).send({ error: "Failed to retrieve students" });
-    });
+    });  
 });
 app.get("/api/students/cohort/:cohortId", (req, res) => {
   const cohortId = req.params.cohortId;
@@ -135,7 +135,7 @@ app.get("/api/students/:studentId", (req, res) => {
     .catch((error) => {
       console.error("Error while retrieving a student by ID ->", error);
       res.status(500).send({ error: "Failed to retrieve a student by ID" });
-    });
+    });  
 });
 app.put("/api/students/:studentId", (req, res) => {
   const studentId = req.params.studentId;
