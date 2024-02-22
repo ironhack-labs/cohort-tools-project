@@ -5,6 +5,9 @@ const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const PORT = 5005;
 
+const Cohort = require("./models/CohortModel");
+const Student = require("./models/StudentModel");
+
 // STATIC DATA
 // Devs Team - Import the provided files with JSON data of students and cohorts here:
 // ...
@@ -37,12 +40,22 @@ app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
-app.get("/api/cohorts", (req, res) => {
-  res.json(cohortData);
+app.get("/api/cohorts", async (req, res) => {
+  try {
+    const cohorts = await Cohort.find();
+    res.status(201).json(cohorts);
+  } catch {
+    res.status(500).json({ message: "Error fetching cohorts" });
+  }
 });
 
-app.get("/api/students", (req, res) => {
-  res.json(studentData);
+app.get("/api/students", async (req, res) => {
+  try {
+    const students = await Student.find();
+    res.status(201).json(students);
+  } catch {
+    res.status(500).json({ message: "Error fetching students" });
+  }
 });
 
 // START SERVER
