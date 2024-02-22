@@ -39,6 +39,7 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+
 // ROUTES - https://expressjs.com/en/starter/basic-routing.html
 // Devs Team - Start working on the routes here:
 // ...
@@ -46,58 +47,57 @@ app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
-app.get("/api/cohorts", (req, res) => {
+app.get("/api/cohorts", (req, res, next) => {
   Cohort.find()
     .then((allCohorts) => res.json(allCohorts))
-    .catch((err) => console.log(err));
+    .catch((err) => next(err));
 });
 
-app.post("/api/cohorts", (req, res) => {
+app.post("/api/cohorts", (req, res, next) => {
   Cohort.create(req.body)
-  .then(newCohort => {
-    console.log("Cohort created: ", newCohort);
-    res.status(201).send(newCohort);
-  })
-  .catch(error => {
-    console.error("Failed to create cohort: ", error);
-    res.status(500).send({error: "Failed to create cohort"});
-  })
+    .then((newCohort) => {
+      console.log("Cohort created: ", newCohort);
+      res.status(201).send(newCohort);
+    })
+    .catch((error) => {
+      next(error);
+    });
 });
 
-app.get("/api/students", (req, res) => {
+app.get("/api/students", (req, res, next) => {
   Student.find()
-  .populate("cohort")
+    .populate("cohort")
     .then((allStudents) => res.json(allStudents))
-    .catch((err) => console.log(err));
+    .catch((err) => next(err));
 });
 
-app.post("/api/students", (req, res) => {
+app.post("/api/students", (req, res, next) => {
   Student.create(req.body)
     .then((newStudent) => {
       console.log("Student created:", newStudent);
       res.status(201).send(newStudent);
     })
     .catch((err) => {
-      console.error(err);
-      res.status(500).send({ error: "Failed to create a new student." });
+      console.log(err);
+      // res.status(500).json("Internal Server Error") --> headersSent
+      next(err);
     });
 });
 
-app.get("/api/students/:id", (req, res) => {
+app.get("/api/students/:id", (req, res, next) => {
   const studentId = req.params.id;
   Student.findById(studentId)
-  .populate("cohort")
+    .populate("cohort")
     .then((student) => {
       console.log("Student retrieved: ", student);
       res.status(200).send(student);
     })
     .catch((error) => {
-      console.error("Failed to retrieve student: ", error);
-      res.status(500).send({ error: "Failed to retrieve student" });
+      next(error);
     });
 });
 
-app.get("/api/cohorts/:id", (req, res) => {
+app.get("/api/cohorts/:id", (req, res, next) => {
   const cohortId = req.params.id;
   Cohort.findById(cohortId)
     .then((cohort) => {
@@ -105,21 +105,19 @@ app.get("/api/cohorts/:id", (req, res) => {
       res.status(200).send(cohort);
     })
     .catch((error) => {
-      console.error("Failed to retrieve cohort: ", error);
-      res.status(500).send({ error: "Failed to retrieve cohort" });
+      next(error);
     });
 });
 
-app.put("/api/cohorts/:id", (req, res) => {
+app.put("/api/cohorts/:id", (req, res, next) => {
   const cohortId = req.params.id;
-  Cohort.findByIdAndUpdate(cohortId, req.body, {new: true})
+  Cohort.findByIdAndUpdate(cohortId, req.body, { new: true })
     .then((updatedCohort) => {
       console.log("Cohort updated: ", updatedCohort);
       res.status(200).send(updatedCohort);
     })
     .catch((error) => {
-      console.error("Failed to update cohort: ", error);
-      res.status(500).send({ error: "Failed to update cohort" });
+      next(error);
     });
 });
 
@@ -137,21 +135,20 @@ app.put("/api/cohorts/:id", (req, res) => {
 //     });
 // });
 
-app.get("/api/students/cohort/:cohortId", (req, res) => {
+app.get("/api/students/cohort/:cohortId", (req, res, next) => {
   const cohortId = req.params.cohortId;
   Student.find({ cohort: cohortId })
-  .populate("cohort")
+    .populate("cohort")
     .then((student) => {
       console.log("Student retrieved: ", student);
       res.status(200).send(student);
     })
     .catch((error) => {
-      console.error("Failed to retrieve student: ", error);
-      res.status(500).send({ error: "Failed to retrieve student" });
+      next(error);
     });
 });
 
-app.put("/api/students/:id", (req, res) => {
+app.put("/api/students/:id", (req, res, next) => {
   const studentId = req.params.id;
   Student.findByIdAndUpdate(studentId, req.body, { new: true })
     .then((updatedStudent) => {
@@ -159,12 +156,11 @@ app.put("/api/students/:id", (req, res) => {
       res.status(200).send(updatedStudent);
     })
     .catch((error) => {
-      console.error("Failed to update student: ", error);
-      res.status(500).send({ error: "Failed to update student" });
+      next(error);
     });
 });
 
-app.delete("/api/students/:id", (req, res) => {
+app.delete("/api/students/:id", (req, res, next) => {
   const studentId = req.params.id;
   Student.findByIdAndDelete(studentId)
     .then((deletedStudent) => {
@@ -172,12 +168,11 @@ app.delete("/api/students/:id", (req, res) => {
       res.status(200).send();
     })
     .catch((error) => {
-      console.error("Failed to delete student: ", error);
-      res.status(500).send({ error: "Failed to delete student" });
+      next(error);
     });
 });
 
-app.delete("/api/cohorts/:id", (req, res) => {
+app.delete("/api/cohorts/:id", (req, res, next) => {
   const cohortId = req.params.id;
   Cohort.findByIdAndDelete(cohortId)
     .then((deletedCohort) => {
@@ -185,10 +180,20 @@ app.delete("/api/cohorts/:id", (req, res) => {
       res.status(200).send();
     })
     .catch((error) => {
-      console.error("Failed to delete cohort: ", error);
-      res.status(500).send({ error: "Failed to delete cohort" });
+      next(error);
     });
 });
+
+// Error handler functions
+const {
+  errorHandler,
+  notFoundHandler,
+  // badRequestHandler,
+} = require("./middleware/error-handling");
+
+app.use(errorHandler);
+// app.use(badRequestHandler);
+app.use(notFoundHandler);
 
 // START SERVER
 app.listen(PORT, () => {
