@@ -12,8 +12,4 @@ function notFoundHandler(req, res, next) {
   res.status(404).json({ message: "This route does not exist." });
 }
 
-// function badRequestHandler(req, res, next) {
-//   res.status(400).json({ message: "Very bad request!!!" });
-// }
-
 module.exports = { errorHandler, notFoundHandler};
