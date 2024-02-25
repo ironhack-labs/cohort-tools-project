@@ -12,8 +12,11 @@ const studentSchema = new Schema({
   program: String,
   background: String,
   image: String,
-  cohort: String,
   projects: String,
+  cohort: {
+    type: Number,
+    ref: "Cohorts",
+  },
 });
 
 const Student = mongoose.model("Student", studentSchema);
