@@ -29,6 +29,16 @@ app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
+app.get("/api/cohorts", (req, res) => {
+  const cohorts = require(`./cohorts.json`);
+  res.json(cohorts);
+});
+
+app.get("/api/students", (req, res) => {
+  const students = require(`./students.json`);
+  res.json(students);
+});
+
 
 // START SERVER
 app.listen(PORT, () => {
