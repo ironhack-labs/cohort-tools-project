@@ -20,7 +20,7 @@ const app = express();
 app.use(
   cors({
     // Add the URLs of allowed origins to this array
-    origin: ['http://localhost:5173', 'http://localhost:5174'],
+    origin: ['http://localhost:5173'],
   })
 );
 app.use(express.json());
