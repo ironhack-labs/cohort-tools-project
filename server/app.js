@@ -94,6 +94,39 @@ app.post("/api/students", async (req, res) => {
   res.json(newStudent);
 });
 
+app.get("/api/students/cohort/:cohortId", async (req, res) => {
+  try {
+    const { cohortId } = req.params;
+    const students = await studentSchema.find({ cohort: cohortId });
+    res.json(students);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.put("/api/students/:studentId", async (req, res) => {
+  try {
+    const { studentId } = req.params;
+    const studentData = req.body;
+    const student = await studentSchema.findByIdAndUpdate(
+      studentId,
+      studentData
+    );
+    res.json(student);
+  } catch (err) {
+    console.log("error is=>>>>", err);
+  }
+});
+
+app.delete("/api/students/:studentId", async (req, res) => {
+  try {
+    const { studentId } = req.params;
+    const student = await studentSchema.findByIdAndDelete(studentId);
+    res.json(student);
+  } catch (err) {
+    console.log(err);
+  }
+});
 // START SERVER
 app.listen(PORT, async () => {
   console.log(`Server listening on port ${PORT}`);
