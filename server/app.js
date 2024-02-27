@@ -3,6 +3,8 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const PORT = 5005;
 const cors = require("cors");
+const mongoose = require("mongoose");
+
 // STATIC DATA
 // Devs Team - Import the provided files with JSON data of students and cohorts here:
 // ...
@@ -32,7 +34,11 @@ const corsOptions = {
   optionsSuccessStatus: 200 
 }
 
-
+// Here we are connecting to our database using Mongoose. 
+mongoose
+  .connect("mongodb://localhost:27017/cohort-tools-api")
+  .then(x => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
+  .catch(err => console.error("Error connecting to mongo", err));
 
 
 // ROUTES - https://expressjs.com/en/starter/basic-routing.html
