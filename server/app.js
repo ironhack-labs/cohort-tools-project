@@ -27,7 +27,7 @@ const students = require('./students.json');
 
 // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
 
-app.use(helmet());
+
 const app = express();
 
 
@@ -40,6 +40,19 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
+
+// app.use(helmet());
+
+
+// overriding "font-src" and "style-src" while
+// maintaining the other default values
+// helmet.contentSecurityPolicy({
+//   useDefaults: false,
+//   directives: {
+//     "default-src": ["'self'", "https://cdnjs.cloudflare.com"]
+//   },
+// })
+
 
 
 // ROUTES - https://expressjs.com/en/starter/basic-routing.html
