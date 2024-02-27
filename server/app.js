@@ -6,6 +6,9 @@ const PORT = 5005;
 
 // Connection to MongoDB with mongoose
 const mongoose = require("mongoose");
+const Cohort = require("./models/Cohort.model")
+const Student = require("./models/Student.model")
+
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/cohort-tools-api")
