@@ -1,3 +1,5 @@
+const helmet= require("helmet");
+
 const express = require("express");
 const morgan = require("morgan");
 const cors = require('cors');
@@ -24,6 +26,8 @@ const students = require('./students.json');
 
 
 // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
+
+app.use(helmet());
 const app = express();
 
 
