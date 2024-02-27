@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const PORT = 5005;
 const cohortSchema = require("./models/cohort");
 const studentSchema = require("./models/student");
+const cohort = require("./models/cohort");
 /*
 old JSON DATA
  const cohorts = require("./cohorts.json");
@@ -54,6 +55,46 @@ app.get("/api/cohorts", async (req, res) => {
   res.json(await cohortSchema.find());
 });
 
+app.get("/api/cohorts/:cohortId", async (req, res) => {
+  try {
+    const { cohortId } = req.params;
+    const cohort = await cohortSchema.findById(cohortId);
+    res.json(cohort);
+  } catch (err) {
+    console.log("error is=>>>>", err);
+  }
+});
+app.post("/api/cohorts", async (req, res) => {
+  const cohort = req.body;
+  const newCohort = new cohortSchema(cohort);
+  await newCohort.save();
+  res.json(newCohort);
+});
+
+app.put("/api/cohorts/:cohortId", async (req, res) => {
+  try {
+    const { cohortId } = req.params;
+    const cohortData = req.body;
+    const updateCohort = await cohortSchema.findByIdAndUpdate(
+      cohortId,
+      cohortData
+    );
+    res.json(updateCohort);
+  } catch (err) {
+    console.log("error is=>>>>", err);
+  }
+});
+
+app.delete("/api/cohorts/:cohortId", async (req, res) => {
+  try {
+    const { cohortId } = req.params;
+    const deleteCohort = await cohortSchema.findByIdAndDelete(cohortId);
+    res.json(deleteCohort);
+  } catch (err) {
+    console.log("error is=>>>>", err);
+  }
+});
+
 app.get("/api/students", async (req, res) => {
   res.json(await studentSchema.find());
 });
@@ -62,7 +103,6 @@ app.get("/api/students/:studentId", async (req, res) => {
   try {
     const { studentId } = req.params;
     const student = await studentSchema.findById(studentId);
-    console.log("this is the consoleLog", student);
     res.json(student);
   } catch (err) {
     console.log("error is=>>>>", err);
