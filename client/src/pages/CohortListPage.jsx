@@ -21,7 +21,7 @@ function CohortListPage() {
     if (programQuery) queryString += `program=${programQuery}`;
 
     axios
-      .get(`${API_URL}/api/cohorts?${queryString}`)
+      .get(`${API_URL}/cohorts?${queryString}`)
       .then((response) => {
         setCohorts(response.data);
       })
@@ -60,15 +60,13 @@ function CohortListPage() {
       </div>
 
       {cohorts &&
-        cohorts.map(
-          (cohort, index) => (
-              <CohortCard
-                key={cohort._id}
-                {...cohort}
-                className={index % 2 === 0 ? "bg-white" : "bg-gray-100"}
-              />
-          )
-        )}
+        cohorts.map((cohort, index) => (
+          <CohortCard
+            key={cohort._id}
+            {...cohort}
+            className={index % 2 === 0 ? "bg-white" : "bg-gray-100"}
+          />
+        ))}
     </div>
   );
 }
