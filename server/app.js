@@ -22,29 +22,7 @@ mongoose
 // Devs Team - Import the provided files with JSON data of students and cohorts here:
 // ...
 // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
-app.get("/cohorts", (req, res) => {
-  Cohort.find({})
-  .then ((cohorts) => {
-    console.log("Retrieve cohorts ->", cohorts);
-    res.json(cohorts)
-  })
-  .catch((error) =>{
-    console.error("Error", error);
-    res.status(500).json({error: "Failed to retrieve cohorts"});
-  });
-})
 
-app.get("/students", (req, res) => {
-  Student.find({})
-  .then ((students) => {
-    console.log("Retrieve students ->", students);
-    res.json(students)
-  })
-  .catch((error) =>{
-    console.error("Error", error);
-    res.status(500).json({error: "Failed to retrieve students"});
-  });
-})
 
 // MIDDLEWARE
 // Research Team - Set up CORS middleware here:
@@ -68,16 +46,10 @@ app.use(cookieParser());
 app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
-app.get("/api/cohorts", (req, res) => {
-  res.status(200).json(cohorts);
-});
-app.get("/api/students", (req, res) => {
-  res.status(200).json(students);
-});
-
-app.post("/api/cohorts", (req, res) => {
-  
-})
+const cohortRoutes = require("./routes/cohort.routes");
+app.use("/api", cohortRoutes)
+const studentRoutes = require("./routes/student.routes");
+app.use("/api", studentRoutes)
 
 
 
