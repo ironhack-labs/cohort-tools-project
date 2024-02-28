@@ -10,6 +10,8 @@ const Cohort = require("./model/Cohort.model.js");
 const cohorts = require("./cohorts.json");
 const students = require("./students.json");
 
+app.use (express.urlencoded({ extended: false })); 
+
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/cohort-tools-api")
@@ -72,6 +74,10 @@ app.get("/api/cohorts", (req, res) => {
 app.get("/api/students", (req, res) => {
   res.status(200).json(students);
 });
+
+app.post("/api/cohorts", (req, res) => {
+  
+})
 
 
 
