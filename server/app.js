@@ -62,6 +62,7 @@ app.get("/docs", (req, res) => {
 
 app.get("/api/students", (req, res) => {
   Student.find({})
+    .populate("cohort")
     .then((students) => {
       console.log("Retrieved students ->", students);
       res.json(students);
@@ -116,10 +117,20 @@ app.get("/api/students", (req, res) => {
     });
 });
 
-app.get("/api/students/cohort/:cohortId", (req, res) => {});
+app.get("/api/students/cohort/:cohortId", (req, res) => {
+  Student.find({cohort: req.params.cohortId})
+  .populate("cohort")
+  .then((allStudents) => {
+    res.status(200).json(allStudents);
+  })
+  .catch((error) => {
+    res.status(500).json({ message: "Error getting all Students" });
+  });
+});
 
 app.get("/api/students/:studentId", (req, res) => {
   Student.findById(req.params.studentId)
+    .populate("cohort")
     .then((student) => {
       res.status(200).json(student);
     })
