@@ -93,6 +93,7 @@ app.post("/api/students", (req, res) => {
 
 app.get("/api/students", (req, res) => {
   Student.find()
+    .populate("cohort")
     .then((listAllStudents) => {
       res.status(200).json(listAllStudents);
     })
@@ -104,23 +105,26 @@ app.get("/api/students", (req, res) => {
     });
 });
 
+
 app.get("/api/students/cohort/:cohortId", (req, res) => {
-  Student.findById(req.params.cohortId)
+  const { cohortId } = req.params 
+  Student.find({cohort: cohortId})
+    .populate("cohort")
     .then((studentFromCohort) => {
       res.status(200).json(studentFromCohort);
     })
     .catch((error) => {
       console.log(error);
-      res
-        .status(500)
-        .json({
-          message: "There was an error getting the student from a given cohort",
-        });
+      res.status(500).json({
+        message: "There was an error getting the student from a given cohort",
+      });
     });
 });
 
+
 app.get("/api/students/:studentId", (req, res) => {
   Student.findById(req.params.studentId)
+    .populate("cohort")
     .then((studentById) => {
       res.status(200).json(studentById);
     })
@@ -161,7 +165,7 @@ app.delete("/api/students/:studentId", (req, res) => {
 // Cohort Routes
 
 app.post("/api/cohorts", (req, res) => {
-  const  {
+  const {
     cohortSlug,
     cohortName,
     program,
@@ -173,9 +177,9 @@ app.post("/api/cohorts", (req, res) => {
     programManager,
     leadTeacher,
     totalHours,
-  } = req.body
+  } = req.body;
 
-  const newCohort =  {
+  const newCohort = {
     cohortSlug: cohortSlug,
     cohortName: cohortName,
     program: program,
@@ -187,52 +191,57 @@ app.post("/api/cohorts", (req, res) => {
     programManager: programManager,
     leadTeacher: leadTeacher,
     totalHours: totalHours,
-  }
+  };
   Cohort.create(newCohort)
     .then((createCohort) => {
-      res.status(201).json(createCohort)
+      res.status(201).json(createCohort);
     })
     .catch((error) => {
-      console.log(error)
-      res.status(500).json({message: "There was an error creating a new cohort"})
-    })
+      console.log(error);
+      res
+        .status(500)
+        .json({ message: "There was an error creating a new cohort" });
+    });
 });
 
 app.get("/api/cohorts", (req, res) => {
   Cohort.find()
-    .then ((listOfCohorts) => {
+    .then((listOfCohorts) => {
       res.status(200).json(listOfCohorts);
     })
-    .catch ((error) => {
-      console.log(error)
-      res.status(500).json({message: "There was an error getting the list of cohorts"})
-    })
-})
-
+    .catch((error) => {
+      console.log(error);
+      res
+        .status(500)
+        .json({ message: "There was an error getting the list of cohorts" });
+    });
+});
 
 app.get("/api/cohorts/:cohortId", (req, res) => {
   Cohort.findById(req.params.cohortId)
-    .then ((cohortById) => {
+    .then((cohortById) => {
       res.status(200).json(cohortById);
     })
-    .catch ((error) => {
-      console.log(error)
-      res.status(500).json({message: "There was an error getting a cohort by id"})
-    })
-})
-
+    .catch((error) => {
+      console.log(error);
+      res
+        .status(500)
+        .json({ message: "There was an error getting a cohort by id" });
+    });
+});
 
 app.put("/api/cohorts/:cohortId", (req, res) => {
-  Cohort.findByIdAndUpdate(req.params.cohortId, req.body, {new: true})
-    .then ((updatedCohort) => {
+  Cohort.findByIdAndUpdate(req.params.cohortId, req.body, { new: true })
+    .then((updatedCohort) => {
       res.status(200).json(updatedCohort);
     })
-    .catch ((error) => {
-      console.log(error)
-      res.status(500).json({message: "There was an error updating a cohort by id"})
-    })
-})
-
+    .catch((error) => {
+      console.log(error);
+      res
+        .status(500)
+        .json({ message: "There was an error updating a cohort by id" });
+    });
+});
 
 app.delete("/api/cohorts/:cohortId", (req, res) => {
   Cohort.findByIdAndDelete(req.params.cohortId)
@@ -247,10 +256,7 @@ app.delete("/api/cohorts/:cohortId", (req, res) => {
     });
 });
 
-
 // START SERVER
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
-
-
