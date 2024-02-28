@@ -24,7 +24,7 @@ app.use(cookieParser());
 
 // CORS
 app.use(
-  cors ({
+  cors({
     origin: "http://localhost:5005",
   })
 );
