@@ -6,8 +6,11 @@ const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 
 const { PORT = 5005 } = process.env;
+
 const cohortSchema = require("./models/cohort");
 const studentSchema = require("./models/student");
+
+const Auth = require("./routers/auth.router");
 
 /*
 old JSON DATA
@@ -52,6 +55,8 @@ mongoose
 app.get("/docs", (req, res, next) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
+
+app.use("/auth", Auth);
 
 app.get("/api/cohorts", async (req, res, next) => {
   try {
@@ -174,7 +179,7 @@ app.delete("/api/students/:studentId", async (req, res, next) => {
 
 // ? error handler
 app.use((err, req, res, next) => {
-  console.log("err", err);
+  console.log("err ", err);
   res.status(500).send("Smth was wrong");
 });
 
