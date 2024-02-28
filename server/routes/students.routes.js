@@ -18,11 +18,12 @@ router.get("/students", cors(corsOptions), async (req, res) => {
     }
 })
 
-router.get("/students/cohort/:id", cors(corsOptions), async (req, res) => {
+router.get("/students/cohorts/:id", cors(corsOptions), async (req, res) => {
   try {
-    const allStudents = await Student.find().populate("cohort");
     const {id} = req.params;
-    res.json(allStudents.cohort.findById(id));
+    const studentsInCohort = await Student.find({cohort: id}).populate("cohort");
+    
+    res.json(studentsInCohort);
   } catch (error) {
       console.log(error)
     }
