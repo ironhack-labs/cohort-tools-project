@@ -5,7 +5,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 
-const PORT = config.PORT || 5005;
+const { PORT = 5005 } = process.env;
 const cohortSchema = require("./models/cohort");
 const studentSchema = require("./models/student");
 
