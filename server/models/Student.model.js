@@ -11,7 +11,10 @@ const studentSchema = new Schema({
     program: {type: String, enum: ["Web Dev", "Data Analytics", "UX/UI"]},
     background: String,
     image: String,
-    cohort: {type: Number, min:0, default: 0},
+    cohort: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Cohorts"
+    },
     projects: Array
 })
 

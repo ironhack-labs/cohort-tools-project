@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const cohortsSchema = new Schema({
-    _id: Number,
     inProgress: Boolean,
     cohortSlug: String,
     cohortName: String,
