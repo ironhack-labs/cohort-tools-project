@@ -124,7 +124,7 @@ app.post("/api/students", (req, res) => {
 // GETS ALL STUDENTS
 app.get("/api/students", (req, res) => {
   Student.find({})
-  .populate("Cohort")
+    .populate("cohort")
     .then((students) => {
       //console.log("Retrieved students ->", students);
       res.json(students);
@@ -138,7 +138,7 @@ app.get("/api/students", (req, res) => {
 //RETIEVES ALL STUDENTS FROM A COHORT
 app.get("/api/students/cohort/:cohortId", (req, res) => {
   Student.find({ cohort: req.params.cohortId })
-  .populate("Cohort")
+    .populate("cohort")
     .then((studentsFromCohort) => {
       res.status(200).json(studentsFromCohort);
     })
@@ -151,7 +151,7 @@ app.get("/api/students/cohort/:cohortId", (req, res) => {
 // GETS STUDENT BY ID
 app.get("/api/students/:studentId", (req, res) => {
   Student.findById(req.params.studentId)
-  .populate("Cohort")
+    .populate("cohort")
     .then((studentDetails) => {
       // console.log("Retrieved student detailss ->", studentDetails);
       console.log("Display student detials ->", studentDetails);
