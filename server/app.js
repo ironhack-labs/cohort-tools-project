@@ -4,7 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 
-const PORT = 5005;
+const PORT = 6005;
 const cohortSchema = require("./models/cohort");
 const studentSchema = require("./models/student");
 
@@ -36,6 +36,7 @@ app.use(morgan("dev"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
 mongoose
   .connect("mongodb://localhost:27017/cohort-tools-api")
   .then((res) => {
@@ -47,31 +48,40 @@ mongoose
 // ROUTES - https://expressjs.com/en/starter/basic-routing.html
 // Devs Team - Start working on the routes here:
 // ...
-app.get("/docs", (req, res) => {
+app.get("/docs", (req, res, next) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
-app.get("/api/cohorts", async (req, res) => {
-  res.json(await cohortSchema.find());
+app.get("/api/cohorts", async (req, res, next) => {
+  try {
+    res.json(await cohortSchema.find());
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.get("/api/cohorts/:cohortId", async (req, res) => {
+app.get("/api/cohorts/:cohortId", async (req, res, next) => {
   try {
     const { cohortId } = req.params;
     const cohort = await cohortSchema.findById(cohortId);
     res.json(cohort);
   } catch (err) {
-    console.log("error is=>>>>", err);
+    next(err);
   }
 });
-app.post("/api/cohorts", async (req, res) => {
-  const cohort = req.body;
-  const newCohort = new cohortSchema(cohort);
-  await newCohort.save();
-  res.json(newCohort);
+
+app.post("/api/cohorts", async (req, res, next) => {
+  try {
+    const cohort = req.body;
+    const newCohort = new cohortSchema(cohort);
+    await newCohort.save();
+    res.json(newCohort);
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.put("/api/cohorts/:cohortId", async (req, res) => {
+app.put("/api/cohorts/:cohortId", async (req, res, next) => {
   try {
     const { cohortId } = req.params;
     const cohortData = req.body;
@@ -81,55 +91,63 @@ app.put("/api/cohorts/:cohortId", async (req, res) => {
     );
     res.json(updateCohort);
   } catch (err) {
-    console.log("error is=>>>>", err);
+    next(err);
   }
 });
 
-app.delete("/api/cohorts/:cohortId", async (req, res) => {
+app.delete("/api/cohorts/:cohortId", async (req, res, next) => {
   try {
     const { cohortId } = req.params;
     const deleteCohort = await cohortSchema.findByIdAndDelete(cohortId);
     res.json(deleteCohort);
   } catch (err) {
-    console.log("error is=>>>>", err);
+    next(err);
   }
 });
 
-app.get("/api/students", async (req, res) => {
-  res.json(await studentSchema.find());
+app.get("/api/students", async (req, res, next) => {
+  try {
+    res.json(await studentSchema.find());
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.get("/api/students/:studentId", async (req, res) => {
+app.get("/api/students/:studentId", async (req, res, next) => {
   try {
     const { studentId } = req.params;
     const student = await studentSchema.findById(studentId);
     res.json(student);
   } catch (err) {
-    console.log("error is=>>>>", err);
+    next(err);
   }
 });
 
-app.post("/api/students", async (req, res) => {
-  const student = req.body;
-  const newStudent = new studentSchema(student);
-  await newStudent.save();
-  res.json(newStudent);
+app.post("/api/students", async (req, res, next) => {
+  try {
+    const student = req.body;
+    const newStudent = new studentSchema(student);
+    await newStudent.save().catch(next);
+    res.json(newStudent);
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.get("/api/students/cohort/:cohortId", async (req, res) => {
-  try {
-    const { cohortId } = req.params;
+app.get("/api/students/cohort/:cohortId", async (req, res, next) => {
+  const { cohortId } = req.params;
 
+  try {
     const students = await studentSchema
       .find({ cohort: cohortId })
       .populate("cohort");
     res.json(students);
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 });
 
-app.put("/api/students/:studentId", async (req, res) => {
+app.put("/api/students/:studentId", async (req, res, next) => {
   try {
     const { studentId } = req.params;
     const studentData = req.body;
@@ -139,19 +157,26 @@ app.put("/api/students/:studentId", async (req, res) => {
     );
     res.json(student);
   } catch (err) {
-    console.log("error is=>>>>", err);
+    next(err);
   }
 });
 
-app.delete("/api/students/:studentId", async (req, res) => {
+app.delete("/api/students/:studentId", async (req, res, next) => {
   try {
     const { studentId } = req.params;
     const student = await studentSchema.findByIdAndDelete(studentId);
     res.json(student);
   } catch (err) {
-    console.log(err);
+    next(err);
   }
 });
+
+// ? error handler
+app.use((err, req, res, next) => {
+  console.log("err", err);
+  res.status(500).send("Smth was wrong");
+});
+
 // START SERVER
 app.listen(PORT, async () => {
   console.log(`Server listening on port ${PORT}`);
