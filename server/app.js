@@ -27,52 +27,24 @@ mongoose
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
 
+  /* ROUTES */
+  const cohortRoutes = require('./routes/cohort.routes');
+  app.use('/api', cohortRoutes); // '/api' works like a default value that goes before every route path you create inside cohortRoutes.
+  
+  // So, if you have a '/cohorts' --> the route is going automatically be '/api/cohorts'.
 
-app.get("/cohorts", (req, res) => {
-  Cohort.find({})
-  .then ((cohorts) => {
-    console.log("Retrieve cohorts ->", cohorts);
-    res.json(cohorts)
-  })
-  .catch((error) =>{
-    console.error("Error", error);
-    res.status(500).json({error: "Failed to retrieve cohorts"});
-  });
-})
-
-app.get("/students", (req, res) => {
-  Student.find({})
-  .then ((students) => {
-    console.log("Retrieve students ->", students);
-    res.json(students)
-  })
-  .catch((error) =>{
-    console.error("Error", error);
-    res.status(500).json({error: "Failed to retrieve students"});
-  });
-})
-
-// MIDDLEWARE
-// Research Team - Set up CORS middleware here:
-// ...
+  const studentsRoutes = require('./routes/students.routes');
+  app.use('/api', studentsRoutes); // '/api' works like a default value that goes before every route path you create inside studentsRoutes.
+  
+  
 
 
-
-// ROUTES - https://expressjs.com/en/starter/basic-routing.html
-// Devs Team - Start working on the routes here:
-// ...
+  
 
 app.get("/docs", (req, res) => {
 res.sendFile(__dirname + "/views/docs.html")
 })
 
-app.get("/api/cohorts", (req, res) => {
-  res.status(200).json(cohorts); 
-});
-
-app.get("/api/students", (req, res) => {
-  res.status(200).json(students); 
-});
 
 
 // START SERVER
