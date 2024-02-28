@@ -1,10 +1,11 @@
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 
-const PORT = 6005;
+const PORT = config.PORT || 5005;
 const cohortSchema = require("./models/cohort");
 const studentSchema = require("./models/student");
 
