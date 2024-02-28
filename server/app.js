@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const PORT = 5005;
 const cohortSchema = require("./models/cohort");
 const studentSchema = require("./models/student");
-const cohort = require("./models/cohort");
+
 /*
 old JSON DATA
  const cohorts = require("./cohorts.json");
@@ -110,24 +110,6 @@ app.get("/api/students/:studentId", async (req, res) => {
 });
 
 app.post("/api/students", async (req, res) => {
-  /*
-  one way
-  const student = new studentSchema({
-    _id:req.body._id
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    phone: req.body.phone,
-    linkedinUrl: req.body.linkedinUrl,
-    languages: req.body.languages,
-    program: req.body.program,
-    background: req.body.background,
-    image: req.body.image,
-    cohort: req.body.cohort,
-    projects: req.body.projects,
-  });
-  */
-  //easier way
   const student = req.body;
   const newStudent = new studentSchema(student);
   await newStudent.save();
@@ -137,7 +119,10 @@ app.post("/api/students", async (req, res) => {
 app.get("/api/students/cohort/:cohortId", async (req, res) => {
   try {
     const { cohortId } = req.params;
-    const students = await studentSchema.find({ cohort: cohortId });
+
+    const students = await studentSchema
+      .find({ cohort: cohortId })
+      .populate("cohort");
     res.json(students);
   } catch (err) {
     console.log(err);
