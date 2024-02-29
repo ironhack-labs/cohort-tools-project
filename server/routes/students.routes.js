@@ -1,11 +1,10 @@
 const router = require("express").Router();
 const Student = require("../models/Student.model");
 const cors = require("cors");
-const populate = require("mongoose");
 
 const corsOptions = {
-  origin: 'http://localhost:5005',
-  optionsSuccessStatus: 200 
+  origin: ['http://localhost:5005', "http://localhost:5173"],
+  optionsSuccessStatus: 200
 }
 
 
@@ -14,35 +13,35 @@ router.get("/students", cors(corsOptions), async (req, res) => {
     const allStudents = await Student.find().populate("cohort");
     res.json(allStudents);
   } catch (error) {
-      console.log(error)
-    }
+    console.log(error)
+  }
 })
 
-router.get("/students/cohorts/:id", cors(corsOptions), async (req, res) => {
+router.get("/students/cohort/:id", cors(corsOptions), async (req, res) => {
   try {
-    const {id} = req.params;
-    const studentsInCohort = await Student.find({cohort: id}).populate("cohort");
-    
+    const { id } = req.params;
+    const studentsInCohort = await Student.find({ cohort: id }).populate("cohort");
+
     res.json(studentsInCohort);
   } catch (error) {
-      console.log(error)
-    }
+    console.log(error)
+  }
 })
 
 router.get("/students/:id", cors(corsOptions), async (req, res) => {
   try {
-    const {id} = req.params;
-    const student = await Student.findById(id);
+    const { id } = req.params;
+    const student = await Student.findById(id).populate("cohort");
     res.json(student);
   } catch (error) {
     console.log(error)
   }
 })
 
-router.post("/student", cors(corsOptions), async (req, res) => {
-  const {fisrtName, lastName, email, phone, likendinUrl, languages, program, background, image, cohort, projects} = req.body;
+router.post("/students", cors(corsOptions), async (req, res) => {
+  const { firstName, lastName, email, phone, likendinUrl, languages, program, background, image, cohort, projects } = req.body;
   try {
-    const newStudent = await Student.create({fisrtName, lastName, email, phone, likendinUrl, languages, program, background, image, cohort, projects})
+    const newStudent = await Student.create({ firstName, lastName, email, phone, likendinUrl, languages, program, background, image, cohort, projects })
     res.json(newStudent)
   } catch (error) {
     console.log(error)
@@ -50,24 +49,27 @@ router.post("/student", cors(corsOptions), async (req, res) => {
 })
 
 router.put("/students/:id", cors(corsOptions), async (req, res) => {
-  Student.findByIdAndUpdate(req.params.id, req.body, {new: true})
+
   try {
     (updateStudent) => {
+      Student.findByIdAndUpdate(req.params.id, req.body, { new: true })
       res.json(updateStudent)
     }
-  } catch {(error) => {
-    console.log(error)
-  }}
+  } catch {
+    (error) => {
+      console.log(error)
+    }
+  }
 })
 
-router.delete("/students/:id", cors(corsOptions), (req, res) => {
-  Student.findByIdAndDelete(req.params.id)
+router.delete("/students/:id", cors(corsOptions), async (req, res) => {
+  const { id } = req.params;
   try {
-    () => {
-      res.send()
-    }
-  } catch (error) {
-    console.log(error)
+    await Student.findByIdAndDelete(id)
+    res.json({ message: "Student deleted!" })
+  } catch {
+    (error) => { console.log(error) }
+
   }
 })
 
