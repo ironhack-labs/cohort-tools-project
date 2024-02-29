@@ -5,10 +5,11 @@ const cookieParser = require("cookie-parser");
 const PORT = 5005;
 const mongoose = require("mongoose");
 const app = express();
-const Student = require("./model/Student.model.js");
+const {errorHandler, notFoundHandler} = require("./middleware/error-handling");
+/* const Student = require("./model/Student.model.js");
 const Cohort = require("./model/Cohort.model.js"); 
 const cohorts = require("./cohorts.json");
-const students = require("./students.json");
+const students = require("./students.json"); */
 
 app.use (express.urlencoded({ extended: false })); 
 
@@ -54,6 +55,9 @@ app.use("/api", studentRoutes)
 
 
 // START SERVER
+app.use(notFoundHandler);
+app.use(errorHandler);
+
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
