@@ -17,6 +17,7 @@ function StudentDetailsPage() {
         .get(`${API_URL}/api/students/${studentId}`)
         .then((response) => {
           const oneStudent = response.data;
+          console.log(oneStudent);
           setStudent(oneStudent);
           setLoading(false);
         })
@@ -25,6 +26,7 @@ function StudentDetailsPage() {
 
     getStudent();
   }, [studentId]);
+
 
   if (loading) return <div>Loading...</div>;
 
@@ -35,6 +37,18 @@ function StudentDetailsPage() {
           <>
             {/* <img className="w-32 h-32 rounded-full object-cover mb-4" src={student.image} alt="profile-photo" /> */}
             <img
+              src={student.image || placeholderImage}
+              alt="profile-photo"
+              className="rounded-full w-32 h-32 object-cover border-2 border-gray-300"
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null;
+                currentTarget.src = placeholderImage;
+              }}
+            />
+            <h1 className="text-2xl mt-4 font-bold absolute">
+              {student.firstName} {student.lastName}
+            </h1>
+
               src={student.image || placeholderImage}
               alt="profile-photo"
               className="rounded-full w-32 h-32 object-cover border-2 border-gray-300"
@@ -70,12 +84,17 @@ function StudentDetailsPage() {
                 <strong>Cohort:</strong>
                 <Link
                   className="ml-2 text-blue-500 hover:underline"
-                  to={`/cohorts/details/${student.cohort._id}`}
+
+                  to={`/cohorts/details/${student.cohort?._id}`}
                 >
-                  {student.cohort.cohortName}
+                  {student.cohort?.cohortName}
+
                 </Link>
               </p>
               {student && student.projects.length > 0 && (
+                <p className="text-left mb-2 border-b pb-2">
+                  <strong>Projects:</strong> {student.projects}
+                </p>
                 <p className="text-left mb-2 border-b pb-2">
                   <strong>Projects:</strong> {student.projects}
                 </p>
@@ -96,3 +115,4 @@ function StudentDetailsPage() {
 }
 
 export default StudentDetailsPage;
+
