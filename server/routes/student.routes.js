@@ -1,52 +1,63 @@
 const router = require("express").Router();
 const Student = require("../model/Student.model");
-const Cohort = require("../model/Cohort.model");
 const data = require("../students.json");
+const populate = require("mongoose");
 
 router.get("/students", async (req, res) => {
   try {
-    const students = await Student.find();
-    res.status(200).json(students);
+    const studentsAll = await Student.find().populate("cohort");
+    res.status(200).json(studentsAll);
   } catch (error) {
     console.log(error);
+    res.status(500).json({message:"Internal Server Error"})
+  }
+});
+
+router.get("/students/cohort/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const studentsInCohort = await Student.find({ cohort: id }).populate(
+      "cohort"
+    );
+    res.status(200).json(studentsInCohort);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ message: "Cohort not found!" });
   }
 });
 
 router.get("/students/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const students = await Student.findById(id);
+    const students = await Student.findById(id).populate("cohort");
     res.status(200).json(students);
   } catch (error) {
     console.log(error);
-  }
-});
-
-router.get("/:cohortId", async (req, res) => {
-  try {
-    const cohortId = req.params.cohortId;
-    const students = await Student.find({ cohort: cohortId });
-    res.status(200).json(students);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(404).json({ message: "Student not found!" });
   }
 });
 
 router.post("/students", async (req, res) => {
-  const { first_name, last_name, email, gender, ip_address } = req.body;
+  const { firstName, lastName, email, phone, linkedinUrl, languages, program, background, image, cohort, projects } = req.body;
 
   try {
     const newStudent = await Student.create({
-      first_name,
-      last_name,
-      email,
-      gender,
-      ip_address,
+      firstName,
+      lastName, 
+      email, 
+      phone, 
+      linkedinUrl, 
+      languages, 
+      program, 
+      background, 
+      image, 
+      cohort,
+      projects
     });
     res.status(200).json(newStudent);
   } catch (error) {
     console.log(error);
+    res.status(500).json({ message: "Error while creating" });
   }
 });
 
@@ -57,17 +68,19 @@ router.put("/students/:id", async (req, res) => {
     })
     .catch((error) => {
       console.log(error);
+      res.status(500).json({ message: "Error while editing" });
     });
 });
 
-router.delete("/students/:id", (req, res) => {
-  Student.findByIdDelete(req.params.id)
-    .then(() => {
-      res.status(204).send();
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+router.delete("/students/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Student.findByIdAndDelete(id);
+    res.status(200).json({ message: "Student was deleted" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
 module.exports = router;
