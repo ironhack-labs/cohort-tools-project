@@ -47,7 +47,16 @@ function StudentDetailsPage() {
             <h1 className="text-2xl mt-4 font-bold absolute">
               {student.firstName} {student.lastName}
             </h1>
-
+            src={student.image || placeholderImage}
+            alt="profile-photo" className="rounded-full w-32 h-32 object-cover
+            border-2 border-gray-300" onError=
+            {({ currentTarget }) => {
+              currentTarget.onerror = null;
+              currentTarget.src = placeholderImage;
+            }}
+            <h1 className="text-2xl mt-4 font-bold absolute">
+              {student.firstName} {student.lastName}
+            </h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-24 mb-4 border-b pb-4">
               <p className="text-left mb-2 border-b pb-2">
                 <strong>Email:</strong> {student.email}
@@ -77,9 +86,14 @@ function StudentDetailsPage() {
                 </Link>
               </p>
               {student && student.projects.length > 0 && (
-                <p className="text-left mb-2 border-b pb-2">
-                  <strong>Projects:</strong> {student.projects}
-                </p>
+                <>
+                  <p className="text-left mb-2 border-b pb-2">
+                    <strong>Projects:</strong> {student.projects}
+                  </p>
+                  <p className="text-left mb-2 border-b pb-2">
+                    <strong>Projects:</strong> {student.projects}
+                  </p>
+                </>
               )}
             </div>
             <div className="mt-4">
