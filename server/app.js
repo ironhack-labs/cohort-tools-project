@@ -3,7 +3,10 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const PORT = 5005;
-
+const {
+  errorHandler,
+  notFoundHandler,
+} = require("./middleware/error-handling");
 // Connection to MongoDB with mongoose
 const mongoose = require("mongoose");
 const Cohort = require("./models/Cohort.model");
@@ -54,7 +57,7 @@ app.use(cookieParser());
 // });
 
 // Student Routes
-app.post("/api/students", (req, res) => {
+app.post("/api/students", (req, res, next) => {
   const {
     firstName,
     lastName,
@@ -84,87 +87,85 @@ app.post("/api/students", (req, res) => {
       res.status(201).json(createdStudent);
     })
     .catch((error) => {
-      console.log(error);
-      res
-        .status(500)
-        .json({ message: "There was an error creating a student" });
+      next(error);
+      // res
+      //   .status(500)
+      //   .json({ message: "There was an error creating a student" });
     });
 });
 
-app.get("/api/students", (req, res) => {
+app.get("/api/students", (req, res, next) => {
   Student.find()
     .populate("cohort")
     .then((listAllStudents) => {
       res.status(200).json(listAllStudents);
     })
     .catch((error) => {
-      console.log(error);
-      res
-        .status(500)
-        .json({ message: "There was an error getting all students" });
+      next(error);
+      //res
+      // .status(500)
+      // .json({ message: "There was an error getting all students" });
     });
 });
 
-
-app.get("/api/students/cohort/:cohortId", (req, res) => {
-  const { cohortId } = req.params 
-  Student.find({cohort: cohortId})
+app.get("/api/students/cohort/:cohortId", (req, res, next) => {
+  const { cohortId } = req.params;
+  Student.find({ cohort: cohortId })
     .populate("cohort")
     .then((studentFromCohort) => {
       res.status(200).json(studentFromCohort);
     })
     .catch((error) => {
-      console.log(error);
-      res.status(500).json({
-        message: "There was an error getting the student from a given cohort",
-      });
+      next(error);
+      //res.status(500).json({
+      //  message: "There was an error getting the student from a given cohort",
     });
 });
 
-
-app.get("/api/students/:studentId", (req, res) => {
+app.get("/api/students/:studentId", (req, res, next) => {
   Student.findById(req.params.studentId)
     .populate("cohort")
     .then((studentById) => {
       res.status(200).json(studentById);
     })
     .catch((error) => {
-      console.log(error);
-      res
-        .status(500)
-        .json({ message: "There was an error getting a student by id." });
+      next(error);
+      // res
+      //.status(500)
+      // .json({ message: "There was an error getting a student by id." });
     });
 });
 
-app.put("/api/students/:studentId", (req, res) => {
+app.put("/api/students/:studentId", (req, res, next) => {
   Student.findByIdAndUpdate(req.params.studentId, req.body, { new: true })
     .then((updateStudent) => {
       res.status(200).json(updateStudent);
     })
     .catch((error) => {
-      console.log(error);
-      res
-        .status(500)
-        .json({ message: "There was an error updating a student." });
+      next(error);
+
+      // res
+      //   .status(500)
+      //   .json({ message: "There was an error updating a student." });
     });
 });
 
-app.delete("/api/students/:studentId", (req, res) => {
+app.delete("/api/students/:studentId", (req, res, next) => {
   Student.findByIdAndDelete(req.params.studentId)
     .then(() => {
       res.status(204).json();
     })
     .catch((error) => {
-      console.log(error);
-      res
-        .status(500)
-        .json({ message: "There was an error deleting a student." });
+      next(error);
+      //  res
+      // .status(500)
+      //.json({ message: "There was an error deleting a student." });
     });
 });
 
 // Cohort Routes
 
-app.post("/api/cohorts", (req, res) => {
+app.post("/api/cohorts", (req, res, next) => {
   const {
     cohortSlug,
     cohortName,
@@ -197,64 +198,65 @@ app.post("/api/cohorts", (req, res) => {
       res.status(201).json(createCohort);
     })
     .catch((error) => {
-      console.log(error);
-      res
-        .status(500)
-        .json({ message: "There was an error creating a new cohort" });
+      next(error);
+      // res
+      //   .status(500)
+      //   .json({ message: "There was an error creating a new cohort" });
     });
 });
 
-app.get("/api/cohorts", (req, res) => {
+app.get("/api/cohorts", (req, res, next) => {
   Cohort.find()
     .then((listOfCohorts) => {
       res.status(200).json(listOfCohorts);
     })
     .catch((error) => {
-      console.log(error);
-      res
-        .status(500)
-        .json({ message: "There was an error getting the list of cohorts" });
+      next(error);
+      // res
+      //   .status(500)
+      //   .json({ message: "There was an error getting the list of cohorts" });
     });
 });
 
-app.get("/api/cohorts/:cohortId", (req, res) => {
+app.get("/api/cohorts/:cohortId", (req, res, next) => {
   Cohort.findById(req.params.cohortId)
     .then((cohortById) => {
       res.status(200).json(cohortById);
     })
     .catch((error) => {
-      console.log(error);
-      res
-        .status(500)
-        .json({ message: "There was an error getting a cohort by id" });
+      next(error);
     });
 });
 
-app.put("/api/cohorts/:cohortId", (req, res) => {
+app.put("/api/cohorts/:cohortId", (req, res, next) => {
   Cohort.findByIdAndUpdate(req.params.cohortId, req.body, { new: true })
     .then((updatedCohort) => {
       res.status(200).json(updatedCohort);
     })
     .catch((error) => {
-      console.log(error);
-      res
-        .status(500)
-        .json({ message: "There was an error updating a cohort by id" });
+      next(error);
+      // res
+      // .status(500)
+      // .json({ message: "There was an error updating a cohort by id" });
     });
 });
 
-app.delete("/api/cohorts/:cohortId", (req, res) => {
+app.delete("/api/cohorts/:cohortId", (req, res, next) => {
   Cohort.findByIdAndDelete(req.params.cohortId)
     .then(() => {
       res.status(204).json();
     })
     .catch((error) => {
-      console.log(error);
-      res
-        .status(500)
-        .json({ message: "There was an error deleting a cohort." });
+      next(error);
+      // res
+      //   .status(500)
+      //   .json({ message: "There was an error deleting a cohort." });
     });
 });
+
+//Middleware error handler
+app.use(errorHandler);
+app.use(notFoundHandler);
 
 // START SERVER
 app.listen(PORT, () => {
