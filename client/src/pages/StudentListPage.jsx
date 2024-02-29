@@ -11,7 +11,7 @@ function StudentListPage() {
 
   useEffect(() => {
     axios
-      .get(`${API_URL}/students?$`)
+      .get(`${API_URL}/api/students?$`)
       .then((response) => {
         setStudents(response.data);
       })
