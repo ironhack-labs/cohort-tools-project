@@ -50,6 +50,11 @@ app.use(
   })
 );
 
+const errorHandler = require("./middleware/error-handling");
+const notFoundHandler = require("./middleware/error-handling");
+
+app.use(errorHandler, notFoundHandler);
+
 // ROUTES - https://expressjs.com/en/starter/basic-routing.html
 // Devs Team - Start working on the routes here:
 // ...
