@@ -14,6 +14,8 @@ const corsOptions = {
 router.get("/cohorts", cors(corsOptions), async (req, res) => {
     try {
         const cohorts = await Cohort.find();
+    if (!cohorts){throw new Error("error found");}
+
         res.json(cohorts);
     }
     catch (error){
@@ -27,6 +29,8 @@ router.get("/cohorts/:id", cors(corsOptions), async (req, res) => {
    try{
     const {id} = req.params;
     const cohort = await Cohort.findById(id);
+    if (!cohort){throw new Error("error found");}
+
     res.json(cohort);
    }
    catch (error){
@@ -39,6 +43,8 @@ router.post("/cohorts", cors(corsOptions), async (req, res) => {
     try{
         const {cohortSlug, cohortName, program, format, campus, startDate, endDate, inProgress, programManager, leadTeacher, totalHours} = req.body;
         const newCohort = await Cohort.create({cohortSlug, cohortName, program, format, campus, startDate, endDate, inProgress, programManager, leadTeacher, totalHours});
+    if (!newCohort){throw new Error("error found");}
+        
         res.json(newCohort);
     }
     catch (error){
