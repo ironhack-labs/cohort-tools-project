@@ -47,11 +47,36 @@ router.put("/students/:id", async (req, res) => {
     try {
       /* Destructure the id via router params */
       const { id } = req.params;
+      const {
+        firstName,
+        lastName,
+        email, 
+        phone, 
+        linkedinUrl, 
+        languages,  
+        program, 
+        background, 
+        image, 
+        cohort, 
+        projects} = req.body
+
       /* Find the user via the id and send it back to the client */
-      const Student = await Student.findByIdAndUpdate(req.params.id, req.body, { new: true });
-      res.status(200).json(Student);
+      const updateStudent = await Student.findByIdAndUpdate(id, {
+        firstName,
+        lastName,
+        email, 
+        phone, 
+        linkedinUrl, 
+        languages,  
+        program, 
+        background, 
+        image, 
+        cohort, 
+        projects
+      }, { new: true });
+      res.status(200).json(updateStudent);
     } catch (error) {
-        res.status(500).json({message: "Error while creating the Student"});
+        res.status(500).json({message: "Error while creating the Cohort"});
     }
   })
 
@@ -62,8 +87,8 @@ router.delete("/students/:id", async (req, res) => {
       /* Destructure the id via route params */
       const { id } = req.params;
       /* Find the user via the id and send it back to the client */
-      const deleteStudent = await Student.findByIdAndDelete(req.params.id);
-      res.status(204).json(deleteStudent);
+        await Student.findByIdAndDelete(id);
+      res.status(204).json("Student was deleted");
     } catch (error) {
         res.status(500).json({message: "Error while creating the Student"});
     }

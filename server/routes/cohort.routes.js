@@ -2,7 +2,7 @@ const router = require('express').Router();
 const Cohort = require('../models/Cohort.model');
 
 /* Create our GET all route */
-router.get("/cohort", async (req, res)=>{
+router.get("/cohorts", async (req, res)=>{
     try{
         const allCohort = await Cohort.find()
         res.status(200).json(allCohort);
@@ -13,7 +13,7 @@ router.get("/cohort", async (req, res)=>{
 }); 
 
 /* Get by id */
-router.get("/cohort/:id", async (req, res) => {
+router.get("/cohorts/:id", async (req, res) => {
     try {
         // destructure the id via route params
     const {id} = req.params;
@@ -28,11 +28,11 @@ router.get("/cohort/:id", async (req, res) => {
 
 
 /* Create */
-router.post("/cohort", async (req, res) => {
+router.post("/cohorts", async (req, res) => {
     const {cohortSlug, cohortName, program, format, campus, startDate, endDate, inProgress, programManager, leadTeacher, totalHours} = req.body;
 
     try{
-    const newCohort = await User.create({cohortSlug, cohortName, program, format, campus, startDate, endDate, inProgress, programManager, leadTeacher, totalHours});
+    const newCohort = await Cohort.create({cohortSlug, cohortName, program, format, campus, startDate, endDate, inProgress, programManager, leadTeacher, totalHours});
 
     res.status(200).json(newCohort);
     }
@@ -42,7 +42,7 @@ router.post("/cohort", async (req, res) => {
 })
 
 /* Update */
-router.put("/cohort/:id", async (req, res) => {
+router.put("/cohorts/:id", async (req, res) => {
     try {
       /* Destructure the id via router params */
       const { id } = req.params;
@@ -84,7 +84,7 @@ router.put("/cohort/:id", async (req, res) => {
 
 
   /* Delete */
-router.delete("/cohort/:id", async (req, res) => {
+router.delete("/cohorts/:id", async (req, res) => {
     try {
       /* Destructure the id via route params */
       const { id } = req.params;
