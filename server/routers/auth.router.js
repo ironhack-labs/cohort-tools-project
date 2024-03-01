@@ -27,7 +27,7 @@ Auth.get("/api/users/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     const user = await userSchema.findById(id);
-    res.json(user);
+    res.json({ _id: user._id, email: user.email, name: user.name });
   } catch (err) {
     throw new Error(err);
   }
