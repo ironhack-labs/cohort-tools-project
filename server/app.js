@@ -8,6 +8,7 @@ const mongoose = require("mongoose");
 const Student = require("./models/Student.model.js");
 const Cohort = require("./models/Cohort.model.js")
 const app = express(); // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
+const { isAuthenticated } = require("./middleware/jwt.middleware");
 
 
 mongoose
@@ -29,22 +30,27 @@ mongoose
 
   /* ROUTES */
   const cohortRoutes = require('./routes/cohort.routes');
-  app.use('/api', cohortRoutes); // '/api' works like a default value that goes before every route path you create inside cohortRoutes.
+  app.use('/api', isAuthenticated, cohortRoutes); // '/api' works like a default value that goes before every route path you create inside cohortRoutes.
   
   // So, if you have a '/cohorts' --> the route is going automatically be '/api/cohorts'.
 
   const studentsRoutes = require('./routes/students.routes');
-  app.use('/api', studentsRoutes); // '/api' works like a default value that goes before every route path you create inside studentsRoutes.
+  app.use('/api', isAuthenticated, studentsRoutes); // '/api' works like a default value that goes before every route path you create inside studentsRoutes.
   
+  /* const allRoutes = require("/routes");
+  app.use("/api", allRoutes); // ADDED BY STUDENT PORTAL  */
+
+   
+  const authRouter = require("./routes/auth.routes");       //  <== IMPORT
+  app.use("/auth", authRouter);                             //  <== ADD
+   
+   
+
   
 
-
-  
-
-app.get("/docs", (req, res) => {
+/*app.get("/docs", (req, res) => {
 res.sendFile(__dirname + "/views/docs.html")
-})
-
+})*/
 
 
 // START SERVER
@@ -52,3 +58,4 @@ app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
 
+module.exports = app;

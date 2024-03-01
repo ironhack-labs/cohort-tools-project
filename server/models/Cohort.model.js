@@ -10,7 +10,7 @@ const cohortsSchema = new Schema({
     campus: { type: String, enum: ["Madrid", "Barcelona", "Miami", "Paris", "Berlin", "Amsterdam", "Lisbon", "Remote"] },
     startDate: { type: Date, default: Date.now },
     endDate: { type: Date},
-    inPrgoress: {type: Boolean, default: false}, 
+    inProgress: {type: Boolean, default: false}, 
     programManager: {type: String, required: true}, 
     leadTeacher: {type: String, required: true}, 
     totalHours: {type: Number, default: 360}
