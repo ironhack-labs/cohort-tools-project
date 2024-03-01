@@ -6,6 +6,9 @@ const PORT = 5005;
 const mongoose = require("mongoose");
 const app = express();
 const {errorHandler, notFoundHandler} = require("./middleware/error-handling");
+
+
+const { isAuthenticated } = require("./middleware/jwt.middleware"); // <== IMPORT
 /* const Student = require("./model/Student.model.js");
 const Cohort = require("./model/Cohort.model.js"); 
 const cohorts = require("./cohorts.json");
@@ -53,6 +56,13 @@ const studentRoutes = require("./routes/student.routes");
 app.use("/api", studentRoutes)
 
 
+//  Start handling routes here
+/* const allRoutes = require("./routes");
+app.use("/api", allRoutes); */
+
+ 
+const authRouter = require("./routes/auth.routes");       //  <== IMPORT
+app.use("/auth", authRouter);                             //  <== ADD
 
 // START SERVER
 app.use(notFoundHandler);
@@ -61,3 +71,5 @@ app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+
+module.exports = app;
