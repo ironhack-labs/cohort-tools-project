@@ -12,6 +12,8 @@ const Student = require("./models/Student.model");
 const Cohort = require("./models/Cohort.model");
 const studentRouter = require("./routes/student.routes");
 const cohortRouter = require("./routes/cohort.routes");
+const authRouter = require("./routes/auth.routes");
+require("dotenv/config");
 
 // STATIC DATA
 // Devs Team - Import the provided files with JSON data of students and cohorts here:
@@ -42,6 +44,7 @@ app.use(cookieParser());
 
 app.use("/", studentRouter);
 app.use("/", cohortRouter);
+app.use("/auth", authRouter);
 
 // CORS
 app.use(
@@ -50,8 +53,10 @@ app.use(
   })
 );
 
-const errorHandler = require("./middleware/error-handling");
-const notFoundHandler = require("./middleware/error-handling");
+const {
+  errorHandler,
+  notFoundHandler,
+} = require("./middleware/error-handling");
 
 app.use(errorHandler, notFoundHandler);
 

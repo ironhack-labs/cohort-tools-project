@@ -1,6 +1,7 @@
 const Cohort = require("../models/Cohort.model");
 
 const router = require("express").Router();
+const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 router.get("/api/cohorts", (req, res, next) => {
   Cohort.find({})
@@ -13,7 +14,7 @@ router.get("/api/cohorts", (req, res, next) => {
     });
 });
 
-router.post("/api/cohorts", (req, res) => {
+router.post("/api/cohorts", isAuthenticated, (req, res) => {
   Cohort.create({
     cohortSlug: req.body.cohortSlug,
     cohortName: req.body.cohortName,
@@ -45,7 +46,7 @@ router.get("/api/cohorts", (req, res) => {
     });
 });
 
-router.get("/api/cohorts/:cohortId", (req, res) => {
+router.get("/api/cohorts/:cohortId", isAuthenticated, (req, res) => {
   Cohort.findById(req.params.cohortId)
     .then((cohort) => {
       res.status(200).json(cohort);
@@ -55,7 +56,7 @@ router.get("/api/cohorts/:cohortId", (req, res) => {
     });
 });
 
-router.put("/api/cohorts/:cohortId", (req, res) => {
+router.put("/api/cohorts/:cohortId", isAuthenticated, (req, res) => {
   Cohort.findByIdAndUpdate(req.params.cohortId, req.body, { new: true })
     .then((updatedCohort) => {
       res.status(200).json(updatedCohort);
@@ -65,7 +66,7 @@ router.put("/api/cohorts/:cohortId", (req, res) => {
     });
 });
 
-router.delete("/api/cohorts/:cohortId", (req, res) => {
+router.delete("/api/cohorts/:cohortId", isAuthenticated, (req, res) => {
   Cohort.findByIdAndDelete(req.params.cohortId)
     .then(() => {
       res.status(200).send();

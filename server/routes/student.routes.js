@@ -1,6 +1,7 @@
 const Student = require("../models/Student.model");
 
 const router = require("express").Router();
+const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 router.get("/api/students", (req, res) => {
   Student.find({})
@@ -15,7 +16,7 @@ router.get("/api/students", (req, res) => {
     });
 });
 
-router.get("/api/students/:studentId", (req, res) => {
+router.get("/api/students/:studentId", isAuthenticated, (req, res) => {
   Student.findById(req.params.studentId)
     .populate("cohort")
     .then((student) => {
@@ -26,7 +27,7 @@ router.get("/api/students/:studentId", (req, res) => {
     });
 });
 
-router.post("/api/students", (req, res) => {
+router.post("/api/students", isAuthenticated, (req, res) => {
   Student.create({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -48,7 +49,7 @@ router.post("/api/students", (req, res) => {
     });
 });
 
-router.get("/api/students/cohort/:cohortId", (req, res) => {
+router.get("/api/students/cohort/:cohortId", isAuthenticated, (req, res) => {
   Student.find({ cohort: req.params.cohortId })
     .populate("cohort")
     .then((allStudents) => {
@@ -59,7 +60,7 @@ router.get("/api/students/cohort/:cohortId", (req, res) => {
     });
 });
 
-router.put("/api/students/:studentId", (req, res) => {
+router.put("/api/students/:studentId", isAuthenticated, (req, res) => {
   Student.findByIdAndUpdate(req.params.studentId, req.body, { new: true })
     .then((updatedStudent) => {
       res.status(200).json(updatedStudent);
@@ -69,7 +70,7 @@ router.put("/api/students/:studentId", (req, res) => {
     });
 });
 
-router.delete("/api/students/:studentId", (req, res) => {
+router.delete("/api/students/:studentId", isAuthenticated, (req, res) => {
   Student.findByIdAndDelete(req.params.studentId)
     .then(() => {
       res.status(200).send();
