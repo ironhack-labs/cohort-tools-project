@@ -41,7 +41,7 @@ app.use(cookieParser());
 
 
 // Routes Students & Cohorts
-app.use("/auth", require("./routes/auth.routes"))
+app.use("/", require("./routes/auth.routes"))
 app.use("/", require("./routes/student.routes"))
 app.use("/", require("./routes/cohort.routes"))
 

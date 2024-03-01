@@ -2,8 +2,9 @@ const router = require("express").Router();
 const mongoose = require("mongoose");
 
 const Cohort = require("../models/Cohort.model");
+const {isAuthenticated} = require("../middleware/jwt.middleware")
 
-router.post("/api/cohorts", (req, res, next) => {
+router.post("/api/cohorts", isAuthenticated, (req, res, next) => {
     const {
       cohortSlug,
       cohortName,
@@ -66,7 +67,7 @@ router.post("/api/cohorts", (req, res, next) => {
       });
   });
   
-  router.put("/api/cohorts/:cohortId", (req, res, next) => {
+  router.put("/api/cohorts/:cohortId", isAuthenticated, (req, res, next) => {
     Cohort.findByIdAndUpdate(req.params.cohortId, req.body, { new: true })
       .then((updatedCohort) => {
         res.status(200).json(updatedCohort);
@@ -79,7 +80,7 @@ router.post("/api/cohorts", (req, res, next) => {
       });
   });
   
-  router.delete("/api/cohorts/:cohortId", (req, res, next) => {
+  router.delete("/api/cohorts/:cohortId", isAuthenticated, (req, res, next) => {
     Cohort.findByIdAndDelete(req.params.cohortId)
       .then(() => {
         res.status(204).json();

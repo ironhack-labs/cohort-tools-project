@@ -2,10 +2,10 @@ const router = require("express").Router();
 const mongoose = require("mongoose");
 
 const Student = require("../models/Student.model");
-
+const {isAuthenticated} = require("../middleware/jwt.middleware")
 
 // Student Routes
-router.post("/api/students", (req, res, next) => {
+router.post("/api/students", isAuthenticated, (req, res, next) => {
     const {
       firstName,
       lastName,
@@ -84,7 +84,7 @@ router.post("/api/students", (req, res, next) => {
       });
   });
   
-  router.put("/api/students/:studentId", (req, res, next) => {
+  router.put("/api/students/:studentId", isAuthenticated, (req, res, next) => {
     Student.findByIdAndUpdate(req.params.studentId, req.body, { new: true })
       .then((updateStudent) => {
         res.status(200).json(updateStudent);
@@ -98,7 +98,7 @@ router.post("/api/students", (req, res, next) => {
       });
   });
   
-  router.delete("/api/students/:studentId", (req, res, next) => {
+  router.delete("/api/students/:studentId", isAuthenticated, (req, res, next) => {
     Student.findByIdAndDelete(req.params.studentId)
       .then(() => {
         res.status(204).json();
