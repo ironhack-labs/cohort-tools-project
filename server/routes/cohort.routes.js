@@ -11,7 +11,7 @@ const corsOptions = {
 
 // GET route
 
-router.get("/cohorts", cors(corsOptions), async (req, res) => {
+router.get("/cohorts", cors(corsOptions), async (req, res, next) => {
   try {
     const cohorts = await Cohort.find();
     if (!cohorts) {
@@ -20,13 +20,13 @@ router.get("/cohorts", cors(corsOptions), async (req, res) => {
 
     res.json(cohorts);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 
 // GET route by id
 
-router.get("/cohorts/:id", cors(corsOptions), async (req, res) => {
+router.get("/cohorts/:id", cors(corsOptions), async (req, res, next) => {
   try {
     const { id } = req.params;
     const cohort = await Cohort.findById(id);
@@ -36,12 +36,12 @@ router.get("/cohorts/:id", cors(corsOptions), async (req, res) => {
 
     res.json(cohort);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 
 // POST route
-router.post("/cohorts", cors(corsOptions), async (req, res) => {
+router.post("/cohorts", cors(corsOptions), async (req, res, next) => {
   try {
     const {
       cohortSlug,
@@ -75,12 +75,12 @@ router.post("/cohorts", cors(corsOptions), async (req, res) => {
 
     res.json(newCohort);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 
 // PUT route
-router.put("/cohorts/:id", cors(corsOptions), async (req, res) => {
+router.put("/cohorts/:id", cors(corsOptions), async (req, res, next) => {
   Cohort.findByIdAndUpdate(req.params.id, req.body, { new: true });
   try {
     (updateCohort) => {
@@ -91,19 +91,19 @@ router.put("/cohorts/:id", cors(corsOptions), async (req, res) => {
       res.json(updateCohort);
     };
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 
 // DELETE route
-router.delete("/cohorts/:id", cors(corsOptions), async (req, res) => {
+router.delete("/cohorts/:id", cors(corsOptions), async (req, res, next) => {
   Cohort.findByIdAndDelete(req.params.id);
   try {
     () => {
       res.send();
     };
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 
