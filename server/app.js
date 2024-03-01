@@ -1,5 +1,5 @@
 const helmet = require("helmet");
-
+const bcrypt = require("bcryptjs");
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -7,9 +7,12 @@ const cookieParser = require("cookie-parser");
 const PORT = 5005;
 const mongoose = require("mongoose");
 
+
 const Cohort = require("./models/Cohort.model");
 const Student = require("./models/Student.model");
 const User = require("./models/User.model");
+
+require("dotenv").config();
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/cohort-tools-api")
@@ -23,7 +26,7 @@ mongoose
 const cohorts = require("./cohorts.json");
 const students = require("./students.json");
 
-const { authentication } = require("../middleware/authentication");
+const { authentication } = require("./middleware/authentication");
 
 // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
 
@@ -217,9 +220,9 @@ app.delete("/api/students/:studentId", (req, res, next) => {
 
 app.get(`/api/users/:id`, authentication, (req, res, next) => {
 
-  const {_id} = req.body;
+  const id = req.params.id;
 
-  User.findById({_id})
+  User.findById(id)
     .then(user => {
       const {name, email} = user;
       res.status(200).json({name: name, email: email})
