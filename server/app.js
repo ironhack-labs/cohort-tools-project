@@ -141,9 +141,8 @@ app.post("/api/students", async (req, res, next) => {
 });
 
 app.get("/api/students/cohort/:cohortId", async (req, res, next) => {
-  const { cohortId } = req.params;
-
   try {
+    const { cohortId } = req.params;
     const students = await studentSchema
       .find({ cohort: cohortId })
       .populate("cohort");
