@@ -9,6 +9,7 @@ const mongoose = require("mongoose");
 
 const Cohort = require("./models/Cohort.model");
 const Student = require("./models/Student.model");
+const User = require("./models/User.model");
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/cohort-tools-api")
@@ -21,6 +22,8 @@ mongoose
 
 const cohorts = require("./cohorts.json");
 const students = require("./students.json");
+
+const { authentication } = require("../middleware/authentication");
 
 // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
 
@@ -209,6 +212,25 @@ app.delete("/api/students/:studentId", (req, res, next) => {
       next(error)
     });
 });
+
+// GET USER BY ID /api/users/:id
+
+app.get(`/api/users/:id`, authentication, (req, res, next) => {
+
+  const {_id} = req.body;
+
+  User.findById({_id})
+    .then(user => {
+      const {name, email} = user;
+      res.status(200).json({name: name, email: email})
+    })
+    .catch(error => {
+      next(error)
+    });
+})
+
+app.use("/auth", require("./routes/auth.routes"));
+
 
 const { errorHandler, notFoundHandler } = require("./middleware/error-handling");
 
