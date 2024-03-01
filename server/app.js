@@ -62,7 +62,11 @@ app.use("/api", allRoutes); */
 
  
 const authRouter = require("./routes/auth.routes");       //  <== IMPORT
-app.use("/auth", authRouter);                             //  <== ADD
+app.use("/auth", authRouter);                           //  <== ADD
+
+const userRouter = require("./routes/user.routes");       //  <== IMPORT
+app.use("/api", userRouter);                            //  <== ADD
+
 
 // START SERVER
 app.use(notFoundHandler);
