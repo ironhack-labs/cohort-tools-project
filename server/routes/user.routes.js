@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const router = require("express").Router();
 const User = require ("../models/User.model.js")
 const cors = require("cors");
@@ -37,3 +38,7 @@ const corsOptions = {
 
   module.exports = router;
 
+=======
+//Use the authentication middleware to protect the GET /api/users/:id route. 
+//The route should be protected using the authentication middleware and accessible only to authenticated users.
+>>>>>>> 93ee195b948df5ffab05c3d4d5137979de2ce923
