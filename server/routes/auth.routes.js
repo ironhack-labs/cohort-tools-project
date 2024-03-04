@@ -99,7 +99,7 @@ router.post('/login', (req, res, next) => {
         // Create and sign the token
         const authToken = jwt.sign( 
           payload,
-          `${process.env.TOKEN_SECRET}`, // Add backticks, dollar sign, dont know why, but it only worked like this. 
+          process.env.TOKEN_SECRET, // Add backticks, dollar sign, dont know why, but it only worked like this. 
           { algorithm: 'HS256', expiresIn: "6h" }
         );
  

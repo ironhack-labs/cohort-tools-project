@@ -10,6 +10,7 @@ const Cohort = require("./models/Cohort.model.js")
 const app = express(); // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
 const { isAuthenticated } = require("./middleware/jwt.middleware");
 
+require('dotenv').config()
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/cohort-tools-api")
@@ -48,9 +49,9 @@ mongoose
 
   
 
-/*app.get("/docs", (req, res) => {
+app.get("/docs", (req, res) => {
 res.sendFile(__dirname + "/views/docs.html")
-})*/
+})
 
 
 // START SERVER
