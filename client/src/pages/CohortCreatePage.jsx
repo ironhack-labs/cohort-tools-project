@@ -46,8 +46,12 @@ function CohortCreatePage() {
       ...cohort,
     };
 
+    const token = localStorage.getItem("authToken");
+
     axios
-      .post(`${API_URL}/api/cohorts`, requestBody)
+      .post(`${API_URL}/api/cohorts`, requestBody, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((response) => {
         const newCohort = response.data;
 
@@ -58,7 +62,7 @@ function CohortCreatePage() {
 
   return (
     <div className="CohortCreatePage p-8 pb-16 mb-10 mt-10 rounded-lg shadow-md flex flex-col h-full relative w-full max-w-3xl mx-auto">
-    <div className="flex justify-center bg-white items-center mb-4 pt-8 absolute top-0 left-0 right-0 py-2 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 border-b border-gray-300 shadow-sm"></div>
+      <div className="flex justify-center bg-white items-center mb-4 pt-8 absolute top-0 left-0 right-0 py-2 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 border-b border-gray-300 shadow-sm"></div>
 
       <form
         onSubmit={handleSubmit}
