@@ -13,8 +13,12 @@ function StudentDetailsPage() {
 
   useEffect(() => {
     const getStudent = () => {
+      const token = localStorage.getItem("authToken");
+
       axios
-        .get(`${API_URL}/api/students/${studentId}`)
+        .get(`${API_URL}/api/students/${studentId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
         .then((response) => {
           const oneStudent = response.data;
           console.log(oneStudent);

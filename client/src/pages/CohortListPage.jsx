@@ -19,6 +19,7 @@ function CohortListPage() {
     let queryString = "";
     if (campusQuery) queryString += `campus=${campusQuery}&`;
     if (programQuery) queryString += `program=${programQuery}`;
+    const token = localStorage.getItem("authToken");
 
     axios
       .get(`${API_URL}/cohorts?${queryString}`)

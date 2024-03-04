@@ -10,9 +10,7 @@ const student = require("./models/Student.model");
 const cohort = require("./models/Cohort.model");
 const Student = require("./models/Student.model");
 const Cohort = require("./models/Cohort.model");
-const studentRouter = require("./routes/student.routes");
-const cohortRouter = require("./routes/cohort.routes");
-const authRouter = require("./routes/auth.routes");
+
 require("dotenv/config");
 
 // STATIC DATA
@@ -36,22 +34,24 @@ mongoose
 // MIDDLEWARE
 // Research Team - Set up CORS middleware here:
 // ...
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+const studentRouter = require("./routes/student.routes");
+const cohortRouter = require("./routes/cohort.routes");
+const authRouter = require("./routes/auth.routes");
+
 app.use("/", studentRouter);
 app.use("/", cohortRouter);
 app.use("/auth", authRouter);
-
-// CORS
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-  })
-);
 
 const {
   errorHandler,
