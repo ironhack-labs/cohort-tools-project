@@ -53,13 +53,22 @@ function Navbar({ toggleSidebar }) {
 
         <div className="w-1/4 flex justify-end mr-4">
           {isLoggedIn && (
-            <button className="px-4 py-1 rounded bg-blue-500 text-white hover:bg-blue-400" onClick={logOutUser}>Log Out</button>
+            <button
+              className="px-4 py-1 rounded bg-blue-500 text-white hover:bg-blue-400"
+              onClick={logOutUser}
+            >
+              Log Out
+            </button>
           )}
-          {!isLoggedIn && location.pathname !== "/login" && location.pathname !== "/signup" && (
-            <Link to ="/login">
-              <button className="px-6 py-1 rounded bg-blue-500 text-white hover:bg-blue-400">Log In</button>
-            </Link>
-          )}
+          {!isLoggedIn &&
+            location.pathname !== "/login" &&
+            location.pathname !== "/signup" && (
+              <Link to="/login">
+                <button className="px-6 py-1 rounded bg-blue-500 text-white hover:bg-blue-400">
+                  Log In
+                </button>
+              </Link>
+            )}
         </div>
       </div>
     </nav>
