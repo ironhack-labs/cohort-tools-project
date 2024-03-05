@@ -1,7 +1,8 @@
 const { expressjwt: jwt } = require('express-jwt');
-const TOKEN_SECRET='1r0Nh4cK';
+// const TOKEN_SECRET='1r0Nh4cK';
+// auth.routes.js files token changed from process.env.TOKEN_SECRET to TOKEN_SECRET
 const isAuthenticated = jwt({
-    secret: TOKEN_SECRET,// should be process.env.TOKEN_SECRET
+    secret: `${process.env.TOKEN_SECRET}`,
     algorithms: ['HS256'],
     requestProperty: 'payload',
     getToken: getTokenFromHeaders

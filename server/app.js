@@ -53,13 +53,21 @@ app.use("/api", studentsRoutes)
 const cohortsRoutes = require("./routes/cohort.routes");
 app.use("/api", cohortsRoutes)
 
+const userRoutes = require("./routes/user.routes");
+app.use("/api", userRoutes)
+
+const authRoutes = require("./routes/auth.routes")
+app.use("/auth", authRoutes)
+
 app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
 /* app.get('/protected', isAuthenticated, (req, res) => {
   res.json({ message: 'You accessed a protected route!' });
-}); */
+}); */ 
+
+app.get("/api/users/:id", isAuthenticated )
 
 /* app.get("/api/students",cors(corsOptions), (req, res) => {
   res.json(studentsData)
@@ -87,8 +95,7 @@ app.use("/api", isAuthenticated, taskRouter);
 * 
 */
 
-const authRouter = require("./routes/auth.routes")
-app.use("/auth", authRouter);
+
 
 // MIDDLEWARE set up
 app.use(errorHandler);
