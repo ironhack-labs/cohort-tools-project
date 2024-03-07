@@ -8,7 +8,8 @@ module.exports = (app) => {
     })
 
     // 500
-    app.use((req, res, next) => {
+    app.use((error, req, res, next) => {
+        console.error(error)
         res.status(500).json({errorMessage: "El servidor explotó :_("})
     })
 }
