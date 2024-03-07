@@ -115,7 +115,6 @@ app.get("/api/students/cohort/:cohortId", async (req, res, next) => {
 });
 
 // obtener un estudiante especifico por id
-// CON EL QUE HEMOS CREADO NOSOTROS NO FUNCIONA EL POPULATE
 app.get("/api/students/:studentId", async (req, res, next) => {
   try {
     const response = await Student.findById(req.params.studentId).populate(
