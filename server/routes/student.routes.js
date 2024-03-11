@@ -20,7 +20,7 @@ router.get("/", (req, res, next) => {
   router.post("/", async (req, res, next) => {
     console.log(req.body);
   
-    const {
+    let {
       firstName,
       lastName,
       email,
@@ -34,6 +34,9 @@ router.get("/", (req, res, next) => {
       cohort,
     } = req.body;
   
+    if (image === "") {
+      image = "https://i.imgur.com/r8bo8u7.png"
+    }
     try {
       const response = await Student.create({
         firstName,
