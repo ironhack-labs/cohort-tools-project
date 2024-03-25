@@ -3,7 +3,7 @@ const morgan = require("morgan");
 
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const referrerPolicy = require("referrer-policy");
+
 const PORT = 5005;
 
 // STATIC DATA
@@ -17,17 +17,12 @@ const app = express();
 // MIDDLEWARE
 // Research Team - Set up CORS middleware here:
 // ...
-app.use(referrerPolicy({ policy: "strict-origin" }));
+
 app.use(
 	cors({
 		origin: ["http://localhost:5173", "http://example.com"], // Add the URLs of allowed origins to this array
 	}),
 );
-
-app.use((req, res, next) => {
-	res.setHeader("Referrer-Policy", "strict-origin");
-	next();
-});
 
 app.use(express.json());
 app.use(morgan("dev"));
