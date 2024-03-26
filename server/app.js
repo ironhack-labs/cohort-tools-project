@@ -4,9 +4,15 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
+// swagger stuff
 const bodyParser = require("body-parser");
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+
+// open api stuff
+const oas = require("express-openapi");
+const worldsService = require("./paths/worlds.js");
+const v1WorldsService = require("./api-v1/services/worldsService");
 
 const PORT = 5005;
 
@@ -23,6 +29,17 @@ const app = express();
 // ...
 
 // open api
+
+oas.initialize({
+	app,
+	docsPath: "/open-api",
+	apiDoc: "./open-api/spec.yaml",
+	paths: "./paths",
+	dependencies: {
+		worldsService: v1WorldsService,
+	},
+	operations: "./operations",
+});
 
 const options = {
 	definition: {
@@ -73,6 +90,10 @@ app.use(cookieParser());
 // ROUTES - https://expressjs.com/en/starter/basic-routing.html
 // Devs Team - Start working on the routes here:
 // ...
+
+app.get("/open-api-docs", (req, res) => {
+	res.sendFile(`${__dirname}/views/stoplight.html`);
+});
 
 /**
  * @swagger
