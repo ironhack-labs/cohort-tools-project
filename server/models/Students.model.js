@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
  * @swagger
  * components:
  *   schemas:
- *     Student:
+ *     student:
  *       type: object
  *       required:
  *         - firstName
@@ -74,7 +74,6 @@ const Schema = mongoose.Schema;
  *         "cohort": 1
  *         "projects": []
  */
-
 const studentSchema = new Schema({
 	firstName: { type: String, required: true },
 	lastName: { type: String, required: true },

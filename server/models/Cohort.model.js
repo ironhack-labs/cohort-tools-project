@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
  *@swagger
  * components:
  *   schemas:
- *     Cohort:
+ *     cohort:
  *       type: object
  *       required:
  *         - cohortSlug

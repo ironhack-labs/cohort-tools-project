@@ -9,11 +9,6 @@ const bodyParser = require("body-parser");
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 
-// open api stuff
-const oas = require("express-openapi");
-const worldsService = require("./paths/worlds.js");
-const v1WorldsService = require("./api-v1/services/worldsService");
-
 const PORT = 5005;
 
 const Student = require("./models/Students.model");
@@ -42,19 +37,6 @@ app.use(
 // MIDDLEWARE
 // Research Team - Set up CORS middleware here:
 // ...
-
-// open api
-
-oas.initialize({
-	app,
-	docsPath: "/open-api",
-	apiDoc: "./open-api/spec.yaml",
-	paths: "./paths",
-	dependencies: {
-		worldsService: v1WorldsService,
-	},
-	operations: "./operations",
-});
 
 const options = {
 	definition: {
@@ -138,7 +120,7 @@ app.get("/docs", (req, res) => {
  * tags:
  *   name: Students
  *   description: The students
- * /docs:
+ * /students:
  *   get:
  *     summary: Lists all the students
  *     tags: [Students]
@@ -148,9 +130,9 @@ app.get("/docs", (req, res) => {
  *         content:
  *           application/json:
  *             schema:
- *               type: string
+ *               type: array
  *               items:
- *                 type: object
+ *                 $ref: "#/components/schemas/student"
  */
 app.get("/api/students", (req, res) => {
 	Student.find({})
@@ -181,7 +163,7 @@ app.get("/api/students", (req, res) => {
  *             schema:
  *               type: array
  *               items:
- *                 type: object
+ *                 $ref: "#/components/schemas/cohort"
  */
 app.get("/api/cohorts", (req, res) => {
 	Cohort.find({})
