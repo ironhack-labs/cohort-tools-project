@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const { ObjectId } = require("bson");
 
 const studentSchema = new Schema({
 	firstName: { type: String, required: true },
@@ -26,7 +25,7 @@ const studentSchema = new Schema({
 	},
 	background: String,
 	image: { type: String, default: "https://i.imgur.com/r8bo8u7.png" },
-	cohort: ObjectId,
+	cohort: Schema.Types.ObjectId,
 	projects: { type: [String] },
 });
 
