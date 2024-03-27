@@ -133,18 +133,25 @@ app.get("/docs", (req, res) => {
 	res.sendFile(`${__dirname}/views/docs.html`);
 });
 
-app.get("/api/students", (req, res) => {
-	Student.find({})
-		.then((students) => {
-			console.log("found students ->", students);
-			res.json(students);
-		})
-		.catch((error) => {
-			console.error("Error finding students ->", error);
-			res.status(500).send({ error: "Lost students" });
-		});
-});
-
+/**
+ * @swagger
+ * tags:
+ *   name: Students
+ *   description: The students
+ * /docs:
+ *   get:
+ *     summary: Lists all the students
+ *     tags: [Docs]
+ *     responses:
+ *       200:
+ *         description: The steudents at Ironshack
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *               items:
+ *                 type: object
+ */
 app.get("/api/students", (req, res) => {
 	Student.find({})
 		.then((students) => {
