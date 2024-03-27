@@ -16,21 +16,18 @@ const app = express();
 const mongoose = require("mongoose");
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/cohort-tools-api")
-  .then((x) => console.log(`Connected to Database: "${x.connections[0].name}"`))
-  .catch((err) => console.error("Error connecting to MongoDB", err));
+	.connect("mongodb://127.0.0.1:27017/cohort-tools-api")
+	.then((x) => console.log(`Connected to Database: "${x.connections[0].name}"`))
+	.catch((err) => console.error("Error connecting to MongoDB", err));
 
 // MIDDLEWARE
 // Research Team - Set up CORS middleware here:
 // ...
 app.use(
-  cors({
-    origin: ["http://localhost:5173", "http://example.com"], // Add the URLs of allowed origins to this array
-  })
+	cors({
+		origin: ["http://localhost:5173", "http://example.com"], // Add the URLs of allowed origins to this array
+	}),
 );
-=======
-// INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
-const app = express();
 
 // MIDDLEWARE
 // Research Team - Set up CORS middleware here:
@@ -41,7 +38,6 @@ app.use(
 		origin: ["http://localhost:5173", "http://example.com"], // Add the URLs of allowed origins to this array
 	}),
 );
-
 
 app.use(express.json());
 app.use(morgan("dev"));
@@ -57,32 +53,30 @@ app.get("/docs", (req, res) => {
 });
 
 app.get("/api/students", (req, res) => {
-  Student.find({})
-    .then((students) => {
-      console.log("found students ->", students);
-      res.json(students);
-    })
-    .catch((error) => {
-      console.error("Error finding students ->", error);
-      res.status(500).send({ error: "Lost students" });
-    });
+	Student.find({})
+		.then((students) => {
+			console.log("found students ->", students);
+			res.json(students);
+		})
+		.catch((error) => {
+			console.error("Error finding students ->", error);
+			res.status(500).send({ error: "Lost students" });
+		});
 });
 
 app.get("/api/cohorts", (req, res) => {
-  Cohort.find({})
-    .then((cohorts) => {
-      console.log("found cohorts ->", cohorts);
-      res.json(cohorts);
-    })
-    .catch((error) => {
-      console.error("Error finding cohorts ->", error);
-      res.status(500).send({ error: "Lost cohorts" });
-    });
+	Cohort.find({})
+		.then((cohorts) => {
+			console.log("found cohorts ->", cohorts);
+			res.json(cohorts);
+		})
+		.catch((error) => {
+			console.error("Error finding cohorts ->", error);
+			res.status(500).send({ error: "Lost cohorts" });
+		});
 });
 
 // START SERVER
 app.listen(PORT, () => {
-
-  console.log(`Server listening on port ${PORT}`);
-
+	console.log(`Server listening on port ${PORT}`);
 });
