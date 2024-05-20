@@ -1,36 +1,39 @@
+require("dotenv").config();
+require("./db");
+const { isAuthenticated } = require("./middleware/jwt.middleware");
+const User = require("./models/User.model");
+
 const express = require("express");
-const morgan = require("morgan");
-const cookieParser = require("cookie-parser");
-const PORT = 5005;
 
-// STATIC DATA
-// Devs Team - Import the provided files with JSON data of students and cohorts here:
-// ...
-
-
-// INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
 const app = express();
+require("./config")(app);
 
-
-// MIDDLEWARE
-// Research Team - Set up CORS middleware here:
-// ...
-app.use(express.json());
-app.use(morgan("dev"));
-app.use(express.static("public"));
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-
-
-// ROUTES - https://expressjs.com/en/starter/basic-routing.html
-// Devs Team - Start working on the routes here:
-// ...
 app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
+const studentRoutes = require("./routes/student.routes");
+app.use("/api", studentRoutes);
 
-// START SERVER
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+const cohortRoutes = require("./routes/cohort.routes");
+app.use("/api", cohortRoutes);
+
+const authRoutes = require("./routes/auth.routes");
+app.use("/auth", authRoutes);
+
+//protected user route
+
+app.get("/api/users/:userId", isAuthenticated, (req, res) => {
+  const userId = req.params.userId;
+  User.findById(userId)
+    .then((foundUser) => {
+      res.status(200).json(foundUser);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: "Error finding a user" });
+    });
 });
+
+require("./error-handling")(app);
+
+module.exports = app;

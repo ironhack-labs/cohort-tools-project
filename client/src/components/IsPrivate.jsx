@@ -9,10 +9,10 @@ function IsPrivate({ children }) {
   if (isLoading) return <p>Loading ...</p>;
 
   if (!isLoggedIn) {
-  // If the user is not logged in ❌
+    // If the user is not logged in ❌
     return <Navigate to="/login" />;
   } else {
-  // If the user is logged in, allow to see the page ✅
+    // If the user is logged in, allow to see the page ✅
     return children;
   }
 }
