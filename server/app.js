@@ -8,12 +8,17 @@ const PORT = 5005;
 // Devs Team - Import the provided files with JSON data of students and cohorts here:
 // ...
 
-const cohorts = require("./cohorts.json");
-const students = require("./students.json");
+const cohorts = require("./models/Cohort.model");
+const students = require("./models/Students.model");
+const { default: mongoose } = require("mongoose");
+
+mongoose
+  .connect("mongodb://127.0.0.1:27017/cohort-tools-api")
+  .then((x) => console.log(`Cnnected to Database: "${x.connections[0].name}`))
+  .catch((err) => console.error("Error connecting to MongoDB", err));
 
 // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
 const app = express();
-
 
 // MIDDLEWARE
 // Research Team - Set up CORS middleware here:
@@ -29,10 +34,9 @@ app.use(cookieParser());
 app.use(
   cors({
     // Add the URLs of allowed origins to this array
-    origin: ['http://localhost:5173'],
+    origin: ["http://localhost:5173"],
   })
 );
-
 
 // ROUTES - https://expressjs.com/en/starter/basic-routing.html
 // Devs Team - Start working on the routes here:
@@ -49,7 +53,7 @@ app.get("/api/cohorts", (req, res) => {
 //creating a route to students
 app.get("/api/students", (req, res) => {
   res.json(students);
-})
+});
 
 // START SERVER
 app.listen(PORT, () => {
