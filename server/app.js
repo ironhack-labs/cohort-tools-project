@@ -17,7 +17,6 @@ const app = express();
 
 // MIDDLEWARE
 // Research Team - Set up CORS middleware here:
-// ...
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.static("public"));
