@@ -23,17 +23,17 @@ function LoginPage() {
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     const requestBody = { email, password };
-
     axios
       .post(`${API_URL}/auth/login`, requestBody)
       .then((response) => {
-        console.log("JWT token", response.data.authToken);
+        console.log("JWT token", response);
 
         storeToken(response.data.authToken);
         authenticateUser();
-        navigate("/");
+        // navigate("/");
       })
       .catch((error) => {
+        console.log(error);
         const errorDescription = error.response.data.message;
         setErrorMessage(errorDescription);
       });
