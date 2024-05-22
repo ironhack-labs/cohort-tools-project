@@ -46,9 +46,9 @@ function CohortDetailsPage() {
     <div className={`CohortDetails bg-gray-100 py-6 px-4`}>
       {/* Drawer */}
       <div
-className={`drawer transition-transform transform ${
-       showDrawer ? "translate-x-0" : "translate-x-full"
-     } fixed right-0 top-0 h-full bg-white shadow-md z-10`}
+        className={`drawer transition-transform transform ${
+          showDrawer ? "translate-x-0" : "translate-x-full"
+        } fixed right-0 top-0 h-full bg-white shadow-md z-10`}
       >
         {cohort && showDrawer && (
           <StudentCreateForm
@@ -62,7 +62,6 @@ className={`drawer transition-transform transform ${
           />
         )}
       </div>
-
 
       <div
         className={`CohortDetails bg-gray-100 py-6 px-4 ${
@@ -87,10 +86,22 @@ className={`drawer transition-transform transform ${
                     <strong>Campus:</strong> {cohort.campus}
                   </p>
                   <p className="mb-2 border-b pb-2">
-                    <strong>Start Date:</strong> {cohort.startDate}
+                    <strong>Start Date:</strong>{" "}
+                    {new Date(cohort.startDate).toLocaleDateString("en-GB", {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
                   </p>
                   <p className="mb-2 border-b pb-2">
-                    <strong>End Date:</strong> {cohort.endDate}
+                    <strong>End Date:</strong>{" "}
+                    {new Date(cohort.endDate).toLocaleDateString("en-GB", {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
                   </p>
                 </div>
                 <div className="text-left pl-4">
