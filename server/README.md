@@ -1,3 +1,7 @@
+# Installation: 
+## Create a .env file that contains a TOKEN_SECRET and a PORT.
+
+
 # API Documentation
 
 This documentation provides an overview of the available routes and data models for the Cohort Tools API.
