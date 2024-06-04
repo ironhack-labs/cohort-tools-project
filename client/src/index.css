@@ -3,7 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Styles */
 body {
   margin: 0;
 }
@@ -25,7 +24,6 @@ label {
   width: 200px;
   display: block;
 }
-
 
 .Navbar li {
   list-style: none;
