@@ -13,6 +13,7 @@ The API offers a variety of routes to work with *cohort* and *student* documents
 
 <br>
 
++
 #### Cohort routes
 
 | HTTP verb | URL                        | Request body | Action                                 |
