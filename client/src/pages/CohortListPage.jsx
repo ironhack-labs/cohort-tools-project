@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import CohortFilterBar from "../components/CohortFilterBar";
 import CohortCard from "../components/CohortCard";
+import { AuthContext } from "../context/auth.context";
 
 // Import the string from the .env with URL of the API/server - http://localhost:5005
 const API_URL = import.meta.env.VITE_API_URL;
@@ -14,6 +15,10 @@ function CohortListPage() {
   const handleChange = (event, updateState) => {
     updateState(event.target.value);
   };
+
+  // Testing the context
+  // const context = useContext(AuthContext);
+  // console.log("my context", context);
 
   useEffect(() => {
     let queryString = "";
@@ -60,15 +65,13 @@ function CohortListPage() {
       </div>
 
       {cohorts &&
-        cohorts.map(
-          (cohort, index) => (
-              <CohortCard
-                key={cohort._id}
-                {...cohort}
-                className={index % 2 === 0 ? "bg-white" : "bg-gray-100"}
-              />
-          )
-        )}
+        cohorts.map((cohort, index) => (
+          <CohortCard
+            key={cohort._id}
+            {...cohort}
+            className={index % 2 === 0 ? "bg-white" : "bg-gray-100"}
+          />
+        ))}
     </div>
   );
 }

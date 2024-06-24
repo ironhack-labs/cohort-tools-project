@@ -22,6 +22,7 @@ function SignupPage() {
 
   
   const handleSignupSubmit = (e) => {
+    // always stop the page from reloading when submiting a form
     e.preventDefault();
     // Create an object representing the request body
     const requestBody = { email, password, name };

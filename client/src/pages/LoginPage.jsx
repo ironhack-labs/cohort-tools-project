@@ -20,6 +20,10 @@ function LoginPage() {
   const handleEmail = (e) => setEmail(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
 
+  // Testing the context
+  // const context = useContext(AuthContext)
+  // console.log("my context", context)
+
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     const requestBody = { email, password };
@@ -27,11 +31,13 @@ function LoginPage() {
     axios
       .post(`${API_URL}/auth/login`, requestBody)
       .then((response) => {
-        console.log("JWT token", response.data.authToken);
-
+        // console.log("JWT token", response.data.authToken);
+        // localStorage.setItem("authToken", response.data.authToken)
         storeToken(response.data.authToken);
-        authenticateUser();
-        navigate("/");
+        return authenticateUser()
+      })
+      .then(()=>{
+        navigate("/profile");
       })
       .catch((error) => {
         const errorDescription = error.response.data.message;

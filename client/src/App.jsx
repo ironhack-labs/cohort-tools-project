@@ -35,7 +35,7 @@ function App() {
           <Route path="/cohorts/create" element={<CohortCreatePage />} />
           <Route path="/students/details/:studentId" element={<StudentDetailsPage />} />
           <Route path="/students/edit/:studentId" element={<StudentEditPage />} />
-          <Route path="/profile" element={ <IsPrivate><UserProfilePage /></IsPrivate>} />
+          <Route path="/profile" element={<IsPrivate><UserProfilePage /></IsPrivate>} />
           <Route path="/login" element={<IsAnon><LoginPage /></IsAnon>} />
           <Route path="/signup" element={<IsAnon><SignupPage /></IsAnon>} />
 
