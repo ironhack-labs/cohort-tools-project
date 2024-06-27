@@ -3,10 +3,8 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 
-
 // Import the string from the .env with URL of the API/server - http://localhost:5005
 const API_URL = import.meta.env.VITE_API_URL;
-
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -25,7 +23,7 @@ function LoginPage() {
     const requestBody = { email, password };
 
     axios
-      .post(`${API_URL}/auth/login`, requestBody)
+      .post(`${API_URL}/users/login`, requestBody)
       .then((response) => {
         console.log("JWT token", response.data.authToken);
 
@@ -93,7 +91,7 @@ function LoginPage() {
 
       {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-      <p className="mt-10 mb-2">Don&apos;t have an account yet?</p>
+      <p className="mt-10 mb-2">Don't have an account yet?</p>
       <Link to={"/signup"}> Sign Up</Link>
     </div>
   );

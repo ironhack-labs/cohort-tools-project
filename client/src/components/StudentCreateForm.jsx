@@ -28,7 +28,7 @@ function StudentCreateForm({ cohortId, cohortName, callback, closeCallback }) {
     setSubmitting(true);
 
     axios
-      .post(`${API_URL}/api/students`, requestBody)
+      .post(`${API_URL}/students`, requestBody)
       .then(() => {
         // Reset the state to clear the inputs
         setStudent({ ...DEFAULT_STUDENT_FORM_VALUES, cohort: cohortId });
