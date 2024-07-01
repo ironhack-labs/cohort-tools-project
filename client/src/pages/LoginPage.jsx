@@ -3,10 +3,8 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 
-
 // Import the string from the .env with URL of the API/server - http://localhost:5005
 const API_URL = import.meta.env.VITE_API_URL;
-
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -27,9 +25,9 @@ function LoginPage() {
     axios
       .post(`${API_URL}/auth/login`, requestBody)
       .then((response) => {
-        console.log("JWT token", response.data.authToken);
+        console.log("JWT token", response.data.accessToken);
 
-        storeToken(response.data.authToken);
+        storeToken(response.data.accessToken);
         authenticateUser();
         navigate("/");
       })
