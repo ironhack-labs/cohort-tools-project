@@ -1,36 +1,42 @@
+// ℹ️ Gets access to environment variables/settings
+require("dotenv").config();
+
+// ℹ️ Connects to the database
+require("./db");
+
+// Handles http requests (express is node js framework)
 const express = require("express");
-const morgan = require("morgan");
-const cookieParser = require("cookie-parser");
-const PORT = 5005;
 
-// STATIC DATA
-// Devs Team - Import the provided files with JSON data of students and cohorts here:
-// ...
+// Imports the middleware that checks if the user is authenticated
+const { isAuthenticated } = require("./middleware/jwt.middleware"); 
 
-
-// INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
+// INITIALIZE EXPRESS APP
 const app = express();
 
+// ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
+require("./config")(app);
 
-// MIDDLEWARE
-// Research Team - Set up CORS middleware here:
-// ...
-app.use(express.json());
-app.use(morgan("dev"));
-app.use(express.static("public"));
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+// 👇 Start handling routes here
 
+const allRoutes = require("./routes/index.routes");
+app.use("/api", allRoutes);
 
-// ROUTES - https://expressjs.com/en/starter/basic-routing.html
-// Devs Team - Start working on the routes here:
-// ...
+const studentRouter = require("./routes/student.routes"); // <== IMPORT
+app.use("/api", studentRouter); // 
+
+const cohortRouter = require("./routes/cohort.routes"); // <== IMPORT
+app.use("/api", cohortRouter); //
+const authRouter = require("./routes/auth.routes");
+app.use("/auth", authRouter);
+
+const userRouter = require("./routes/user.routes"); // <== IMPORT
+app.use("/api", isAuthenticated, userRouter); 
+
 app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
+// ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
+require("./error-handling")(app);
 
-// START SERVER
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+module.exports = app;
