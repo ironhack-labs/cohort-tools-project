@@ -1,36 +1,55 @@
+require("dotenv").config();
 const express = require("express");
-const morgan = require("morgan");
-const cookieParser = require("cookie-parser");
+const { isAuthenticated } = require("./middleware/jwt.middleware");
+const {
+  errorHandler,
+  notFoundHandler,
+} = require("./middleware/error-handling");
 const PORT = 5005;
 
-// STATIC DATA
-// Devs Team - Import the provided files with JSON data of students and cohorts here:
-// ...
-
-
-// INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
+// Initialize EXPRESS APP
 const app = express();
+require("./config")(app);
+require("./db");
 
-
-// MIDDLEWARE
-// Research Team - Set up CORS middleware here:
-// ...
-app.use(express.json());
-app.use(morgan("dev"));
+// Middleware
 app.use(express.static("public"));
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-
-
-// ROUTES - https://expressjs.com/en/starter/basic-routing.html
-// Devs Team - Start working on the routes here:
-// ...
 app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
+// Routes
+// const allRoutes = require("./routes");
+// app.use("/api", allRoutes);
 
-// START SERVER
+// const projectRouter = require("./routes/project.routes");
+// app.use("/api", isAuthenticated, projectRouter);
+
+// const taskRouter = require("./routes/task.routes");
+// app.use("/api", isAuthenticated, taskRouter);
+
+// Cohort routes
+const cohortsRouter = require("./routes/cohorts.routes");
+app.use("/api", cohortsRouter);
+
+// Students routes
+const studentsRouter = require("./routes/students.routes");
+app.use("/api", studentsRouter);
+
+// // Auth routes
+const authRoutes = require("./routes/auth.routes");
+app.use("/auth", authRoutes);
+
+// // // User routes
+const userRoutes = require("./routes/User.routes");
+app.use("/api/users", isAuthenticated, userRoutes);
+// // Use error handlers
+app.use(notFoundHandler);
+app.use(errorHandler);
+
+// Start server
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+
+module.exports = app;
