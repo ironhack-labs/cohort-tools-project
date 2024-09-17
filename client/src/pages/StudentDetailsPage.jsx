@@ -71,10 +71,10 @@ function StudentDetailsPage() {
                   {student.cohort.cohortName}
                 </Link>
               </p>
-              {student && student.projects.length > 0 && (
-              <p className="text-left mb-2 border-b pb-2">
-                <strong>Projects:</strong> {student.projects}
-              </p>
+              {student && student.projects && Array.isArray(student.projects) && student.projects.length > 0 && (
+                <p className="text-left mb-2 border-b pb-2">
+                <strong>Projects:</strong> {student.projects.join(", ")}
+                </p>
               )}
             </div>
             <div className="mt-4">
