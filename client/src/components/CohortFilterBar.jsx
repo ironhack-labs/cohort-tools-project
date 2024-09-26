@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/auth.context";
 
 function CohortFilterBar({
   campusQuery,
@@ -7,7 +9,8 @@ function CohortFilterBar({
   setProgramQuery,
   handleChange,
 }) {
-  return  (
+  const { isLoggedIn } = useContext(AuthContext);
+  return (
     <div className="filter-bar flex justify-between items-center mb-4 p-2 px-8 bg-gray-200 rounded">
       <div className="flex justify-start items-center space-x-8">
         <label htmlFor="campus" className="flex items-center">
@@ -48,9 +51,13 @@ function CohortFilterBar({
         </label>
       </div>
 
-      <Link to="/cohorts/create" className="ml-auto">
-        <button className="px-4 py-1 rounded bg-blue-600 text-white hover:bg-blue-500 px-6">Create</button>
-      </Link>
+      {isLoggedIn && (
+        <Link to="/cohorts/create" className="ml-auto">
+          <button className="px-4 py-1 rounded bg-blue-600 text-white hover:bg-blue-500 px-6">
+            Create
+          </button>
+        </Link>
+      )}
     </div>
   );
 }
