@@ -19,6 +19,7 @@ function StudentDetailsPage() {
         .then((response) => {
           const oneStudent = response.data;
           setStudent(oneStudent);
+          console.log(oneStudent);
           setLoading(false);
         })
         .catch((error) => console.log(error));

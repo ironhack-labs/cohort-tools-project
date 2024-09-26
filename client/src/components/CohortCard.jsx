@@ -1,14 +1,15 @@
 import { Link } from "react-router-dom";
 
-function CohortCard({
-  _id,
-  program,
-  inProgress,
-  campus,
-  cohortName,
-  cohortSlug,
-  className,
-}) {
+function CohortCard({ cohort }) {
+  const {
+    _id,
+    program,
+    inProgress,
+    campus,
+    cohortName,
+    cohortSlug,
+    className,
+  } = cohort;
   return (
     <Link to={`/cohorts/details/${_id}`}>
       <div
