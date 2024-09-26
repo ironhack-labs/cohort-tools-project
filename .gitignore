@@ -130,3 +130,6 @@ dist
 .pnp.*
 
 .DS_Store
+.vscode/settings.json
+server/.vscode/settings.json
+.vscode/settings.json
