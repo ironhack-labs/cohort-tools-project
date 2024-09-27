@@ -61,16 +61,24 @@ function CohortEditPage() {
   };
 
   const handleDelete = () => {
+    const token = localStorage.getItem("authToken");
+
     axios
-      .delete(`${API_URL}/api/cohorts/${cohort._id}`)
+      .delete(`${API_URL}/api/cohorts/${cohort._id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then(() => navigate(`/dashboard`))
       .catch((error) => console.log(error));
   };
 
   useEffect(() => {
     const getCohort = () => {
+      const token = localStorage.getItem("authToken");
+
       axios
-        .get(`${API_URL}/api/cohorts/${cohortId}`)
+        .get(`${API_URL}/api/cohorts/${cohortId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
         .then((response) => {
           const oneCohort = response.data;
           setCohort({
@@ -302,9 +310,11 @@ function CohortEditPage() {
         <br />
 
         <button
-         type="submit"
-         className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4 transition duration-150 ease-in-out"
-         >Save</button>
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4 transition duration-150 ease-in-out"
+        >
+          Save
+        </button>
 
         <button
           disabled={loading}
