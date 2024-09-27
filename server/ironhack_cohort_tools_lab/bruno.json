@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "ironhack_cohort_tools_lab",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
