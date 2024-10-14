@@ -29,12 +29,13 @@ function SignupPage() {
     // Make an axios request to the API
     // If POST request is successful redirect to login page
     // If the request resolves with an error, set the error message in the state
-    axios.post(`${API_URL}/auth/signup`, requestBody)
+    axios.post(`${API_URL}/api/auth/signup`, requestBody)
       .then(() => {
-        navigate("/login");
+        navigate("/auth/login");
       })
       .catch((error) => {
         const errorDescription = error.response.data.message;
+        console.log(error)
         setErrorMessage(errorDescription);
       })
   };
@@ -111,7 +112,7 @@ function SignupPage() {
       {errorMessage && <p className="error-message">{errorMessage}</p>}
 
       <p className="mt-10 mb-2">Already have an account?</p>
-      <Link to={"/login"}> Log in</Link>
+      <Link to={"/auth/login"}> Log in</Link>
     </div>
   )
 }

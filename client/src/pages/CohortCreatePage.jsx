@@ -45,12 +45,11 @@ function CohortCreatePage() {
     const requestBody = {
       ...cohort,
     };
-
+    console.log(requestBody)
     axios
       .post(`${API_URL}/api/cohorts`, requestBody)
       .then((response) => {
-        const newCohort = response.data;
-
+        const newCohort = response.data.data;
         navigate(`/cohorts/details/${newCohort._id}`);
       })
       .catch((error) => console.log(error));

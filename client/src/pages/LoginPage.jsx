@@ -25,17 +25,16 @@ function LoginPage() {
     const requestBody = { email, password };
 
     axios
-      .post(`${API_URL}/auth/login`, requestBody)
+      .post(`${API_URL}/api/auth/login`, requestBody)
       .then((response) => {
         console.log("JWT token", response.data.authToken);
-
         storeToken(response.data.authToken);
         authenticateUser();
         navigate("/");
       })
       .catch((error) => {
         const errorDescription = error.response.data.message;
-        setErrorMessage(errorDescription);
+        setErrorMessage(errorDescription);  
       });
   };
 
@@ -94,7 +93,7 @@ function LoginPage() {
       {errorMessage && <p className="error-message">{errorMessage}</p>}
 
       <p className="mt-10 mb-2">Don&apos;t have an account yet?</p>
-      <Link to={"/signup"}> Sign Up</Link>
+      <Link to={"/auth/signup"}> Sign Up</Link>
     </div>
   );
 }

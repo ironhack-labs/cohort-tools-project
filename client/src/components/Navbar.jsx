@@ -17,8 +17,8 @@ function Navbar({ toggleSidebar }) {
       "/students/details/:studentId": "Student Details",
       "/students/edit/:studentId": "Edit Student",
       "/profile": "User Profile",
-      "/login": "Log In",
-      "/signup": "Sign Up",
+      "/auth/login": "Log In",
+      "/auth/signup": "Sign Up",
     };
 
     for (let route in routes) {
@@ -55,8 +55,8 @@ function Navbar({ toggleSidebar }) {
           {isLoggedIn && (
             <button className="px-4 py-1 rounded bg-blue-500 text-white hover:bg-blue-400" onClick={logOutUser}>Log Out</button>
           )}
-          {!isLoggedIn && location.pathname !== "/login" && location.pathname !== "/signup" && (
-            <Link to ="/login">
+          {!isLoggedIn && location.pathname !== "/auth/login" && location.pathname !== "/auth/signup" && (
+            <Link to ="/auth/login">
               <button className="px-6 py-1 rounded bg-blue-500 text-white hover:bg-blue-400">Log In</button>
             </Link>
           )}
