@@ -17,6 +17,7 @@ function StudentDetailsPage() {
       axios
         .get(`${API_URL}/api/students/${studentId}`)
         .then((response) => {
+      console.log(response.data)
           const oneStudent = response.data;
           setStudent(oneStudent);
           setLoading(false);
