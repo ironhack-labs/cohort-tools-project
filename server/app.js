@@ -1,36 +1,37 @@
+// ℹ️ Gets access to environment variables/settings
+// https://www.npmjs.com/package/dotenv
+require("dotenv").config();
+
+// Handles http requests (express is node js framework)
+// https://www.npmjs.com/package/express
 const express = require("express");
-const morgan = require("morgan");
-const cookieParser = require("cookie-parser");
-const PORT = 5005;
-
-// STATIC DATA
-// Devs Team - Import the provided files with JSON data of students and cohorts here:
-// ...
-
-
-// INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
+const PORT = process.env.PORT || 3000;
 const app = express();
 
+// ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
+require("./config")(app);
+const withDB = require("./db");
 
-// MIDDLEWARE
-// Research Team - Set up CORS middleware here:
-// ...
-app.use(express.json());
-app.use(morgan("dev"));
-app.use(express.static("public"));
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+// 👇 Start handling routes here
+const indexRoutes = require("./routes/index.routes");
+app.use("/api", indexRoutes);
 
-
-// ROUTES - https://expressjs.com/en/starter/basic-routing.html
-// Devs Team - Start working on the routes here:
-// ...
 app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
+// ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 
+const authRoutes = require('./routes/auth.routes')
+app.use('/auth', authRoutes)
+
+require('./error-handling')(app)
+
+module.exports = app;
 
 // START SERVER
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+withDB(() => {
+  app.listen(PORT, () => {
+    console.log(`Server listening on port http://localhost:${PORT}`);
+  });
 });
+// const port = process.env.PORT || 3000
