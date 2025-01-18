@@ -1,12 +1,10 @@
 import { useState, useContext } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/auth.context";
+import { AuthContext } from "../context/auth.context"; // Context to manage authentication
 
-
-// Import the string from the .env with URL of the API/server - http://localhost:5005
+// Import the string from the .env with URL of the API/server
 const API_URL = import.meta.env.VITE_API_URL;
-
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -15,27 +13,30 @@ function LoginPage() {
 
   const navigate = useNavigate();
 
+  // Use AuthContext to manage token storage and authentication
   const { storeToken, authenticateUser } = useContext(AuthContext);
 
+  // Input handlers for email and password
   const handleEmail = (e) => setEmail(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
 
+  // Login submission handler
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     const requestBody = { email, password };
 
     axios
-      .post(`${API_URL}/auth/login`, requestBody)
+      .post(`${API_URL}/auth/login`, requestBody) // Send login request to the backend
       .then((response) => {
-        console.log("JWT token", response.data.authToken);
+        console.log("JWT token:", response.data.token); // Debug: log the token
 
-        storeToken(response.data.authToken);
-        authenticateUser();
-        navigate("/");
+        storeToken(response.data.token); // Save token using AuthContext
+        authenticateUser(); // Update the authentication state in the app
+        navigate("/"); // Redirect to the home page after successful login
       })
       .catch((error) => {
-        const errorDescription = error.response.data.message;
-        setErrorMessage(errorDescription);
+        const errorDescription = error.response?.data?.message || "Something went wrong";
+        setErrorMessage(errorDescription); // Display error message
       });
   };
 

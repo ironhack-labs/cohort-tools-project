@@ -1,75 +1,91 @@
-import { useEffect, useState, useContext } from "react";
+import { useState } from "react";
 import axios from "axios";
-import placeholderImage from "./../assets/placeholder.png";
+import { Link, useNavigate } from "react-router-dom";
 
-import { AuthContext } from "../context/auth.context";
-
-// Import the string from the .env with URL of the API/server - http://localhost:5005
 const API_URL = import.meta.env.VITE_API_URL;
 
-
-
-function UserProfilePage() {
-  const [userProfile, setUserProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const { user } = useContext(AuthContext);
+function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState(undefined);
 
-  useEffect(() => {
-    const getStudent = () => {
-      const storedToken = localStorage.getItem("authToken");
+  const navigate = useNavigate();
 
-      if (storedToken) {
-        axios
-        .get(
-          `${API_URL}/api/users/${user._id}`,
-          { headers: { Authorization: `Bearer ${storedToken}` }}
-          )
-          .then((response) => {
-            setUserProfile(response.data);
-            setLoading(false);
-          })
-          .catch((error) => {
-            const errorDescription = error.response.data.message;
-            setErrorMessage(errorDescription);
-          });
-        }
-        else {
-          setErrorMessage("User not logged in");
-        }
-    };
+  const handleEmail = (e) => setEmail(e.target.value);
+  const handlePassword = (e) => setPassword(e.target.value);
 
-    getStudent();
-  }, [user._id]);
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    const requestBody = { email, password };
 
-  if (errorMessage) return <div>{errorMessage}</div>;
-  
-  if (loading) return <div>Loading...</div>;
+    console.log("Submitting login request:", requestBody);
+
+    axios
+      .post(`${API_URL}/auth/login`, requestBody)
+      .then((response) => {
+        console.log("Login response received:", response.data);
+        navigate("/dashboard"); // Redirect to the dashboard
+      })
+      .catch((error) => {
+        console.error("Login failed:", error.response?.data || error.message);
+
+        const errorDescription =
+          error.response?.status === 401
+            ? "Invalid email or password"
+            : error.response?.data?.message || "Something went wrong";
+
+        setErrorMessage(errorDescription);
+      });
+  };
 
   return (
-    <div className="StudentDetailsPage bg-gray-100 py-6 px-4">
-      <div className="bg-white p-8 rounded-lg shadow-md mb-6">
-        {userProfile && (
-          <>
-            {/* <img className="w-32 h-32 rounded-full object-cover mb-4" src={student.image} alt="profile-photo" /> */}
-            <img
-            src={placeholderImage}
-            alt="profile-photo"
-            className="rounded-full w-32 h-32 object-cover border-2 border-gray-300"
-          />            
-            <h1 className="text-2xl mt-4 font-bold absolute">{userProfile.name}</h1>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-24 mb-4 border-b pb-4">
-              <p className="text-left mb-2 border-b pb-2">
-                <strong>Email:</strong> {userProfile.email}
-              </p>
-            </div>
-          </>
-        )}
-      </div>
-      
+    <div className="LoginPage p-8 pb-16 mb-10 mt-10 rounded-lg shadow-md flex flex-col h-full relative w-full max-w-3xl mx-auto">
+      <form
+        onSubmit={handleLoginSubmit}
+        className="grid grid-cols-1 gap-4 overflow-y-auto mt-12 px-4"
+      >
+        <h3 className="text-2xl font-semibold text-gray-700 mb-6 sticky left-0">Login</h3>
+
+        <label htmlFor="email" className="text-gray-600 text-left ml-1 -mb-2 text-l font-bold">
+          Email
+        </label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          value={email}
+          onChange={handleEmail}
+          className="border rounded p-2 w-full mb-6"
+          autoComplete="off"
+        />
+
+        <label htmlFor="password" className="text-gray-600 text-left ml-1 -mb-2 text-l font-bold">
+          Password
+        </label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          value={password}
+          onChange={handlePassword}
+          className="border rounded p-2 w-full mb-6"
+          autoComplete="off"
+        />
+
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4 transition duration-150 ease-in-out"
+        >
+          Log In
+        </button>
+      </form>
+
+      {errorMessage && <p className="error-message text-red-500 mt-4">{errorMessage}</p>}
+
+      <p className="mt-10 mb-2">Don&apos;t have an account yet?</p>
+      <Link to={"/signup"} className="text-blue-500 hover:underline">Sign Up</Link>
     </div>
   );
 }
 
-export default UserProfilePage;
+export default LoginPage;
