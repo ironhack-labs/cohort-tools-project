@@ -28,9 +28,14 @@ function CohortListPage() {
       .catch((error) => console.log(error));
   }, [campusQuery, programQuery]);
 
-  const getAllCohorts = () => {
+  const getAllCohorts = async () => {
+    const authToken = await localStorage.getItem("authToken")
     axios
-      .get(`${API_URL}/api/cohorts`)
+      .get(`${API_URL}/api/cohorts`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`
+        }
+      })
       .then((response) => {
         setCohorts(response.data);
       })
@@ -38,6 +43,7 @@ function CohortListPage() {
   };
 
   useEffect(() => {
+    
     getAllCohorts();
   }, []);
 

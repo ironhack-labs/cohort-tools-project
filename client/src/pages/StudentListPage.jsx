@@ -10,8 +10,14 @@ function StudentListPage() {
   const [students, setStudents] = useState([]);
 
   useEffect(() => {
+    const authToken = localStorage.getItem("authToken")
+    console.log(authToken)
     axios
-      .get(`${API_URL}/api/students?$`)
+      .get(`${API_URL}/api/students`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`
+        }
+      })
       .then((response) => {
         setStudents(response.data)})
       .catch((error) => console.log(error));

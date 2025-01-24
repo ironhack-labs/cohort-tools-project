@@ -1,36 +1,52 @@
-const express = require("express");
-const morgan = require("morgan");
-const cookieParser = require("cookie-parser");
-const PORT = 5005;
+// server/app.js
 
-// STATIC DATA
-// Devs Team - Import the provided files with JSON data of students and cohorts here:
-// ...
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors'); // Importar CORS
+const middleware = require('./middleware');
+const authMiddleware = require('./authMiddleware');
+const cohortRoutes = require('./routes/cohorts');
+const studentRoutes = require('./routes/students');
+const authRoutes = require('./routes/auth.routes');
 
-
-// INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
 const app = express();
+const port = process.env.PORT || 5005;
 
+// Configuración de CORS
+app.use(cors({
+    origin: '*', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Métodos permitidos
+    allowedHeaders: ['Content-Type', 'Authorization'] // Encabezados permitidos
+}));
 
-// MIDDLEWARE
-// Research Team - Set up CORS middleware here:
-// ...
+// Conectar a MongoDB
+async function connectDB() {
+    try {
+        await mongoose.connect('mongodb://localhost:27017/cohort-tools-api');
+        console.log('Database connection established!');
+    } catch (err) {
+        console.error('Database connection error:', err);
+    }
+}
+
+// Conectar a la base de datos
+connectDB();
+
+// Usar middleware global 
 app.use(express.json());
-app.use(morgan("dev"));
-app.use(express.static("public"));
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 
+app.use('/auth', authRoutes);
+app.use('/api/cohorts', authMiddleware, cohortRoutes); // Protegemos las rutas si es necesario
+app.use('/api/students', authMiddleware, studentRoutes); // Protegemos las rutas si es necesario
 
-// ROUTES - https://expressjs.com/en/starter/basic-routing.html
-// Devs Team - Start working on the routes here:
-// ...
-app.get("/docs", (req, res) => {
-  res.sendFile(__dirname + "/views/docs.html");
+// Manejo de errores
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: 'Something went wrong!', error: err.message });
 });
 
-
-// START SERVER
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+// Iniciar el servidor
+app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
 });
+
