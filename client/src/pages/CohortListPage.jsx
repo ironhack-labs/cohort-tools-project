@@ -15,6 +15,34 @@ function CohortListPage() {
     updateState(event.target.value);
   };
 
+  // useEffect(() => {
+  //   axios.defaults.withCredentials = true;
+  //   axios.defaults.headers.common["Access-Control-Allow-Headers"] =
+  //     "Authorization";
+  //   const accessToken = localStorage.getItem("authToken");
+  //   const requestInterceptor = axios.interceptors.request.use((config) => {
+  //     if (accessToken) {
+  //       config.headers.Authorization = accessToken;
+  //     }
+  //     config;
+  //   });
+  //   return () => {
+  //     axios.interceptors.request.eject(requestInterceptor);
+  //     axios.defaults.withCredentials = false;
+  //     delete axios.defaults.headers.common["Access-Control-Allow-Headers"];
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    axios.interceptors.request.use((config) => {
+      const storedToken = localStorage.getItem("authToken");
+      if (storedToken) {
+        config.headers = { Authorization: `Bearer ${storedToken}` };
+      }
+      return config;
+    });
+  }, []);
+
   useEffect(() => {
     let queryString = "";
     if (campusQuery) queryString += `campus=${campusQuery}&`;
@@ -30,7 +58,11 @@ function CohortListPage() {
 
   const getAllCohorts = () => {
     axios
-      .get(`${API_URL}/api/cohorts`)
+      .get(`${API_URL}/api/cohorts`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("authToken"),
+        },
+      })
       .then((response) => {
         setCohorts(response.data);
       })
@@ -60,15 +92,13 @@ function CohortListPage() {
       </div>
 
       {cohorts &&
-        cohorts.map(
-          (cohort, index) => (
-              <CohortCard
-                key={cohort._id}
-                {...cohort}
-                className={index % 2 === 0 ? "bg-white" : "bg-gray-100"}
-              />
-          )
-        )}
+        cohorts.map((cohort, index) => (
+          <CohortCard
+            key={cohort._id}
+            {...cohort}
+            className={index % 2 === 0 ? "bg-white" : "bg-gray-100"}
+          />
+        ))}
     </div>
   );
 }

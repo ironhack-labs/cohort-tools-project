@@ -16,6 +16,16 @@ function UserProfilePage() {
   const [errorMessage, setErrorMessage] = useState(undefined);
 
   useEffect(() => {
+    axios.interceptors.request.use((config) => {
+      const storedToken = localStorage.getItem("authToken");
+      if (storedToken) {
+        config.headers = { Authorization: `Bearer ${storedToken}` };
+      }
+      return config;
+    });
+  }, []);
+
+  useEffect(() => {
     const getStudent = () => {
       const storedToken = localStorage.getItem("authToken");
 

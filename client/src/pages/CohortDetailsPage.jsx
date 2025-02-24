@@ -11,10 +11,18 @@ function CohortDetailsPage() {
   const [cohort, setCohort] = useState(null);
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [showDrawer, setShowDrawer] = useState(false);
-
   const { cohortId } = useParams();
+
+  // useEffect(() => {
+  //   const accessToken = localStorage.getItem("authToken");
+  //   axios.interceptors.request.use((config) => {
+  //     if (accessToken) {
+  //       config.headers.Authorization = accessToken;
+  //     }
+  //     return config;
+  //   });
+  // }, []);
 
   const getCohort = useCallback(() => {
     axios
@@ -46,9 +54,9 @@ function CohortDetailsPage() {
     <div className={`CohortDetails bg-gray-100 py-6 px-4`}>
       {/* Drawer */}
       <div
-className={`drawer transition-transform transform ${
-       showDrawer ? "translate-x-0" : "translate-x-full"
-     } fixed right-0 top-0 h-full bg-white shadow-md z-10`}
+        className={`drawer transition-transform transform ${
+          showDrawer ? "translate-x-0" : "translate-x-full"
+        } fixed right-0 top-0 h-full bg-white shadow-md z-10`}
       >
         {cohort && showDrawer && (
           <StudentCreateForm
@@ -62,7 +70,6 @@ className={`drawer transition-transform transform ${
           />
         )}
       </div>
-
 
       <div
         className={`CohortDetails bg-gray-100 py-6 px-4 ${
