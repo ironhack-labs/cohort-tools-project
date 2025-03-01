@@ -1,0 +1,27 @@
+{
+  "cohort": {
+    "inProgress": true,
+    "cohortSlug": "ft-wd-berlin-2023-10-16",
+    "cohortName": "FT WD BERLIN 2023 10",
+    "program": "Web Dev",
+    "campus": "Berlin",
+    "startDate": "2023-10-16T00:00:00.000Z",
+    "endDate": "2023-12-22T00:00:00.000Z",
+    "programManager": "Marcus Schmidt",
+    "leadTeacher": "Julia Weber",
+    "totalHours": 360
+  },
+  "student": {
+    "firstName": "Alex",
+    "lastName": "Morgan",
+    "email": "alex.morgan@example.com",
+    "phone": "456-789-0123",
+    "linkedinUrl": "https://linkedin.com/in/alexmorganexample",
+    "languages": ["English", "Japanese", "French"],
+    "program": "Web Dev",
+    "background": "Digital Marketing",
+    "image": "https://i.imgur.com/r8bo8u7.png",
+    "cohort": "67c1e624e30f5b888bae5dd1",
+    "projects": ["E-commerce Platform"]
+  }
+}
