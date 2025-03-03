@@ -275,8 +275,12 @@ function StudentEditPage() {
   };
 
   const handleDelete = () => {
+    const storedToken = localStorage.getItem("authToken");
     axios
-      .delete(`${API_URL}/api/students/${student._id}`)
+      .delete(
+        `${API_URL}/api/students/${student._id}`,
+        { headers: { Authorization: `Bearer ${storedToken}` } }
+      )
       .then(() => {
         navigate(`/cohorts/details/${student.cohort._id}`);
       })

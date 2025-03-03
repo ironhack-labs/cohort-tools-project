@@ -16,9 +16,13 @@ function CohortDetailsPage() {
 
   const { cohortId } = useParams();
 
+  const storedToken = localStorage.getItem("authToken");
+
   const getCohort = useCallback(() => {
     axios
-      .get(`${API_URL}/api/cohorts/${cohortId}`)
+      .get(`${API_URL}/api/cohorts/${cohortId}`,
+        { headers: { Authorization: `Bearer ${storedToken}` } }
+      )
       .then((response) => {
         const oneCohort = response.data;
         setCohort(oneCohort);
@@ -28,7 +32,9 @@ function CohortDetailsPage() {
 
   const getStudents = useCallback(() => {
     axios
-      .get(`${API_URL}/api/students/cohort/${cohortId}`)
+      .get(`${API_URL}/api/students/cohort/${cohortId}`,
+        { headers: { Authorization: `Bearer ${storedToken}` } }
+      )
       .then((response) => {
         const allStudents = response.data;
         setStudents(allStudents);
@@ -46,9 +52,8 @@ function CohortDetailsPage() {
     <div className={`CohortDetails bg-gray-100 py-6 px-4`}>
       {/* Drawer */}
       <div
-className={`drawer transition-transform transform ${
-       showDrawer ? "translate-x-0" : "translate-x-full"
-     } fixed right-0 top-0 h-full bg-white shadow-md z-10`}
+        className={`drawer transition-transform transform ${showDrawer ? "translate-x-0" : "translate-x-full"
+          } fixed right-0 top-0 h-full bg-white shadow-md z-10`}
       >
         {cohort && showDrawer && (
           <StudentCreateForm
@@ -65,9 +70,8 @@ className={`drawer transition-transform transform ${
 
 
       <div
-        className={`CohortDetails bg-gray-100 py-6 px-4 ${
-          showDrawer ? "opacity-30 pointer-events-none" : ""
-        }`}
+        className={`CohortDetails bg-gray-100 py-6 px-4 ${showDrawer ? "opacity-30 pointer-events-none" : ""
+          }`}
       >
         {/* Cohort details */}
         <div className="bg-white p-8  px-24 rounded-lg shadow-md mb-6">
@@ -114,22 +118,20 @@ className={`drawer transition-transform transform ${
                 <Link to={`/cohorts/edit/${cohortId}`} className="w-full">
                   <button
                     disabled={showDrawer}
-                    className={`transition duration-300 ease-in-out text-white px-4 py-2 w-full rounded ${
-                      showDrawer
+                    className={`transition duration-300 ease-in-out text-white px-4 py-2 w-full rounded ${showDrawer
                         ? "bg-gray-500 hover:bg-gray-500"
                         : "bg-green-500 hover:bg-green-600"
-                    }`}
+                      }`}
                   >
                     Edit Cohort
                   </button>
                 </Link>
                 <button
                   disabled={showDrawer}
-                  className={`transition duration-300 ease-in-out text-white px-4 py-2 w-full rounded hover:bg-blue-600 ${
-                    showDrawer
+                  className={`transition duration-300 ease-in-out text-white px-4 py-2 w-full rounded hover:bg-blue-600 ${showDrawer
                       ? "bg-gray-500 hover:bg-gray-500"
                       : "bg-blue-500 hover:bg-blue-600"
-                  }`}
+                    }`}
                   onClick={() => setShowDrawer(true)}
                 >
                   Add Student
