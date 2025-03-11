@@ -13,7 +13,7 @@ function StudentListPage() {
     axios
       .get(`${API_URL}/api/students?$`)
       .then((response) => {
-        setStudents(response.data)})
+        setStudents(response.data.students)})
       .catch((error) => console.log(error));
   }, []);
 

@@ -23,6 +23,7 @@ function CohortListPage() {
     axios
       .get(`${API_URL}/api/cohorts?${queryString}`)
       .then((response) => {
+        console.log(response.data);
         setCohorts(response.data);
       })
       .catch((error) => console.log(error));
@@ -32,7 +33,8 @@ function CohortListPage() {
     axios
       .get(`${API_URL}/api/cohorts`)
       .then((response) => {
-        setCohorts(response.data);
+        console.log(response);
+        setCohorts(response.data.cohorts);
       })
       .catch((error) => console.log(error));
   };
@@ -59,7 +61,7 @@ function CohortListPage() {
         <span style={{ flexBasis: "25%" }}>Id</span>
       </div>
 
-      {cohorts &&
+      {(cohorts.length>0) &&
         cohorts.map(
           (cohort, index) => (
               <CohortCard
