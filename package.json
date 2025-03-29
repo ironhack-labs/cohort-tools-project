@@ -1,0 +1,21 @@
+{
+  "name": "cohort-tools-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shabcode/cohort-tools-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shabcode/cohort-tools-project/issues"
+  },
+  "homepage": "https://github.com/Shabcode/cohort-tools-project#readme",
+  "description": ""
+}
