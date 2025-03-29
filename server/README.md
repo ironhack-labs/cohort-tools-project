@@ -80,7 +80,7 @@ The *Models* section holds information about the data models for your database. 
 | `program`      | *`String`*                               | Type of program the student is enrolled in. Allowed values: "Web Dev", "UX/UI", "Data Analytics", "Cybersecurity". |
 | `background`   | *`String`*                               | Background information about the student. Default: Empty. |
 | `image`        | *`String`*                               | URL to the student's profile image. Default: https://i.imgur.com/r8bo8u7.png . |
-| `cohort`       | *`ObjectId`*,                            | Reference *_id* of the cohort the student belongs to. |
+| `cohort`       | *`4`*,                            | Reference *_id* of the cohort the student belongs to. |
 | `projects`     | *`Array`*                                | Array of the student's projects.   |
 
 

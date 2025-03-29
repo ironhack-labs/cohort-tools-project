@@ -51,7 +51,7 @@ function CohortListPage() {
         handleChange={handleChange}
       />
 
-      <div className="flex justify-between items-center p-2 font-bold border-b">
+      <div className="flex items-center justify-between p-2 font-bold border-b">
         <span style={{ flexBasis: "25%" }}>Cohort</span>
         <span style={{ flexBasis: "15%" }}>Program</span>
         <span style={{ flexBasis: "15%" }}>Format</span>
