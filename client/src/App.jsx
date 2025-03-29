@@ -22,7 +22,7 @@ function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="App relative z-20 pt-20">
+    <div className="relative z-20 pt-20 App">
       <Navbar toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
       {isSidebarOpen && <Sidebar />}
       <div className={`content ${isSidebarOpen ? 'shifted' : ''} relative z-10`}>
@@ -39,7 +39,7 @@ function App() {
           <Route path="/login" element={<IsAnon><LoginPage /></IsAnon>} />
           <Route path="/signup" element={<IsAnon><SignupPage /></IsAnon>} />
 
-          
+          1
         </Routes>
       </div>
 
