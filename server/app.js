@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const cors = require("cors")
 const PORT = 5005;
 
 // STATIC DATA
@@ -20,6 +21,7 @@ app.use(morgan("dev"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(cors())
 
 
 // ROUTES - https://expressjs.com/en/starter/basic-routing.html
@@ -29,7 +31,13 @@ app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
+app.get("/api/cohorts", (req, res) => {
+  res.sendFile(__dirname + "/cohorts.json")
+})
 
+app.get("/api/students", (req, res) => {
+  res.sendFile(__dirname + "/students.json");
+});
 // START SERVER
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
