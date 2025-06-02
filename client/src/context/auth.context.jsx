@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-
-// Import the string from the .env with URL of the API/server - http://localhost:5005
+// Import the string from the .env with URL of the API/server - http://localhost:5006
 const API_URL = import.meta.env.VITE_API_URL;
-
 
 const AuthContext = React.createContext();
 

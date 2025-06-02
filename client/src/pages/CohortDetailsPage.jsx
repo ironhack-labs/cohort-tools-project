@@ -4,7 +4,7 @@ import axios from "axios";
 import StudentCard from "../components/StudentCard";
 import StudentCreateForm from "../components/StudentCreateForm";
 
-// Import the string from the .env with URL of the API/server - http://localhost:5005
+// Import the string from the .env with URL of the API/server - http://localhost:5006
 const API_URL = import.meta.env.VITE_API_URL;
 
 function CohortDetailsPage() {
@@ -46,9 +46,9 @@ function CohortDetailsPage() {
     <div className={`CohortDetails bg-gray-100 py-6 px-4`}>
       {/* Drawer */}
       <div
-className={`drawer transition-transform transform ${
-       showDrawer ? "translate-x-0" : "translate-x-full"
-     } fixed right-0 top-0 h-full bg-white shadow-md z-10`}
+        className={`drawer transition-transform transform ${
+          showDrawer ? "translate-x-0" : "translate-x-full"
+        } fixed right-0 top-0 h-full bg-white shadow-md z-10`}
       >
         {cohort && showDrawer && (
           <StudentCreateForm
@@ -62,7 +62,6 @@ className={`drawer transition-transform transform ${
           />
         )}
       </div>
-
 
       <div
         className={`CohortDetails bg-gray-100 py-6 px-4 ${

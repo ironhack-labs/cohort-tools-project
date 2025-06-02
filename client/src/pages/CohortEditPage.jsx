@@ -7,7 +7,7 @@ import {
   getFormattedDate,
 } from "../utils/index";
 
-// Import the string from the .env with URL of the API/server - http://localhost:5005
+// Import the string from the .env with URL of the API/server - http://localhost:5006
 const API_URL = import.meta.env.VITE_API_URL;
 
 const DEFAULT_COHORT_FORM_VALUES = {
@@ -302,9 +302,11 @@ function CohortEditPage() {
         <br />
 
         <button
-         type="submit"
-         className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4 transition duration-150 ease-in-out"
-         >Save</button>
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4 transition duration-150 ease-in-out"
+        >
+          Save
+        </button>
 
         <button
           disabled={loading}
