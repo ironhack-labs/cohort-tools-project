@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 // Import the string from the .env with URL of the API/server - http://localhost:5005
 const API_URL = import.meta.env.VITE_API_URL;
-
 
 const AuthContext = React.createContext();
 
@@ -15,12 +13,12 @@ function AuthProviderWrapper(props) {
   const [authError, setAuthError] = useState(null);
 
   const storeToken = (token) => {
-    localStorage.setItem("authToken", token);
+    localStorage.setItem('authToken', token);
   };
 
   const authenticateUser = () => {
     // Get the stored token from the localStorage
-    const storedToken = localStorage.getItem("authToken");
+    const storedToken = localStorage.getItem('authToken');
 
     // If the token exists in the localStorage
     if (storedToken) {
@@ -58,7 +56,7 @@ function AuthProviderWrapper(props) {
 
   const removeToken = () => {
     // Upon logout, remove the token from the localStorage
-    localStorage.removeItem("authToken");
+    localStorage.removeItem('authToken');
   };
 
   const logOutUser = () => {
@@ -82,8 +80,7 @@ function AuthProviderWrapper(props) {
         authenticateUser,
         logOutUser,
         authError,
-      }}
-    >
+      }}>
       {props.children}
     </AuthContext.Provider>
   );
