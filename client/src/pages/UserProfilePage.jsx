@@ -14,7 +14,7 @@ function UserProfilePage() {
   const [loading, setLoading] = useState(true);
   const { user } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState(undefined);
-
+  console.log(user)
   useEffect(() => {
     const getStudent = () => {
       const storedToken = localStorage.getItem("authToken");
