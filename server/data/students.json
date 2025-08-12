@@ -10,7 +10,19 @@
     "program": "Web Dev",
     "background": "Computer Engineering",
     "image": "https://i.imgur.com/r8bo8u7.png",
-    "cohort": 1,
+    "cohort":  {
+        "_id": 1,
+        "inProgress": false,
+        "cohortSlug": "ft-wd-paris-2023-07-03",
+        "cohortName": "FT WD PARIS 2023 07",
+        "program": "Web Dev",
+        "campus": "Paris",
+        "startDate": "2023-07-03T00:00:00.000Z",
+        "endDate": "2023-09-08T00:00:00.000Z",
+        "programManager": "Sally Daher",
+        "leadTeacher": "Florian Aube",
+        "totalHours": 360
+  },
     "projects": []
   },
   {
