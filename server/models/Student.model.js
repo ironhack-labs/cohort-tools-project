@@ -1,0 +1,13 @@
+const { Schema, model } = require('mongoose');
+
+const studentSchema = new Schema(
+  {
+    firstName: { type: String, required: true, trim: true },
+    lastName:  { type: String, required: true, trim: true },
+    email:     { type: String, required: true, unique: true, lowercase: true, trim: true },
+    cohort:    { type: Schema.Types.ObjectId, ref: 'Cohort', required: true }
+  },
+  { timestamps: true }
+);
+
+module.exports = model('Student', studentSchema);
