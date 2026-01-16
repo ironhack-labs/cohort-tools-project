@@ -1,6 +1,6 @@
 [
   {
-    "_id": 1,
+    
     "firstName": "Christine",
     "lastName": "Clayton",
     "email": "christine.clayton@example.com",
@@ -14,7 +14,7 @@
     "projects": []
   },
   {
-    "_id": 2,
+    
     "firstName": "Grace",
     "lastName": "Green",
     "email": "grace.green@example.com",
@@ -28,7 +28,7 @@
     "projects": []
   },
   {
-    "_id": 3,
+
     "firstName": "Jack",
     "lastName": "Johnson",
     "email": "jack.johnson@example.com",
@@ -42,7 +42,6 @@
     "projects": []
   },
   {
-    "_id": 4,
     "firstName": "John",
     "lastName": "Doe",
     "email": "john.doe@example.com",
@@ -56,7 +55,6 @@
     "projects": []
   },  
   {
-    "_id": 5,
     "firstName": "Katie",
     "lastName": "King",
     "email": "katie.king@example.com",
@@ -70,7 +68,6 @@
     "projects": []
   },
   {
-    "_id": 6,
     "firstName": "Irene",
     "lastName": "Iverson",
     "email": "irene.iverson@example.com",
