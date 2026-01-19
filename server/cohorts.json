@@ -1,6 +1,5 @@
 [
   {
-    "_id": 1,
     "inProgress": false,
     "cohortSlug": "ft-wd-paris-2023-07-03",
     "cohortName": "FT WD PARIS 2023 07",
@@ -13,7 +12,6 @@
     "totalHours": 360
   },
   {
-    "_id": 2,
     "cohortSlug": "pt-ux-berlin-2023-02-06",
     "cohortName": "PT UX BERLIN 2023 02",
     "program": "UX/UI",
@@ -27,7 +25,6 @@
     "totalHours": 360
   },
   {
-    "_id": 3,
     "cohortSlug": "ft-da-miami-2023-03-06",
     "cohortName": "FT DA MIAMI 2023 03",
     "program": "Data Analytics",
@@ -41,7 +38,6 @@
     "totalHours": 360
   },
   {
-    "_id": 4,
     "cohortSlug": "pt-cy-paris-2023-04-03",
     "cohortName": "PT CY PARIS 2023 04",
     "program": "Cybersecurity",
