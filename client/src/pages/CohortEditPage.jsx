@@ -60,12 +60,15 @@ function CohortEditPage() {
       .catch((error) => console.log(error));
   };
 
-  const handleDelete = () => {
-    axios
-      .delete(`${API_URL}/api/cohorts/${cohort._id}`)
-      .then(() => navigate(`/dashboard`))
-      .catch((error) => console.log(error));
-  };
+ const handleDelete = () => {
+  axios
+    .delete(`${API_URL}/api/cohorts/${cohortId}`)
+    .then(() => {
+      navigate("/dashboard");
+    })
+    .catch((error) => console.log(error));
+};
+
 
   useEffect(() => {
     const getCohort = () => {
@@ -95,9 +98,9 @@ function CohortEditPage() {
       </h3>
 
       {showDeleteConfirmation && (
-        <div className="absolute top-0 left-0 w-72 h-48 bg-white flex flex-col justify-center items-center border border-gray-300 rounded-md p-4 shadow-md">
+        <div className="absolute inset-0 bg-white flex flex-col justify-center items-center border border-gray-300 rounded-md p-4 shadow-md z-50">
           <p className="mb-4">
-            Are you sure you want to delete this cohortList?
+            Are you sure you want to delete this Cohort from the Dashboard?
           </p>
           <div className="flex space-x-4">
             <button

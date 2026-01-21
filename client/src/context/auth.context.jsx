@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-
 // Import the string from the .env with URL of the API/server - http://localhost:5005
 const API_URL = import.meta.env.VITE_API_URL;
-
 
 const AuthContext = React.createContext();
 
@@ -38,9 +36,19 @@ function AuthProviderWrapper(props) {
           setUser(user);
         })
         .catch((error) => {
-          if (error) {
+          if (
+            error.response &&
+            error.response.status === 401 &&
+            error.response.data.message === "Token expired"
+          ) {
+            localStorage.removeItem("authToken");
+            setAuthError("Session expired. Please log in again.");
+          } else if (
+            error.response &&
+            error.response.data &&
+            error.response.data.message
+          ) {
             setAuthError(error.response.data.message);
-            return;
           }
           // If the server sends an error response (invalid token)
           // Update state variables

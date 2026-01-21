@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import placeholderImage from "./../assets/placeholder.png";
+
 
 // Import the string from the .env with URL of the API/server - http://localhost:5005
 const API_URL = import.meta.env.VITE_API_URL;
@@ -11,6 +12,7 @@ function StudentDetailsPage() {
   const [student, setStudent] = useState(null);
   const [loading, setLoading] = useState(true);
   const { studentId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getStudent = () => {
@@ -26,6 +28,16 @@ function StudentDetailsPage() {
 
     getStudent();
   }, [studentId]);
+
+  const handleDelete = () => {
+  axios
+    .delete(`${API_URL}/api/students/${studentId}`)
+    .then(() => {
+      navigate("/students");
+    })
+    .catch((error) => console.log(error));
+};
+
   
   if (loading) return <div>Loading...</div>;
 
@@ -77,13 +89,21 @@ function StudentDetailsPage() {
               </p>
               )}
             </div>
-            <div className="mt-4">
-              <Link to={`/students/edit/${student._id}`}>
-                <button className="text-white px-4 py-2 rounded bg-green-500 hover:bg-green-600 transition duration-300 ease-in-out">
-                  Edit
-                </button>
-              </Link>
-            </div>
+            <div className="mt-4 flex gap-4">
+  <Link to={`/students/edit/${student._id}`}>
+    <button className="text-white px-4 py-2 rounded bg-green-500 hover:bg-green-600 transition duration-300 ease-in-out">
+      Edit
+    </button>
+  </Link>
+
+  <button
+    onClick={handleDelete}
+    className="text-white px-4 py-2 rounded bg-red-500 hover:bg-red-600 transition duration-300 ease-in-out"
+  >
+    Delete
+  </button>
+</div>
+
           </>
         )}
       </div>
