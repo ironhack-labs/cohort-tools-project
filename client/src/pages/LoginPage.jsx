@@ -3,10 +3,8 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 
-
 // Import the string from the .env with URL of the API/server - http://localhost:5005
 const API_URL = import.meta.env.VITE_API_URL;
-
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -34,7 +32,11 @@ function LoginPage() {
         navigate("/");
       })
       .catch((error) => {
-        const errorDescription = error.response.data.message;
+        console.error("Login error:", error);
+        const errorDescription =
+          error.response?.data?.message ||
+          error.response?.data?.errorMessage ||
+          "Login failed";
         setErrorMessage(errorDescription);
       });
   };

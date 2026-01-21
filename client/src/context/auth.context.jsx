@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-
 // Import the string from the .env with URL of the API/server - http://localhost:5005
 const API_URL = import.meta.env.VITE_API_URL;
-
 
 const AuthContext = React.createContext();
 
@@ -31,22 +29,22 @@ function AuthProviderWrapper(props) {
         })
         .then((response) => {
           // If the server verifies that JWT token is valid
-          const user = response.data;
+          const user = response.data.payload;
           // Update state variables
           setIsLoggedIn(true);
           setIsLoading(false);
           setUser(user);
         })
         .catch((error) => {
-          if (error) {
-            setAuthError(error.response.data.message);
-            return;
-          }
+          console.error("Auth verification error:", error);
           // If the server sends an error response (invalid token)
           // Update state variables
           setIsLoggedIn(false);
           setIsLoading(false);
           setUser(null);
+          setAuthError(
+            error.response?.data?.message || "Authentication failed"
+          );
         });
     } else {
       // If the token is not available

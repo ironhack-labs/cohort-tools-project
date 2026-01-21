@@ -13,7 +13,9 @@
     "axios": "^1.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.11.2"
+    "react-router-dom": "^6.11.2",
+    "swagger-autogen": "^2.23.7",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",

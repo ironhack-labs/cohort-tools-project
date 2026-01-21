@@ -1,444 +1,810 @@
 <!DOCTYPE html>
 
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <title>Cohort Tools API</title>
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="mobile-web-app-capable" content="yes">
-    <title>
-        Cohort Tools API
-    </title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w="
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0="
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"
+      integrity="sha256-3iu9jgsy9TpTwXKb7bNQzqWekRX7pPK+2OLj3R922fo="
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.min.css"
+      integrity="sha256-QiWfLIsCT02Sdwkogf6YMiQlj4NE84MKkzEMkZnMGdg="
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css"
+      integrity="sha256-vtR0hSWRc3Tb26iuN2oZHt3KRUomwTufNIf5/4oeCyg="
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/css/docs.css" />
+  </head>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" integrity="sha256-3iu9jgsy9TpTwXKb7bNQzqWekRX7pPK+2OLj3R922fo=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.min.css" integrity="sha256-QiWfLIsCT02Sdwkogf6YMiQlj4NE84MKkzEMkZnMGdg=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css" integrity="sha256-vtR0hSWRc3Tb26iuN2oZHt3KRUomwTufNIf5/4oeCyg=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="/css/docs.css">
-</head>
-
-<body>
-    <div id="doc" class="markdown-body container-fluid comment-inner comment-enabled" data-hard-breaks="true"><div class="title-tags-preview"><h1 data-toggle="tooltip" data-placement="bottom" data-container=".navbar-default" data-offset="0,5" data-original-title="Title last changed by Uros Cirkovic at 02/08/2023, 18:06:22" class="font-bold text-19 leading-120 !mt-0 text-zinc-800" id="API-Documentation" data-id="API-Documentation"><a class="anchor hidden-xs" href="#API-Documentation" title="API-Documentation"><span class="octicon octicon-link"></span></a>Cohort Tools API</h1><div class="flex flex-wrap gap-1 mb-4"></div></div><h2 id="API-Documentation1" data-id="API-Documentation"><a class="anchor hidden-xs" href="#API-Documentation1" title="API-Documentation1"><span class="octicon octicon-link"></span></a><span>API Documentation</span></h2><p><span>This documentation provides an overview of the available routes and data models for the Cohort Tools API.</span></p><p><span>Throughout the project, you should use this documentation as a reference and a guide. Refer to it whenever you need information or more details on how to implement the routes or model your database.</span></p><br><h2 id="Routes" data-id="Routes"><a class="anchor hidden-xs" href="#Routes" title="Routes"><span class="octicon octicon-link"></span></a><span>Routes</span></h2><p><span>In this section, you will find detailed information about the different routes available in the API.</span><br>
-<span>The API offers a variety of routes to work with </span><em><span>cohort</span></em><span> and </span><em><span>student</span></em><span> documents. Each route is associated with a specific HTTP verb and URL, allowing you to perform CRUD (Create, Read, Update, and Delete) actions on the data.</span></p><br><h4 id="Cohort-routes" data-id="Cohort-routes"><a class="anchor hidden-xs" href="#Cohort-routes" title="Cohort-routes"><span class="octicon octicon-link"></span></a><span>Cohort routes</span></h4><table>
-<thead>
-<tr>
-<th><span>HTTP verb</span></th>
-<th><span>URL</span></th>
-<th><span>Request body</span></th>
-<th><span>Action</span></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>GET</code></td>
-<td><code>/api/cohorts</code></td>
-<td><span>(empty)</span></td>
-<td><span>Returns all the cohorts in JSON format</span></td>
-</tr>
-<tr>
-<td><code>GET</code></td>
-<td><code>/api/cohorts/:cohortId</code></td>
-<td><span>(empty)</span></td>
-<td><span>Returns the specified cohort by id</span></td>
-</tr>
-<tr>
-<td><code>POST</code></td>
-<td><code>/api/cohorts</code></td>
-<td><span>JSON</span></td>
-<td><span>Creates a new cohort</span></td>
-</tr>
-<tr>
-<td><code>PUT </code></td>
-<td><code>/api/cohorts/:cohortId</code></td>
-<td><span>JSON</span></td>
-<td><span>Updates the specified cohort by id</span></td>
-</tr>
-<tr>
-<td><code>DELETE</code></td>
-<td><code>/api/cohorts/:cohortId</code></td>
-<td><span>(empty)</span></td>
-<td><span>Deletes the specified cohort by id</span></td>
-</tr>
-</tbody>
-</table><br><h4 id="Student-routes" data-id="Student-routes"><a class="anchor hidden-xs" href="#Student-routes" title="Student-routes"><span class="octicon octicon-link"></span></a><span>Student routes</span></h4><table>
-<thead>
-<tr>
-<th><span>HTTP verb</span></th>
-<th><span>URL</span></th>
-<th><span>Request body</span></th>
-<th><span>Action</span></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>GET</code></td>
-<td><code>/api/students</code></td>
-<td><span>(empty)</span></td>
-<td><span>Returns all the students in JSON format</span></td>
-</tr>
-<tr>
-<td><code>GET</code></td>
-<td><code>/api/students/cohort/:cohortId</code></td>
-<td><span>(empty)</span></td>
-<td><span>Returns all the students of a specified cohort in JSON format</span></td>
-</tr>
-<tr>
-<td><code>GET</code></td>
-<td><code>/api/students/:studentId</code></td>
-<td><span>(empty)</span></td>
-<td><span>Returns the specified student by id</span></td>
-</tr>
-<tr>
-<td><code>POST</code></td>
-<td><code>/api/students</code></td>
-<td><span>JSON</span></td>
-<td><span>Creates a new student </span><strong><span>with their respective cohort id</span></strong></td>
-</tr>
-<tr>
-<td><code>PUT</code></td>
-<td><code>/api/students/:studentId</code></td>
-<td><span>JSON</span></td>
-<td><span>Updates the specified student by id</span></td>
-</tr>
-<tr>
-<td><code>DELETE</code></td>
-<td><code>/api/students/:studentId</code></td>
-<td><span>(empty)</span></td>
-<td><span>Deletes the specified cohort by id</span></td>
-</tr>
-</tbody>
-</table><hr><br><h2 id="Models" data-id="Models"><a class="anchor hidden-xs" href="#Models" title="Models"><span class="octicon octicon-link"></span></a><span>Models</span></h2><p><span>The </span><em><span>Models</span></em><span> section holds information about the data models for your database. It outlines the structure of the documents in the database, providing you with a clear understanding of how your data should be organized.</span></p><br><h4 id="Cohort-Model" data-id="Cohort-Model"><a class="anchor hidden-xs" href="#Cohort-Model" title="Cohort-Model"><span class="octicon octicon-link"></span></a><span>Cohort Model</span></h4><table>
-<thead>
-<tr>
-<th><span>Field</span></th>
-<th><span>Data Type</span></th>
-<th><span>Description</span></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>cohortSlug</code></td>
-<td><em><code>String</code></em></td>
-<td><span>Unique identifier for the cohort. Required.</span></td>
-</tr>
-<tr>
-<td><code>cohortName</code></td>
-<td><em><code>String</code></em></td>
-<td><span>Name of the cohort. Required.</span></td>
-</tr>
-<tr>
-<td><code>program</code></td>
-<td><em><code>String</code></em></td>
-<td><span>Program/course name. Allowed values: "Web Dev", "UX/UI", "Data Analytics", "Cybersecurity".</span></td>
-</tr>
-<tr>
-<td><code>format</code></td>
-<td><em><code>String</code></em></td>
-<td><span>Format of the cohort. Allowed values: "Full Time", "Part Time".</span></td>
-</tr>
-<tr>
-<td><code>campus</code></td>
-<td><em><code>String</code></em></td>
-<td><span>Campus location. Allowed values: "Madrid", "Barcelona", "Miami", "Paris", "Berlin", "Amsterdam", "Lisbon", "Remote".</span></td>
-</tr>
-<tr>
-<td><code>startDate</code></td>
-<td><em><code>Date</code></em></td>
-<td><span>Start date of the cohort. 
-<br>Default value: Current date.</span></td>
-</tr>
-<tr>
-<td><code>endDate</code></td>
-<td><em><code>Date</code></em></td>
-<td><span>End date of the cohort.</span></td>
-</tr>
-<tr>
-<td><code>inProgress</code></td>
-<td><em><code>Boolean</code></em></td>
-<td><span>Indicates if the cohort is currently in progress. 
-<br>Default value: false.</span></td>
-</tr>
-<tr>
-<td><code>programManager</code></td>
-<td><em><code>String</code></em></td>
-<td><span>Name of the program manager. Required.</span></td>
-</tr>
-<tr>
-<td><code>leadTeacher</code></td>
-<td><em><code>String</code></em></td>
-<td><span>Name of the lead teacher. Required.</span></td>
-</tr>
-<tr>
-<td><code>totalHours</code></td>
-<td><em><code>Number</code></em></td>
-<td><span>Total hours of the cohort program. 
-<br>Default value: 360.</span></td>
-</tr>
-</tbody>
-</table><br><h4 id="Student-Model" data-id="Student-Model"><a class="anchor hidden-xs" href="#Student-Model" title="Student-Model"><span class="octicon octicon-link"></span></a><span>Student Model</span></h4><table>
-<thead>
-<tr>
-<th><span>Field</span></th>
-<th><span>Data Type</span></th>
-<th><span>Description</span></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>firstName</code></td>
-<td><em><code>String</code></em></td>
-<td><span>First name of the student. Required.</span></td>
-</tr>
-<tr>
-<td><code>lastName</code></td>
-<td><em><code>String</code></em></td>
-<td><span>Last name of the student. Required.</span></td>
-</tr>
-<tr>
-<td><code>email</code></td>
-<td><em><code>String</code></em></td>
-<td><span>Email address of the student. Required, unique.</span></td>
-</tr>
-<tr>
-<td><code>phone</code></td>
-<td><em><code>String</code></em></td>
-<td><span>Phone number of the student. Required.</span></td>
-</tr>
-<tr>
-<td><code>linkedinUrl</code></td>
-<td><em><code>String</code></em></td>
-<td><span>URL to the student’s LinkedIn profile. 
-<br>Default value: Empty string.</span></td>
-</tr>
-<tr>
-<td><code>languages</code></td>
-<td><em><code>Array</code></em><span> of Strings</span></td>
-<td><span>Spoken languages of the student. Allowed values: "English", "Spanish", "French", "German", "Portuguese", "Dutch", "Other".</span></td>
-</tr>
-<tr>
-<td><code>program</code></td>
-<td><em><code>String</code></em></td>
-<td><span>Type of program the student is enrolled in. Allowed values: "Web Dev", "UX/UI", "Data Analytics", "Cybersecurity".</span></td>
-</tr>
-<tr>
-<td><code>background</code></td>
-<td><em><code>String</code></em></td>
-<td><span>Background information about the student. 
-<br>Default value: Empty.</span></td>
-</tr>
-<tr>
-<td><code>image</code></td>
-<td><em><code>String</code></em></td>
-<td><span>URL to the student’s profile image. 
-<br>Default value: </span><a href="https://i.imgur.com/r8bo8u7.png" target="_blank" rel="noopener"><span>https://i.imgur.com/r8bo8u7.png</span></a><span> .</span></td>
-</tr>
-<tr>
-<td><code>cohort</code></td>
-<td><em><code>ObjectId</code></em><span>,</span></td>
-<td><span>Reference </span><em><span>_id</span></em><span> of the cohort the student belongs to.</span></td>
-</tr>
-<tr>
-<td><code>projects</code></td>
-<td><em><code>Array</code></em></td>
-<td><span>Array of the student’s projects.</span></td>
-</tr>
-</tbody>
-</table><br></div>
-    <div class="ui-toc dropup unselectable hidden-print" style="display:none;">
-        <div class="pull-right dropdown">
-            <a id="tocLabel" class="ui-toc-label btn btn-default" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="Table of content">
-                <i class="fa fa-bars"></i>
-            </a>
-            <ul id="ui-toc" class="ui-toc-dropdown dropdown-menu" aria-labelledby="tocLabel">
-                <div class="toc"><ul class="nav">
-<li class="invisable-node"><ul class="nav">
-<li class=""><a href="#API-Documentation1" title="API Documentation">API Documentation</a></li>
-<li class=""><a href="#Routes" title="Routes">Routes</a><ul class="nav">
-<li class=""><a href="#Cohort-routes" title="Cohort routes">Cohort routes</a></li>
-<li><a href="#Student-routes" title="Student routes">Student routes</a></li>
-</ul>
-</li>
-<li><a href="#Models" title="Models">Models</a><ul class="nav">
-<li><a href="#Cohort-Model" title="Cohort Model">Cohort Model</a></li>
-<li><a href="#Student-Model" title="Student Model">Student Model</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+  <body>
+    <div
+      id="doc"
+      class="markdown-body container-fluid comment-inner comment-enabled"
+      data-hard-breaks="true"
+    >
+      <div class="title-tags-preview">
+        <h1
+          data-toggle="tooltip"
+          data-placement="bottom"
+          data-container=".navbar-default"
+          data-offset="0,5"
+          data-original-title="Title last changed by Uros Cirkovic at 02/08/2023, 18:06:22"
+          class="font-bold text-19 leading-120 !mt-0 text-zinc-800"
+          id="API-Documentation"
+          data-id="API-Documentation"
+        >
+          <a
+            class="anchor hidden-xs"
+            href="#API-Documentation"
+            title="API-Documentation"
+            ><span class="octicon octicon-link"></span></a
+          >Cohort Tools API
+        </h1>
+        <div class="flex flex-wrap gap-1 mb-4"></div>
+      </div>
+      <h2 id="API-Documentation1" data-id="API-Documentation">
+        <a
+          class="anchor hidden-xs"
+          href="#API-Documentation1"
+          title="API-Documentation1"
+          ><span class="octicon octicon-link"></span></a
+        ><span>API Documentation</span>
+      </h2>
+      <p>
+        <span
+          >This documentation provides an overview of the available routes and
+          data models for the Cohort Tools API.</span
+        >
+      </p>
+      <p>
+        <span
+          >Throughout the project, you should use this documentation as a
+          reference and a guide. Refer to it whenever you need information or
+          more details on how to implement the routes or model your
+          database.</span
+        >
+      </p>
+      <br />
+      <h2 id="Routes" data-id="Routes">
+        <a class="anchor hidden-xs" href="#Routes" title="Routes"
+          ><span class="octicon octicon-link"></span></a
+        ><span>Routes</span>
+      </h2>
+      <p>
+        <span
+          >In this section, you will find detailed information about the
+          different routes available in the API.</span
+        ><br />
+        <span>The API offers a variety of routes to work with </span
+        ><em><span>cohort</span></em
+        ><span> and </span><em><span>student</span></em
+        ><span>
+          documents. Each route is associated with a specific HTTP verb and URL,
+          allowing you to perform CRUD (Create, Read, Update, and Delete)
+          actions on the data.</span
+        >
+      </p>
+      <br />
+      <h4 id="Cohort-routes" data-id="Cohort-routes">
+        <a class="anchor hidden-xs" href="#Cohort-routes" title="Cohort-routes"
+          ><span class="octicon octicon-link"></span></a
+        ><span>Cohort routes</span>
+      </h4>
+      <table>
+        <thead>
+          <tr>
+            <th><span>HTTP verb</span></th>
+            <th><span>URL</span></th>
+            <th><span>Request body</span></th>
+            <th><span>Action</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/cohorts</code></td>
+            <td><span>(empty)</span></td>
+            <td><span>Returns all the cohorts in JSON format</span></td>
+          </tr>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/cohorts/:cohortId</code></td>
+            <td><span>(empty)</span></td>
+            <td><span>Returns the specified cohort by id</span></td>
+          </tr>
+          <tr>
+            <td><code>POST</code></td>
+            <td><code>/api/cohorts</code></td>
+            <td><span>JSON</span></td>
+            <td><span>Creates a new cohort</span></td>
+          </tr>
+          <tr>
+            <td><code>PUT </code></td>
+            <td><code>/api/cohorts/:cohortId</code></td>
+            <td><span>JSON</span></td>
+            <td><span>Updates the specified cohort by id</span></td>
+          </tr>
+          <tr>
+            <td><code>DELETE</code></td>
+            <td><code>/api/cohorts/:cohortId</code></td>
+            <td><span>(empty)</span></td>
+            <td><span>Deletes the specified cohort by id</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+      <h4 id="Student-routes" data-id="Student-routes">
+        <a
+          class="anchor hidden-xs"
+          href="#Student-routes"
+          title="Student-routes"
+          ><span class="octicon octicon-link"></span></a
+        ><span>Student routes</span>
+      </h4>
+      <table>
+        <thead>
+          <tr>
+            <th><span>HTTP verb</span></th>
+            <th><span>URL</span></th>
+            <th><span>Request body</span></th>
+            <th><span>Action</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/students</code></td>
+            <td><span>(empty)</span></td>
+            <td><span>Returns all the students in JSON format</span></td>
+          </tr>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/students/cohort/:cohortId</code></td>
+            <td><span>(empty)</span></td>
+            <td>
+              <span
+                >Returns all the students of a specified cohort in JSON
+                format</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><code>GET</code></td>
+            <td><code>/api/students/:studentId</code></td>
+            <td><span>(empty)</span></td>
+            <td><span>Returns the specified student by id</span></td>
+          </tr>
+          <tr>
+            <td><code>POST</code></td>
+            <td><code>/api/students</code></td>
+            <td><span>JSON</span></td>
+            <td>
+              <span>Creates a new student </span
+              ><strong><span>with their respective cohort id</span></strong>
+            </td>
+          </tr>
+          <tr>
+            <td><code>PUT</code></td>
+            <td><code>/api/students/:studentId</code></td>
+            <td><span>JSON</span></td>
+            <td><span>Updates the specified student by id</span></td>
+          </tr>
+          <tr>
+            <td><code>DELETE</code></td>
+            <td><code>/api/students/:studentId</code></td>
+            <td><span>(empty)</span></td>
+            <td><span>Deletes the specified cohort by id</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <hr />
+      <br />
+      <h2 id="Models" data-id="Models">
+        <a class="anchor hidden-xs" href="#Models" title="Models"
+          ><span class="octicon octicon-link"></span></a
+        ><span>Models</span>
+      </h2>
+      <p>
+        <span>The </span><em><span>Models</span></em
+        ><span>
+          section holds information about the data models for your database. It
+          outlines the structure of the documents in the database, providing you
+          with a clear understanding of how your data should be organized.</span
+        >
+      </p>
+      <br />
+      <h4 id="Cohort-Model" data-id="Cohort-Model">
+        <a class="anchor hidden-xs" href="#Cohort-Model" title="Cohort-Model"
+          ><span class="octicon octicon-link"></span></a
+        ><span>Cohort Model</span>
+      </h4>
+      <table>
+        <thead>
+          <tr>
+            <th><span>Field</span></th>
+            <th><span>Data Type</span></th>
+            <th><span>Description</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>cohortSlug</code></td>
+            <td>
+              <em><code>String</code></em>
+            </td>
+            <td><span>Unique identifier for the cohort. Required.</span></td>
+          </tr>
+          <tr>
+            <td><code>cohortName</code></td>
+            <td>
+              <em><code>String</code></em>
+            </td>
+            <td><span>Name of the cohort. Required.</span></td>
+          </tr>
+          <tr>
+            <td><code>program</code></td>
+            <td>
+              <em><code>String</code></em>
+            </td>
+            <td>
+              <span
+                >Program/course name. Allowed values: "Web Dev", "UX/UI", "Data
+                Analytics", "Cybersecurity".</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><code>format</code></td>
+            <td>
+              <em><code>String</code></em>
+            </td>
+            <td>
+              <span
+                >Format of the cohort. Allowed values: "Full Time", "Part
+                Time".</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><code>campus</code></td>
+            <td>
+              <em><code>String</code></em>
+            </td>
+            <td>
+              <span
+                >Campus location. Allowed values: "Madrid", "Barcelona",
+                "Miami", "Paris", "Berlin", "Amsterdam", "Lisbon",
+                "Remote".</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><code>startDate</code></td>
+            <td>
+              <em><code>Date</code></em>
+            </td>
+            <td>
+              <span
+                >Start date of the cohort. <br />Default value: Current
+                date.</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><code>endDate</code></td>
+            <td>
+              <em><code>Date</code></em>
+            </td>
+            <td><span>End date of the cohort.</span></td>
+          </tr>
+          <tr>
+            <td><code>inProgress</code></td>
+            <td>
+              <em><code>Boolean</code></em>
+            </td>
+            <td>
+              <span
+                >Indicates if the cohort is currently in progress. <br />Default
+                value: false.</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><code>programManager</code></td>
+            <td>
+              <em><code>String</code></em>
+            </td>
+            <td><span>Name of the program manager. Required.</span></td>
+          </tr>
+          <tr>
+            <td><code>leadTeacher</code></td>
+            <td>
+              <em><code>String</code></em>
+            </td>
+            <td><span>Name of the lead teacher. Required.</span></td>
+          </tr>
+          <tr>
+            <td><code>totalHours</code></td>
+            <td>
+              <em><code>Number</code></em>
+            </td>
+            <td>
+              <span
+                >Total hours of the cohort program. <br />Default value:
+                360.</span
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+      <h4 id="Student-Model" data-id="Student-Model">
+        <a class="anchor hidden-xs" href="#Student-Model" title="Student-Model"
+          ><span class="octicon octicon-link"></span></a
+        ><span>Student Model</span>
+      </h4>
+      <table>
+        <thead>
+          <tr>
+            <th><span>Field</span></th>
+            <th><span>Data Type</span></th>
+            <th><span>Description</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>firstName</code></td>
+            <td>
+              <em><code>String</code></em>
+            </td>
+            <td><span>First name of the student. Required.</span></td>
+          </tr>
+          <tr>
+            <td><code>lastName</code></td>
+            <td>
+              <em><code>String</code></em>
+            </td>
+            <td><span>Last name of the student. Required.</span></td>
+          </tr>
+          <tr>
+            <td><code>email</code></td>
+            <td>
+              <em><code>String</code></em>
+            </td>
+            <td>
+              <span>Email address of the student. Required, unique.</span>
+            </td>
+          </tr>
+          <tr>
+            <td><code>phone</code></td>
+            <td>
+              <em><code>String</code></em>
+            </td>
+            <td><span>Phone number of the student. Required.</span></td>
+          </tr>
+          <tr>
+            <td><code>linkedinUrl</code></td>
+            <td>
+              <em><code>String</code></em>
+            </td>
+            <td>
+              <span
+                >URL to the student’s LinkedIn profile. <br />Default value:
+                Empty string.</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><code>languages</code></td>
+            <td>
+              <em><code>Array</code></em
+              ><span> of Strings</span>
+            </td>
+            <td>
+              <span
+                >Spoken languages of the student. Allowed values: "English",
+                "Spanish", "French", "German", "Portuguese", "Dutch",
+                "Other".</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><code>program</code></td>
+            <td>
+              <em><code>String</code></em>
+            </td>
+            <td>
+              <span
+                >Type of program the student is enrolled in. Allowed values:
+                "Web Dev", "UX/UI", "Data Analytics", "Cybersecurity".</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><code>background</code></td>
+            <td>
+              <em><code>String</code></em>
+            </td>
+            <td>
+              <span
+                >Background information about the student. <br />Default value:
+                Empty.</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <td><code>image</code></td>
+            <td>
+              <em><code>String</code></em>
+            </td>
+            <td>
+              <span
+                >URL to the student’s profile image. <br />Default value: </span
+              ><a
+                href="https://i.imgur.com/r8bo8u7.png"
+                target="_blank"
+                rel="noopener"
+                ><span>https://i.imgur.com/r8bo8u7.png</span></a
+              ><span> .</span>
+            </td>
+          </tr>
+          <tr>
+            <td><code>cohort</code></td>
+            <td>
+              <em><code>ObjectId</code></em
+              ><span>,</span>
+            </td>
+            <td>
+              <span>Reference </span><em><span>_id</span></em
+              ><span> of the cohort the student belongs to.</span>
+            </td>
+          </tr>
+          <tr>
+            <td><code>projects</code></td>
+            <td>
+              <em><code>Array</code></em>
+            </td>
+            <td><span>Array of the student’s projects.</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+    <div class="ui-toc dropup unselectable hidden-print" style="display: none">
+      <div class="pull-right dropdown">
+        <a
+          id="tocLabel"
+          class="ui-toc-label btn btn-default"
+          data-toggle="dropdown"
+          href="#"
+          role="button"
+          aria-haspopup="true"
+          aria-expanded="false"
+          title="Table of content"
+        >
+          <i class="fa fa-bars"></i>
+        </a>
+        <ul
+          id="ui-toc"
+          class="ui-toc-dropdown dropdown-menu"
+          aria-labelledby="tocLabel"
+        >
+          <div class="toc">
+            <ul class="nav">
+              <li class="invisable-node">
+                <ul class="nav">
+                  <li class="">
+                    <a href="#API-Documentation1" title="API Documentation"
+                      >API Documentation</a
+                    >
+                  </li>
+                  <li class="">
+                    <a href="#Routes" title="Routes">Routes</a>
+                    <ul class="nav">
+                      <li class="">
+                        <a href="#Cohort-routes" title="Cohort routes"
+                          >Cohort routes</a
+                        >
+                      </li>
+                      <li>
+                        <a href="#Student-routes" title="Student routes"
+                          >Student routes</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="#Models" title="Models">Models</a>
+                    <ul class="nav">
+                      <li>
+                        <a href="#Cohort-Model" title="Cohort Model"
+                          >Cohort Model</a
+                        >
+                      </li>
+                      <li>
+                        <a href="#Student-Model" title="Student Model"
+                          >Student Model</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
             </ul>
-        </div>
+          </div>
+          <div class="toc-menu">
+            <a class="expand-toggle" href="#">Expand all</a
+            ><a class="back-to-top" href="#">Back to top</a
+            ><a class="go-to-bottom" href="#">Go to bottom</a>
+          </div>
+        </ul>
+      </div>
     </div>
-    <div id="ui-toc-affix" class="ui-affix-toc ui-toc-dropdown unselectable hidden-print" data-spy="affix" style="top:17px;display:none;" null null>
-        <div class="toc"><ul class="nav">
-<li class="invisable-node"><ul class="nav">
-<li class=""><a href="#API-Documentation1" title="API Documentation">API Documentation</a></li>
-<li class=""><a href="#Routes" title="Routes">Routes</a><ul class="nav">
-<li class=""><a href="#Cohort-routes" title="Cohort routes">Cohort routes</a></li>
-<li><a href="#Student-routes" title="Student routes">Student routes</a></li>
-</ul>
-</li>
-<li><a href="#Models" title="Models">Models</a><ul class="nav">
-<li><a href="#Cohort-Model" title="Cohort Model">Cohort Model</a></li>
-<li><a href="#Student-Model" title="Student Model">Student Model</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div><div class="toc-menu"><a class="expand-toggle" href="#">Expand all</a><a class="back-to-top" href="#">Back to top</a><a class="go-to-bottom" href="#">Go to bottom</a></div>
+    <div
+      id="ui-toc-affix"
+      class="ui-affix-toc ui-toc-dropdown unselectable hidden-print"
+      data-spy="affix"
+      style="top: 17px; display: none"
+      null
+      null
+    >
+      <div class="toc">
+        <ul class="nav">
+          <li class="invisable-node">
+            <ul class="nav">
+              <li class="">
+                <a href="#API-Documentation1" title="API Documentation"
+                  >API Documentation</a
+                >
+              </li>
+              <li class="">
+                <a href="#Routes" title="Routes">Routes</a>
+                <ul class="nav">
+                  <li class="">
+                    <a href="#Cohort-routes" title="Cohort routes"
+                      >Cohort routes</a
+                    >
+                  </li>
+                  <li>
+                    <a href="#Student-routes" title="Student routes"
+                      >Student routes</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a href="#Models" title="Models">Models</a>
+                <ul class="nav">
+                  <li>
+                    <a href="#Cohort-Model" title="Cohort Model"
+                      >Cohort Model</a
+                    >
+                  </li>
+                  <li>
+                    <a href="#Student-Model" title="Student Model"
+                      >Student Model</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="toc-menu">
+        <a class="expand-toggle" href="#">Expand all</a
+        ><a class="back-to-top" href="#">Back to top</a
+        ><a class="go-to-bottom" href="#">Go to bottom</a>
+      </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.6.0/gist-embed.min.js" integrity="sha256-KyF2D6xPIJUW5sUDSs93vWyZm+1RzIpKCexxElmxl8g=" crossorigin="anonymous" defer></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"
+      integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8="
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.6.0/gist-embed.min.js"
+      integrity="sha256-KyF2D6xPIJUW5sUDSs93vWyZm+1RzIpKCexxElmxl8g="
+      crossorigin="anonymous"
+      defer
+    ></script>
     <script>
-        var markdown = $(".markdown-body");
-        //smooth all hash trigger scrolling
-        function smoothHashScroll() {
-            var hashElements = $("a[href^='#']").toArray();
-            for (var i = 0; i < hashElements.length; i++) {
-                var element = hashElements[i];
-                var $element = $(element);
-                var hash = element.hash;
-                if (hash) {
-                    $element.on('click', function (e) {
-                        // store hash
-                        var hash = this.hash;
-                        if ($(hash).length <= 0) return;
-                        // prevent default anchor click behavior
-                        e.preventDefault();
-                        // animate
-                        $('body, html').stop(true, true).animate({
-                            scrollTop: $(hash).offset().top
-                        }, 100, "linear", function () {
-                            // when done, add hash to url
-                            // (default click behaviour)
-                            window.location.hash = hash;
-                        });
-                    });
-                }
-            }
-        }
-
-        smoothHashScroll();
-        var toc = $('.ui-toc');
-        var tocAffix = $('.ui-affix-toc');
-        var tocDropdown = $('.ui-toc-dropdown');
-        //toc
-        tocDropdown.click(function (e) {
-            e.stopPropagation();
-        });
-
-        var enoughForAffixToc = true;
-
-        function generateScrollspy() {
-            $(document.body).scrollspy({
-                target: ''
+      var markdown = $(".markdown-body");
+      //smooth all hash trigger scrolling
+      function smoothHashScroll() {
+        var hashElements = $("a[href^='#']").toArray();
+        for (var i = 0; i < hashElements.length; i++) {
+          var element = hashElements[i];
+          var $element = $(element);
+          var hash = element.hash;
+          if (hash) {
+            $element.on("click", function (e) {
+              // store hash
+              var hash = this.hash;
+              if ($(hash).length <= 0) return;
+              // prevent default anchor click behavior
+              e.preventDefault();
+              // animate
+              $("body, html")
+                .stop(true, true)
+                .animate(
+                  {
+                    scrollTop: $(hash).offset().top,
+                  },
+                  100,
+                  "linear",
+                  function () {
+                    // when done, add hash to url
+                    // (default click behaviour)
+                    window.location.hash = hash;
+                  }
+                );
             });
-            $(document.body).scrollspy('refresh');
-            if (enoughForAffixToc) {
-                toc.hide();
-                tocAffix.show();
-            } else {
-                tocAffix.hide();
-                toc.show();
-            }
-            $(document.body).scroll();
+          }
         }
+      }
 
-        function windowResize() {
-            //toc right
-            var paddingRight = parseFloat(markdown.css('padding-right'));
-            var right = ($(window).width() - (markdown.offset().left + markdown.outerWidth() - paddingRight));
-            toc.css('right', right + 'px');
-            //affix toc left
-            var newbool;
-            var rightMargin = (markdown.parent().outerWidth() - markdown.outerWidth()) / 2;
-            //for ipad or wider device
-            if (rightMargin >= 133) {
-                newbool = true;
-                var affixLeftMargin = (tocAffix.outerWidth() - tocAffix.width()) / 2;
-                var left = markdown.offset().left + markdown.outerWidth() - affixLeftMargin;
-                tocAffix.css('left', left + 'px');
-            } else {
-                newbool = false;
-            }
-            if (newbool != enoughForAffixToc) {
-                enoughForAffixToc = newbool;
-                generateScrollspy();
-            }
+      smoothHashScroll();
+      var toc = $(".ui-toc");
+      var tocAffix = $(".ui-affix-toc");
+      var tocDropdown = $(".ui-toc-dropdown");
+      //toc
+      tocDropdown.click(function (e) {
+        e.stopPropagation();
+      });
+
+      var enoughForAffixToc = true;
+
+      function generateScrollspy() {
+        $(document.body).scrollspy({
+          target: "",
+        });
+        $(document.body).scrollspy("refresh");
+        if (enoughForAffixToc) {
+          toc.hide();
+          tocAffix.show();
+        } else {
+          tocAffix.hide();
+          toc.show();
         }
-        $(window).resize(function () {
-            windowResize();
-        });
-        $(document).ready(function () {
-            windowResize();
-            generateScrollspy();
-        });
+        $(document.body).scroll();
+      }
 
-        //remove hash
-        function removeHash() {
-            window.location.hash = '';
+      function windowResize() {
+        //toc right
+        var paddingRight = parseFloat(markdown.css("padding-right"));
+        var right =
+          $(window).width() -
+          (markdown.offset().left + markdown.outerWidth() - paddingRight);
+        toc.css("right", right + "px");
+        //affix toc left
+        var newbool;
+        var rightMargin =
+          (markdown.parent().outerWidth() - markdown.outerWidth()) / 2;
+        //for ipad or wider device
+        if (rightMargin >= 133) {
+          newbool = true;
+          var affixLeftMargin = (tocAffix.outerWidth() - tocAffix.width()) / 2;
+          var left =
+            markdown.offset().left + markdown.outerWidth() - affixLeftMargin;
+          tocAffix.css("left", left + "px");
+        } else {
+          newbool = false;
         }
+        if (newbool != enoughForAffixToc) {
+          enoughForAffixToc = newbool;
+          generateScrollspy();
+        }
+      }
+      $(window).resize(function () {
+        windowResize();
+      });
+      $(document).ready(function () {
+        windowResize();
+        generateScrollspy();
+      });
 
-        var backtotop = $('.back-to-top');
-        var gotobottom = $('.go-to-bottom');
+      //remove hash
+      function removeHash() {
+        window.location.hash = "";
+      }
 
-        backtotop.click(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (scrollToTop)
-                scrollToTop();
-            removeHash();
-        });
-        gotobottom.click(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (scrollToBottom)
-                scrollToBottom();
-            removeHash();
-        });
+      var backtotop = $(".back-to-top");
+      var gotobottom = $(".go-to-bottom");
 
-        var toggle = $('.expand-toggle');
-        var tocExpand = false;
+      backtotop.click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (scrollToTop) scrollToTop();
+        removeHash();
+      });
+      gotobottom.click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (scrollToBottom) scrollToBottom();
+        removeHash();
+      });
 
+      var toggle = $(".expand-toggle");
+      var tocExpand = false;
+
+      checkExpandToggle();
+      toggle.click(function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        tocExpand = !tocExpand;
         checkExpandToggle();
-        toggle.click(function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            tocExpand = !tocExpand;
-            checkExpandToggle();
-        })
+      });
 
-        function checkExpandToggle () {
-            var toc = $('.ui-toc-dropdown .toc');
-            var toggle = $('.expand-toggle');
-            if (!tocExpand) {
-                toc.removeClass('expand');
-                toggle.text('Expand all');
-            } else {
-                toc.addClass('expand');
-                toggle.text('Collapse all');
-            }
+      function checkExpandToggle() {
+        var toc = $(".ui-toc-dropdown .toc");
+        var toggle = $(".expand-toggle");
+        if (!tocExpand) {
+          toc.removeClass("expand");
+          toggle.text("Expand all");
+        } else {
+          toc.addClass("expand");
+          toggle.text("Collapse all");
         }
+      }
 
-        function scrollToTop() {
-            $('body, html').stop(true, true).animate({
-                scrollTop: 0
-            }, 100, "linear");
-        }
+      function scrollToTop() {
+        $("body, html").stop(true, true).animate(
+          {
+            scrollTop: 0,
+          },
+          100,
+          "linear"
+        );
+      }
 
-        function scrollToBottom() {
-            $('body, html').stop(true, true).animate({
-                scrollTop: $(document.body)[0].scrollHeight
-            }, 100, "linear");
-        }
+      function scrollToBottom() {
+        $("body, html")
+          .stop(true, true)
+          .animate(
+            {
+              scrollTop: $(document.body)[0].scrollHeight,
+            },
+            100,
+            "linear"
+          );
+      }
     </script>
-</body>
-
+  </body>
 </html>
