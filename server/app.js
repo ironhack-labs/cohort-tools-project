@@ -38,66 +38,81 @@ app.get("/docs", (req, res) => {
 // --- COHORT ROUTES ---
 
 // GET /api/cohorts - Retrieve all cohorts
-app.get("/api/cohorts", async (req, res) => {
+app.get("/api/cohorts", async (req, res, next) => {
   try {
     const cohorts = await Cohort.find();
     res.status(200).json(cohorts);
   } catch (error) {
-    console.error("Error fetching cohorts:", error);
-    res.status(500).json({ message: "Failed to retrieve cohorts" });
+    error.status = 500;
+    error.message = "Failed to retrieve cohorts";
+    next(error);
   }
 });
 
 // POST /api/cohorts - Create a new cohort
-app.post("/api/cohorts", async (req, res) => {
+app.post("/api/cohorts", async (req, res, next) => {
   try {
     const newCohort = await Cohort.create(req.body);
     res.status(201).json(newCohort);
   } catch (error) {
-    console.error("Error creating cohort:", error);
-    res.status(500).json({ message: "Failed to create cohort" });
+    error.status = 500;
+    error.message = "Failed to create cohorts";
+    next(error);
   }
 });
 
 // GET /api/cohorts/:cohortId - Retrieve a specific cohort by id
-app.get("/api/cohorts/:cohortId", async (req, res) => {
+app.get("/api/cohorts/:cohortId", async (req, res, next) => {
   try {
     const cohort = await Cohort.findById(req.params.cohortId);
     if (!cohort) {
-      return res.status(404).json({ message: "Cohort not found" });
-    }
-    res.status(200).json(cohort);
-  } catch (error) {
-    console.error("Error fetching cohort:", error);
-    res.status(500).json({ message: "Failed to retrieve cohort" });
-  }
-});
+      const error = new Error("Cohort not found");
+      error.status = 404;
+      return next(error);
 
-// PUT /api/cohorts/:cohortId - Update a specific cohort by id
-app.put("/api/cohorts/:cohortId", async (req, res) => {
-  try {
-    const updatedCohort = await Cohort.findByIdAndUpdate(req.params.cohortId, req.body, { new: true });
-    if (!updatedCohort) {
-      return res.status(404).json({ message: "Cohort not found" });
     }
     res.status(200).json(updatedCohort);
   } catch (error) {
-    console.error("Error updating cohort:", error);
-    res.status(500).json({ message: "Failed to update cohort" });
+    error.status = 500;
+    error.message = "Failed to retrieve cohort";
+    next(error);
+  }
+  });
+
+// PUT /api/cohorts/:cohortId - Update a specific cohort by id
+app.put("/api/cohorts/:cohortId", async (req, res, next) => {
+  try {
+    const updatedCohort = await Cohort.findByIdAndUpdate(req.params.cohortId, req.body, { new: true });
+    if (!updatedCohort) {
+      const error = new Error("Cohort not found");
+      error.status = 404;
+      return next(error);
+
+    }
+    res.status(200).json(updatedCohort);
+  } catch (error) {
+    error.status = 500;
+    error.message = "Failed to update cohort";
+    next(error);
   }
 });
 
 // DELETE /api/cohorts/:cohortId - Delete a specific cohort by id
-app.delete("/api/cohorts/:cohortId", async (req, res) => {
+app.delete("/api/cohorts/:cohortId", async (req, res, next) => {
   try {
     const deletedCohort = await Cohort.findByIdAndDelete(req.params.cohortId);
     if (!deletedCohort) {
-      return res.status(404).json({ message: "Cohort not found" });
+      const error = new Error("Cohort not found");
+      error.status = 404;
+      return next(error);
+
     }
     res.status(204).send(); 
   } catch (error) {
-    console.error("Error deleting cohort:", error);
-    res.status(500).json({ message: "Failed to delete cohort" });
+    error.status = 500;
+    error.messgae ="Failed to delete cohort";
+    next(error);
+
   }
 });
 
@@ -105,79 +120,114 @@ app.delete("/api/cohorts/:cohortId", async (req, res) => {
 // --- STUDENT ROUTES ---
 
 // GET /api/students - Retrieve all students
-app.get("/api/students", async (req, res) => {
+app.get("/api/students", async (req, res, next) => {
   try {
     const students = await Student.find().populate("cohort");
     res.status(200).json(students);
   } catch (error) {
-    console.error("Error fetching students:", error);
-    res.status(500).json({ message: "Failed to retrieve students" });
+    error.status = 500;
+    error.message = "Failed to retrieve students";
+    next(error);
   }
 });
 
 // POST /api/students - Create a new student
-app.post("/api/students", async (req, res) => {
+app.post("/api/students", async (req, res, next) => {
   try {
     const newStudent = await Student.create(req.body);
     res.status(201).json(newStudent);
   } catch (error) {
-    console.error("Error creating student:", error);
-    res.status(500).json({ message: "Failed to create student" });
+    error.status = 500;
+    error.message = "Failed to create student";
+    next(error);
   }
 });
 
 // GET /api/students/cohort/:cohortId - Retrieve all students for a given cohort
-app.get("/api/students/cohort/:cohortId", async (req, res) => {
+app.get("/api/students/cohort/:cohortId", async (req, res, next) => {
   try {
     const students = await Student.find({ cohort: req.params.cohortId }).populate("cohort");
     res.status(200).json(students);
   } catch (error) {
-    console.error("Error fetching students by cohort:", error);
-    res.status(500).json({ message: "Failed to retrieve students for this cohort" });
+    error.status = 500;
+    error.message = "Failed to retrieve students for the cohort";
+    next(error);
   }
 });
 
 // GET /api/students/:studentId - Retrieve a specific student by id
-app.get("/api/students/:studentId", async (req, res) => {
+app.get("/api/students/:studentId", async (req, res, next) => {
   try {
     const student = await Student.findById(req.params.studentId).populate("cohort");
-    if (!student) {
-      return res.status(404).json({ message: "Student not found" });
+    if (!student) {const error = new Error ("Student not found");
+      error.status = 404;
+      return next(error);
     }
+      
     res.status(200).json(student);
+
   } catch (error) {
-    console.error("Error fetching student:", error);
-    res.status(500).json({ message: "Failed to retrieve student" });
+    error.status = 500;
+    error.message = "Failed to updatestudent";
+    next(error);
   }
 });
 
 // PUT /api/students/:studentId - Update a specific student by id
-app.put("/api/students/:studentId", async (req, res) => {
+app.put("/api/students/:studentId", async (req, res, next) => {
   try {
     const updatedStudent = await Student.findByIdAndUpdate(req.params.studentId, req.body, { new: true });
     if (!updatedStudent) {
-      return res.status(404).json({ message: "Student not found" });
+      const error = new Error ("Student not found");
+      error.status = 404;
+      return next(error);
     }
+      
     res.status(200).json(updatedStudent);
+
   } catch (error) {
-    console.error("Error updating student:", error);
-    res.status(500).json({ message: "Failed to update student" });
+    error.status = 500;
+    error.message = "Failed to delete student";
+    next(error);
   }
 });
 
 // DELETE /api/students/:studentId - Delete a specific student by id
-app.delete("/api/students/:studentId", async (req, res) => {
+app.delete("/api/students/:studentId", async (req, res, next) => {
   try {
     const deletedStudent = await Student.findByIdAndDelete(req.params.studentId);
     if (!deletedStudent) {
-      return res.status(404).json({ message: "Student not found" });
+      const error = new Error("Student not found");
+      error.status = 404;
+      return next(error);
     }
     res.status(204).send(); 
+
   } catch (error) {
-    console.error("Error deleting student:", error);
-    res.status(500).json({ message: "Failed to delete student" });
+    error.status = 500;
+    error.message = "Failed to delete student";
+    next(error);
   }
 });
+
+// =========================================================
+// ERROR HANDLING
+// =========================================================
+  //404 
+
+  app.use((req, res) => {
+    res.status(404).json ({
+      message: "Route not found"
+    });
+
+  app.use((error, req, res, next) => {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  });
+
+});
+
+
 
 
 // =========================================================
