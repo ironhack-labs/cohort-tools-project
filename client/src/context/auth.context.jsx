@@ -38,15 +38,14 @@ function AuthProviderWrapper(props) {
           setUser(user);
         })
         .catch((error) => {
-          if (error) {
-            setAuthError(error.response.data.message);
-            return;
-          }
-          // If the server sends an error response (invalid token)
-          // Update state variables
+          // Update state variables — always runs, whether or not there's a message to show
           setIsLoggedIn(false);
           setIsLoading(false);
           setUser(null);
+
+          if (error) {
+            setAuthError(error.response.data.message);
+          }
         });
     } else {
       // If the token is not available
