@@ -1,37 +1,45 @@
+try {
+  process.loadEnvFile()
+} catch (error) {
+  console.log("no .env found, using default variables if any")
+}
+
 const express = require("express");
-const morgan = require("morgan");
-const cookieParser = require("cookie-parser");
-const PORT = 5005;
-
-// STATIC DATA
-// Import the provided files with JSON data of students and cohorts here:
-// ...
-
-
-// INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
 const app = express();
+const helmet = require("helmet")
+const applyConfigs = require("./config/index.js")
+applyConfigs(app)
+const rateLimit = require("express-rate-limit")
+const limiter = rateLimit({
+  windowMs: 30 * 60 * 1000, // 30 minutes
+  max: 30
+})
 
 
-// MIDDLEWARE
-// Set up CORS middleware here:
-// ...
+app.use(limiter)
+app.use(helmet())
 
-app.use(express.json());
-app.use(morgan("dev"));
-app.use(express.static("public"));
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+require("./db/index.js")  // automatically looks for a file called index inside the folder.
 
 
-// ROUTES - https://expressjs.com/en/starter/basic-routing.html
-// Start working on the routes here:
-// ...
 app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
+// all the other routes
+const indexRouter = require("./routes/index.routes.js")
+app.use("/api", indexRouter)
 
-// START SERVER
+// Import the custom error handling middleware:
+const { errorHandler, notFoundHandler } = require('./middlewares/error.handling');
+
+// Set up custom error handling middleware:
+app.use(notFoundHandler);
+app.use(errorHandler);
+
+// server listen & PORT
+const PORT = process.env.PORT || 5006
+
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
