@@ -2,6 +2,9 @@ const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const PORT = 5005;
+const router = require("express").Router();
+const User = require("../models/User.model.js");
+const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
 
 // STATIC DATA
@@ -155,6 +158,25 @@ app.get("/api/students/cohort/:cohortId", async (req, res) => {
     res.status(500).json({ message: "Error to obtain studients from cohort", error });
   }
 });
+router.get("/users/:id", isAuthenticated, async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findById(id).select("-password"); 
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    res.status(200).json(user);
+  } catch (err) {
+    next(err);
+  }
+});
+const authRoutes = require("./routes/auth.routes");
+app.use("/auth", authRoutes);
+
+const userRoutes = require("./routes/user.routes");
+app.use("/api", userRoutes);
+module.exports = router;
 // START SERVER
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
